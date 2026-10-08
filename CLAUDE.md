@@ -23,7 +23,9 @@ Reels 9:16, 1080×1920, ~30 с. Основной стиль — **дудл**: н
 ## Как сделать ролик (папка work/<имя>/)
 1. `script.txt` — сценарий ~70 слов на 30 с: хук в первые 2 с, 3–4 пункта, призыв «Сохрани/подписывайся».
    Иностранные названия писать по-русски («Клод»), иначе голос читает неверно.
-2. Голос (бесплатно, Silero v5, MIT): `python3 tools/voice.py script.txt voice.wav ru_marat 1.12 0`
+2. Голос — **основной: Zvukogram «Борислав»** (выбор пользователя):
+   `python3 tools/voice_zvuk.py script.txt voice.wav Борислав 1.0` (нужны ZVUKOGRAM_TOKEN/ZVUKOGRAM_EMAIL
+   в переменных среды и zvukogram.com в разрешённых доменах). Запасной бесплатный (Silero v5, MIT): `python3 tools/voice.py script.txt voice.wav ru_marat 1.12 0`
    (`pip install torch librosa sherpa-onnx numpy pillow`; модель скачается в models/).
    Другие мягкие мужские голоса: ru_eduard, ru_dmitriy, ru_igor; последний параметр — высота (+2 = моложе).
 3. Тайминги: `python3 tools/transcribe.py voice.wav asr.json` →
