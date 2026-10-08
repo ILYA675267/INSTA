@@ -43,7 +43,9 @@ Reels 9:16, 1080×1920, ~30 с. Основной стиль — **дудл**: н
 GraphQL `https://api.buffer.com/graphql`. Организация `6ac7e4ff283372fa1f7e397b`,
 канал Instagram **@ember_rea** `6ac7e7346a5c39ccb655425b`. Мутация `createPost`
 (assets — ссылка на видео в интернете, mode, schedulingType). Видео нужно сначала выложить
-по публичной ссылке. Перед публикацией — всегда «Выкладывай» от пользователя.
+по публичной ссылке (репозиторий публичный: `https://raw.githubusercontent.com/ILYA675267/INSTA/<коммит>/output/<файл>.mp4`).
+Пометка ИИ: `aiAssisted: true` и `metadata.instagram.isAiGenerated: true` (+ строка «Видео создано с помощью ИИ» в тексте),
+`metadata.instagram.type: reel`, `shouldShareToFeed: true`, `mode: shareNow`. Перед публикацией — всегда «Выкладывай» от пользователя.
 
 ## Прочее
 `tools/teen.py` + `characters/tema|lev|den.json` — запасной стиль (мультяшные подростки в комнате).
