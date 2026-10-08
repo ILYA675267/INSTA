@@ -44,7 +44,8 @@ GraphQL `https://api.buffer.com/graphql`. Организация `6ac7e4ff283372
 канал Instagram **@ember_rea** `6ac7e7346a5c39ccb655425b`. Мутация `createPost`
 (assets — ссылка на видео в интернете, mode, schedulingType). Видео нужно сначала выложить
 по публичной ссылке (репозиторий публичный: `https://raw.githubusercontent.com/ILYA675267/INSTA/<коммит>/output/<файл>.mp4`).
-Пометка ИИ: `aiAssisted: true` и `metadata.instagram.isAiGenerated: true` (+ строка «Видео создано с помощью ИИ» в тексте),
+Пометка ИИ — только ярлыком: `aiAssisted: true` и `metadata.instagram.isAiGenerated: true`. В текст поста фразу
+«создано с помощью ИИ» НЕ писать: описание — только суть ролика (например, список плюсов) + хэштеги,
 `metadata.instagram.type: reel`, `shouldShareToFeed: true`, `mode: shareNow`. Перед публикацией — всегда «Выкладывай» от пользователя.
 
 ## Прочее
