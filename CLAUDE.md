@@ -25,13 +25,16 @@ Reels 9:16, 1080×1920, ~30 с. Основной стиль — **дудл**: н
    Иностранные названия писать по-русски («Клод»), иначе голос читает неверно.
 2. Голос — **основной: Zvukogram «Борислав»** (выбор пользователя):
    `python3 tools/voice_zvuk.py script.txt voice.wav Борислав 1.0` (нужны ZVUKOGRAM_TOKEN/ZVUKOGRAM_EMAIL
-   в переменных среды и zvukogram.com в разрешённых доменах). Запасной бесплатный (Silero v5, MIT): `python3 tools/voice.py script.txt voice.wav ru_marat 1.12 0`
+   в переменных среды и zvukogram.com в разрешённых доменах). Ещё понравился «Lucien RU» — он медленнее,
+   ставить скорость 1.2 (`... "Lucien RU" 1.2`). Запасной бесплатный (Silero v5, MIT): `python3 tools/voice.py script.txt voice.wav ru_marat 1.12 0`
    (`pip install torch librosa sherpa-onnx numpy pillow`; модель скачается в models/).
    Другие мягкие мужские голоса: ru_eduard, ru_dmitriy, ru_igor; последний параметр — высота (+2 = моложе).
 3. Тайминги: `python3 tools/transcribe.py voice.wav asr.json` →
    `python3 tools/align.py script.txt asr.json words.json`.
 4. `plan.json` — какие мини-анимации и на каких словах (формат в начале `tools/doodle.py`,
    пример `work/claude_plusy/plan_v4.json`; `"corner_logo"` — крутящийся логотип Клода в углу).
+4а. Фоновая музыка (своя, без авторских прав): `python3 tools/music.py work/<имя>/music.wav <длительность+1>`,
+   в plan.json — `"music": "work/<имя>/music.wav"` (очень тихо, под речью приглушается сама).
 5. Рендер: `python3 tools/doodle.py voice.wav words.json plan.json output/<имя>.mp4` (~1,5 мин).
 6. Проверить кадры (ffmpeg select), отправить пользователю.
 

@@ -13,6 +13,7 @@ plan.json  — {"captions": true, "events": [ {...}, ... ]}. Событие:
   "mark": true — жёлтый маркер под текстом, "wave": true — персонаж машет рукой.
 "corner_logo": {"logo": "claude-color", "x": 965, "y": 250, "size": 120, "speed": 18} — маленький логотип
   в углу, медленно крутится весь ролик (speed — градусов в секунду).
+"music": "work/<имя>/music.wav" — тихая фоновая мелодия (tools/music.py), "music_volume": 1.0 — множитель громкости.
 "tail": 0.8 — сколько секунд тишины добавить в конце, чтобы последняя надпись успела доиграть.
 Субтитры рвутся на точках/запятых сценария, если рядом с words.json лежит script.txt.
 Линии «дрожат» (эффект рисованной анимации), фон медленно плывёт волнами.
@@ -427,8 +428,15 @@ def main(wav, words_path, plan_path, out):
     while t < dur:
         blinks.update(range(int(t * FPS), int(t * FPS) + 4)); t += rnd.uniform(2.0, 4.2)
     waves = [(e['t0'], e['t0'] + 1.4) for e in evs if e.get('wave')]
+    if plan.get('music'):                               # тихая музыка; под речью приглушается ещё сильнее
+        audio = ['-stream_loop', '-1', '-i', plan['music'], '-filter_complex',
+                 f"[1:a]apad,asplit[v1][v2];[2:a]volume={plan.get('music_volume', 1.0)}[m];"
+                 "[m][v2]sidechaincompress=threshold=0.04:ratio=3:attack=40:release=600[md];"
+                 "[v1][md]amix=inputs=2:duration=first:normalize=0[a]", '-map', '0:v', '-map', '[a]']
+    else:
+        audio = ['-map', '0:v', '-map', '1:a', '-af', 'apad']
     ff = subprocess.Popen(['ffmpeg', '-v', 'error', '-y', '-f', 'rawvideo', '-pix_fmt', 'rgba', '-s', f'{W}x{H}', '-r', str(FPS),
-                           '-i', '-', '-i', wav, '-map', '0:v', '-map', '1:a', '-af', 'apad', '-t', f'{dur:.3f}', '-c:v', 'libx264', '-preset', 'medium',
+                           '-i', '-', '-i', wav, *audio, '-t', f'{dur:.3f}', '-c:v', 'libx264', '-preset', 'medium',
                            '-crf', '17', '-pix_fmt', 'yuv420p', '-c:a', 'aac', '-b:a', '256k', '-ar', '48000',
                            '-movflags', '+faststart', out], stdin=subprocess.PIPE)
     jumps = [e['t0'] for e in evs if e.get('jump')]

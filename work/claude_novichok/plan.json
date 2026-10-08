@@ -1,0 +1,315 @@
+{
+ "captions": true,
+ "corner_logo": {
+  "logo": "claude-color",
+  "x": 965,
+  "y": 250,
+  "size": 120,
+  "speed": 18
+ },
+ "music": "work/claude_novichok/music.wav",
+ "tail": 0.9,
+ "events": [
+  {
+   "at": "Почему",
+   "type": "zoom",
+   "dur": 1.8
+  },
+  {
+   "at": "Почему",
+   "type": "icon",
+   "icon": "question",
+   "x": 900,
+   "y": 600,
+   "dur": 1.8,
+   "wave": true,
+   "size": 0.8
+  },
+  {
+   "at": "нейросеть",
+   "type": "logo",
+   "logo": "claude-color",
+   "x": 560,
+   "y": 430,
+   "dur": 1.25,
+   "size": 250,
+   "jump": true
+  },
+  {
+   "at": "Первое",
+   "type": "burst",
+   "corner": "tr",
+   "dur": 0.8,
+   "delay": -0.15
+  },
+  {
+   "at": "Первое",
+   "type": "badge",
+   "text": "1",
+   "x": 150,
+   "y": 250,
+   "dur": 3.5,
+   "jump": true
+  },
+  {
+   "at": "начать",
+   "type": "card",
+   "card": {
+    "logo": "claude-color",
+    "title": "Старт бесплатно",
+    "sub": "нужен только браузер"
+   },
+   "y": 470,
+   "dur": 2.9
+  },
+  {
+   "at": "Второе",
+   "type": "burst",
+   "corner": "bl",
+   "dur": 0.8,
+   "delay": -0.15
+  },
+  {
+   "at": "Второе",
+   "type": "badge",
+   "text": "2",
+   "x": 150,
+   "y": 250,
+   "dur": 5.8,
+   "jump": true
+  },
+  {
+   "at": "пишет",
+   "type": "kinetic",
+   "text": "пишет живым языком",
+   "pill": "живым",
+   "y": 450,
+   "px": 84,
+   "dur": 1.4,
+   "maxw": 1000
+  },
+  {
+   "at": "Посты",
+   "type": "icon",
+   "icon": "doc",
+   "x": 300,
+   "y": 460,
+   "dur": 2.4
+  },
+  {
+   "at": "письма",
+   "type": "icon",
+   "icon": "chat",
+   "x": 780,
+   "y": 460,
+   "dur": 1.7
+  },
+  {
+   "at": "резюме",
+   "type": "icon",
+   "icon": "pencil",
+   "x": 540,
+   "y": 330,
+   "dur": 0.95
+  },
+  {
+   "at": "канцелярита",
+   "type": "icon",
+   "icon": "cross",
+   "x": 880,
+   "y": 650,
+   "dur": 0.75
+  },
+  {
+   "at": "Третье",
+   "type": "burst",
+   "corner": "tr",
+   "dur": 0.8,
+   "delay": -0.15
+  },
+  {
+   "at": "Третье",
+   "type": "badge",
+   "text": "3",
+   "x": 150,
+   "y": 250,
+   "dur": 2.75,
+   "jump": true
+  },
+  {
+   "at": "читает",
+   "type": "kinetic",
+   "text": "читает огромные файлы",
+   "pill": "файлы",
+   "y": 450,
+   "px": 84,
+   "dur": 1.65,
+   "maxw": 1000
+  },
+  {
+   "at": "Закинь",
+   "type": "chart",
+   "dur": 4.3,
+   "chart": {
+    "kind": "iso",
+    "title": "Разобрать договор",
+    "y": 640,
+    "items": [
+     {
+      "label": "сам",
+      "value": 10,
+      "text": "~1 час",
+      "color": [
+       255,
+       120,
+       140
+      ]
+     },
+     {
+      "label": "с Claude",
+      "value": 1.2,
+      "text": "1 мин",
+      "color": [
+       110,
+       200,
+       140
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "at": "Четвёртое",
+   "type": "burst",
+   "corner": "bl",
+   "dur": 0.8,
+   "delay": -0.15
+  },
+  {
+   "at": "Четвёртое",
+   "type": "badge",
+   "text": "4",
+   "x": 150,
+   "y": 250,
+   "dur": 4.7,
+   "jump": true
+  },
+  {
+   "at": "пишет",
+   "word_n": 2,
+   "type": "icon",
+   "icon": "code",
+   "x": 540,
+   "y": 450,
+   "dur": 0.75
+  },
+  {
+   "at": "собирает",
+   "type": "card",
+   "card": {
+    "logo": "claude-color",
+    "title": "Код и мини-приложения",
+    "sub": "даже без опыта"
+   },
+   "y": 470,
+   "dur": 3.1
+  },
+  {
+   "at": 49,
+   "type": "chart",
+   "dur": 3.48,
+   "chart": {
+    "kind": "table",
+    "title": "Почему Claude",
+    "y": 680,
+    "cols": [
+     "что даёт",
+     "Claude"
+    ],
+    "widths": [
+     0.78,
+     0.22
+    ],
+    "items": [
+     {
+      "label": "старт бесплатно",
+      "value": true,
+      "dt": 0.2
+     },
+     {
+      "label": "живой язык",
+      "value": true,
+      "dt": 0.45
+     },
+     {
+      "label": "большие файлы",
+      "value": true,
+      "dt": 0.7
+     },
+     {
+      "label": "код и приложения",
+      "value": true,
+      "dt": 0.95
+     },
+     {
+      "label": "объясняет просто",
+      "value": true,
+      "at": "простыми"
+     }
+    ]
+   }
+  },
+  {
+   "at": "пятое",
+   "type": "burst",
+   "corner": "tr",
+   "dur": 0.8,
+   "delay": -0.15
+  },
+  {
+   "at": "пятое",
+   "type": "badge",
+   "text": "5",
+   "x": 150,
+   "y": 250,
+   "dur": 2.9,
+   "jump": true
+  },
+  {
+   "at": "Сохрани",
+   "type": "icon",
+   "icon": "bookmark",
+   "x": 540,
+   "y": 560,
+   "dur": 1.6,
+   "jump": true
+  },
+  {
+   "at": "подписывайся",
+   "type": "burst",
+   "corner": "br",
+   "dur": 1.2
+  },
+  {
+   "at": "подписывайся",
+   "type": "text",
+   "text": "ПОДПИШИСЬ",
+   "x": 540,
+   "y": 400,
+   "px": 140,
+   "mark": true,
+   "dur": 1.9,
+   "wave": true,
+   "jump": true
+  },
+  {
+   "at": "подписывайся",
+   "type": "icon",
+   "icon": "heart",
+   "x": 860,
+   "y": 560,
+   "size": 0.8,
+   "dur": 1.9
+  }
+ ]
+}

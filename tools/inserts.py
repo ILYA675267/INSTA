@@ -166,7 +166,8 @@ def draw_kinetic(frame, e, a, words_t):
     y = e.get('y', 420) - (len(lines) - 1) * px * 0.62
     idx = 0
     for ln in lines:
-        widths = [d.textlength(w + ' ', font=inter(px)) for w in ln]
+        is_pill = lambda w: e.get('pill') and w.strip('.,!?') == e['pill']
+        widths = [d.textlength(w + ' ', font=inter(px)) + (36 if is_pill(w) else 0) for w in ln]   # плашке — поля
         x = e.get('x', 540) - sum(widths) / 2
         for w, wd in zip(ln, widths):
             ta = words_t[idx] if idx < len(words_t) else idx * 0.18
@@ -177,11 +178,13 @@ def draw_kinetic(frame, e, a, words_t):
             shade = int(175 * (1 - g) + 18 * g)
             col = (shade, shade, shade + 2, int(255 * min(1, g * 2) * k_out))
             yy = y + 18 * (1 - g)
-            if e.get('pill') and w.strip('.,!?') == e['pill']:
+            if is_pill(w):
+                x += 18
                 bw = d.textlength(w, font=inter(px))
                 d.rounded_rectangle((x - 18, yy - px * 0.62, x - 18 + (bw + 36) * g, yy + px * 0.62), 16,
                                     fill=(20, 20, 22, int(255 * k_out)))
                 d.text((x, yy), w, font=inter(px), fill=(255, 255, 255, int(255 * g * k_out)), anchor='lm')
+                x -= 18
             else:
                 d.text((x, yy), w, font=inter(px * (0.86 + 0.14 * g)), fill=col, anchor='lm')
             x += wd
