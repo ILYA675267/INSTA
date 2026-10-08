@@ -31,7 +31,7 @@ Reels 9:16, 1080×1920, ~30 с. Основной стиль — **дудл**: н
 3. Тайминги: `python3 tools/transcribe.py voice.wav asr.json` →
    `python3 tools/align.py script.txt asr.json words.json`.
 4. `plan.json` — какие мини-анимации и на каких словах (формат в начале `tools/doodle.py`,
-   пример `work/claude_plusy/plan_v3.json`).
+   пример `work/claude_plusy/plan_v4.json`; `"corner_logo"` — крутящийся логотип Клода в углу).
 5. Рендер: `python3 tools/doodle.py voice.wav words.json plan.json output/<имя>.mp4` (~1,5 мин).
 6. Проверить кадры (ffmpeg select), отправить пользователю.
 

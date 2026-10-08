@@ -5,7 +5,7 @@ python3 tools/voice_zvuk.py --voices          — русские голоса и
 
 Нужны переменные среды ZVUKOGRAM_TOKEN и ZVUKOGRAM_EMAIL (настройки среды) и домен zvukogram.com в разрешённых.
 """
-import json, os, subprocess, sys, tempfile, time, urllib.parse, urllib.request
+import json, os, subprocess, sys, tempfile, time, urllib.error, urllib.parse, urllib.request
 
 API = 'https://zvukogram.com/index.php?r=api/'
 
@@ -21,7 +21,14 @@ def main(script, out, voice='Борислав', speed='1.0'):
     if not token or not email:
         raise SystemExit('Нет ZVUKOGRAM_TOKEN / ZVUKOGRAM_EMAIL в переменных среды')
     text = open(script).read().strip() if os.path.exists(script) else script
-    r = call('text', token=token, email=email, voice=voice, text=text, format='wav', speed=speed)
+    for attempt in range(3):                          # сервис иногда отвечает 504 — пробуем ещё раз
+        try:
+            r = call('text', token=token, email=email, voice=voice, text=text, format='wav', speed=speed)
+            break
+        except urllib.error.HTTPError as e:
+            if e.code < 500 or attempt == 2:
+                raise
+            time.sleep(5)
     while r.get('status') == 0:                       # длинный текст озвучивается не сразу
         time.sleep(2)
         r = call('result', token=token, email=email, id=r['id'])

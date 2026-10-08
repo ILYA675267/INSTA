@@ -206,3 +206,24 @@ def draw_burst(frame, e, a):
         x1, y1 = cx + r1 * math.cos(ang), cy + r1 * math.sin(ang)
         d.line((x0, y0, x1, y1), fill=ORANGE + (255,), width=w)
         d.ellipse((x1 - w / 2, y1 - w / 2, x1 + w / 2, y1 + w / 2), fill=ORANGE + (255,))
+
+
+def draw_spin_logo(frame, c, t):
+    """Маленький логотип в углу: плавно появляется и медленно крутится весь ролик, с мягкой тенью."""
+    size = int(c.get('size', 120))
+    key = ('spin', c.get('logo', 'claude-color'), size)
+    if key not in _cache:
+        lg = logo_img(c.get('logo', 'claude-color'), size * 2)            # x2 — чтобы края при повороте были гладкими
+        pad = size
+        sh = Image.new('RGBA', (lg.width + pad * 2, lg.height + pad * 2), (0, 0, 0, 0))
+        dot = Image.new('RGBA', lg.size, (0, 0, 0, 0)); dot.putalpha(lg.split()[3].point(lambda v: v * 70 // 255))
+        sh.alpha_composite(dot, (pad, pad + size // 6))
+        _cache[key] = (lg, sh.filter(ImageFilter.GaussianBlur(size // 8)).resize((sh.width // 2, sh.height // 2), Image.BICUBIC))
+    lg, sh = _cache[key]
+    k = ease_out(t / 0.6)
+    if k <= 0.02:
+        return
+    cx, cy = c.get('x', 965), c.get('y', 250)
+    paste_center(frame, sh, cx, cy, alpha=k)                            # тень не крутится — свет сверху
+    rot = lg.rotate(-t * c.get('speed', 18), Image.BICUBIC).resize((size, size), Image.LANCZOS)
+    paste_center(frame, rot, cx, cy, scale=0.6 + 0.4 * k, alpha=k)

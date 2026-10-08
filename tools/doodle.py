@@ -11,6 +11,10 @@ plan.json  — {"captions": true, "events": [ {...}, ... ]}. Событие:
           sparkle pencil bookmark,
   "x", "y": центр (по умолчанию — свободное место сверху), "size": масштаб (1.0), "color": [r,g,b],
   "mark": true — жёлтый маркер под текстом, "wave": true — персонаж машет рукой.
+"corner_logo": {"logo": "claude-color", "x": 965, "y": 250, "size": 120, "speed": 18} — маленький логотип
+  в углу, медленно крутится весь ролик (speed — градусов в секунду).
+"tail": 0.8 — сколько секунд тишины добавить в конце, чтобы последняя надпись успела доиграть.
+Субтитры рвутся на точках/запятых сценария, если рядом с words.json лежит script.txt.
 Линии «дрожат» (эффект рисованной анимации), фон медленно плывёт волнами.
 """
 import json, math, os, random, subprocess, sys, wave
@@ -238,7 +242,8 @@ def chart(d, c, a, seed):
     """c — описание из plan.json (kind: bars | iso | line | pie | table), a — сколько секунд сцена на экране."""
     cx, cy = 540 * SS, c.get('y', 660) * SS
     if c.get('title'):
-        txt(d, c['title'], cx, cy - 430 * SS, 96 * min(1, ease(a / 0.4) * 1.0), mark=(255, 226, 90), seed=seed)
+        txt(d, c['title'], cx, cy - 430 * SS, 96 * min(1, ease(a / 0.4) * 1.0), mark=(255, 226, 90), seed=seed,
+            maxw=c.get('title_w', 660))   # место справа под логотип в углу
     items, kind = c.get('items', []), c['kind']
     n = max(1, len(items))
     col = lambda i, it: tuple(it.get('color', PALETTE[i % len(PALETTE)])) + (255,)
@@ -381,13 +386,28 @@ def resolve(plan, words):
     return evs
 
 
-def captions(words, dur):
+def punctuation(words_path, words):
+    """Знаки препинания после каждого слова — из script.txt рядом с words.json (в words.json их нет)."""
+    import re
+    path = os.path.join(os.path.dirname(os.path.abspath(words_path)), 'script.txt')
+    if not os.path.exists(path):
+        return [''] * len(words)
+    toks = [w for w in re.findall(r"[\w\-]+[.,!?…:;]*", open(path).read()) if any(ch.isalnum() for ch in w)]
+    if len(toks) != len(words):
+        return [''] * len(words)
+    return [re.sub(r'^[\w\-]+', '', w) for w in toks]
+
+
+def captions(words, dur, punct=None):
     """Фразы по 2–4 слова, смена на паузах и знаках препинания."""
+    punct = punct or [''] * len(words)
     chunks, cur = [], []
     for i, (w, t) in enumerate(words):
         cur.append((w, t))
         nxt = words[i + 1][1] if i + 1 < len(words) else dur
-        if len(cur) >= 4 or nxt - t > 0.55 or (len(cur) >= 2 and len(w) > 9):
+        p = punct[i]
+        end = any(ch in p for ch in '.!?…:') or (',' in p and len(cur) >= 2)
+        if end or len(cur) >= 4 or nxt - t > 0.55 or (len(cur) >= 2 and len(w) > 9):
             chunks.append((cur[0][1], nxt, ' '.join(x for x, _ in cur))); cur = []
     if cur:
         chunks.append((cur[0][1], dur, ' '.join(x for x, _ in cur)))
@@ -397,8 +417,10 @@ def captions(words, dur):
 def main(wav, words_path, plan_path, out):
     words = json.load(open(words_path)); plan = json.load(open(plan_path))
     rms, dur = loudness(wav)
+    tail = plan.get('tail', 0.8)
+    rms = np.concatenate([rms, np.zeros(int(tail * FPS))]); dur += tail
     evs = resolve(plan, words)
-    caps = captions(words, dur) if plan.get('captions', True) else []
+    caps = captions(words, dur, punctuation(words_path, words)) if plan.get('captions', True) else []
     grid = Grid()
     rnd = random.Random(9)
     blinks, t = set(), 1.1
@@ -406,7 +428,7 @@ def main(wav, words_path, plan_path, out):
         blinks.update(range(int(t * FPS), int(t * FPS) + 4)); t += rnd.uniform(2.0, 4.2)
     waves = [(e['t0'], e['t0'] + 1.4) for e in evs if e.get('wave')]
     ff = subprocess.Popen(['ffmpeg', '-v', 'error', '-y', '-f', 'rawvideo', '-pix_fmt', 'rgba', '-s', f'{W}x{H}', '-r', str(FPS),
-                           '-i', '-', '-i', wav, '-map', '0:v', '-map', '1:a', '-shortest', '-c:v', 'libx264', '-preset', 'medium',
+                           '-i', '-', '-i', wav, '-map', '0:v', '-map', '1:a', '-af', 'apad', '-t', f'{dur:.3f}', '-c:v', 'libx264', '-preset', 'medium',
                            '-crf', '17', '-pix_fmt', 'yuv420p', '-c:a', 'aac', '-b:a', '256k', '-ar', '48000',
                            '-movflags', '+faststart', out], stdin=subprocess.PIPE)
     jumps = [e['t0'] for e in evs if e.get('jump')]
@@ -456,8 +478,9 @@ def main(wav, words_path, plan_path, out):
             else:
                 txt(d, e['text'], cx, cy, e.get('px', 92) * k, color=tuple(e.get('color', INK[:3])) + (255,),
                     mark=(255, 226, 90) if e.get('mark') else None, seed=sd)
+        kinetic = any(e['type'] == 'kinetic' and e['t0'] <= t < e['t1'] for e in evs)   # не дублировать текст
         for c0, c1, text in caps:
-            if c0 <= t < c1:
+            if c0 <= t < c1 and not kinetic:
                 cap_y = 1250 if in_scene else (360 if tgt[2] > 1.6 else 760)
                 txt(d, text, 640 * SS if in_scene else 540 * SS, cap_y * SS, 104, mark=(255, 255, 255), seed=boil, maxw=760 if in_scene else 960)
                 break
@@ -474,6 +497,8 @@ def main(wav, words_path, plan_path, out):
                     inserts.draw_kinetic(frame, e, a, e['wt'])
                 elif e['type'] == 'burst':
                     inserts.draw_burst(frame, e, a)
+        if plan.get('corner_logo'):
+            inserts.draw_spin_logo(frame, plan['corner_logo'], t)
         bl = max([0.0] + [1 - abs(t - ts) / 0.16 for ts in cuts])   # размытие на смене сцены
         if bl > 0.05:
             frame = frame.filter(ImageFilter.GaussianBlur(14 * bl))
