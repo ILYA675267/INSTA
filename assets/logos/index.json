@@ -1,0 +1,450 @@
+{
+ "adidas": {
+  "title": "Adidas",
+  "color": "#000000"
+ },
+ "adobe-color": {
+  "title": "Adobe",
+  "color": null
+ },
+ "adobefirefly-color": {
+  "title": "Adobefirefly",
+  "color": null
+ },
+ "airbnb": {
+  "title": "Airbnb",
+  "color": "#FF5A5F"
+ },
+ "alibabadotcom": {
+  "title": "Alibaba.com",
+  "color": "#FF6A00"
+ },
+ "aliexpress": {
+  "title": "AliExpress",
+  "color": "#FF4747"
+ },
+ "amd": {
+  "title": "AMD",
+  "color": "#ED1C24"
+ },
+ "android": {
+  "title": "Android",
+  "color": "#3DDC84"
+ },
+ "apple": {
+  "title": "Apple",
+  "color": "#000000"
+ },
+ "asus": {
+  "title": "ASUS",
+  "color": "#000000"
+ },
+ "audi": {
+  "title": "Audi",
+  "color": "#BB0A30"
+ },
+ "binance": {
+  "title": "Binance",
+  "color": "#F0B90B"
+ },
+ "bitcoin": {
+  "title": "Bitcoin",
+  "color": "#F7931A"
+ },
+ "bmw": {
+  "title": "BMW",
+  "color": "#0066B1"
+ },
+ "bookingdotcom": {
+  "title": "Booking.com",
+  "color": "#003A9A"
+ },
+ "burgerking": {
+  "title": "Burger King",
+  "color": "#D62300"
+ },
+ "capcut": {
+  "title": "Capcut",
+  "color": null
+ },
+ "claude-color": {
+  "title": "Claude",
+  "color": null
+ },
+ "claude": {
+  "title": "Claude",
+  "color": "#D97757"
+ },
+ "cocacola": {
+  "title": "Coca-Cola",
+  "color": "#D00013"
+ },
+ "copilot-color": {
+  "title": "Copilot",
+  "color": null
+ },
+ "deepseek-color": {
+  "title": "Deepseek",
+  "color": null
+ },
+ "dell": {
+  "title": "Dell",
+  "color": "#007DB8"
+ },
+ "discord": {
+  "title": "Discord",
+  "color": "#5865F2"
+ },
+ "dji": {
+  "title": "DJI",
+  "color": "#000000"
+ },
+ "duolingo": {
+  "title": "Duolingo",
+  "color": "#58CC02"
+ },
+ "ebay": {
+  "title": "eBay",
+  "color": "#E53238"
+ },
+ "epicgames": {
+  "title": "Epic Games",
+  "color": "#313131"
+ },
+ "ethereum": {
+  "title": "Ethereum",
+  "color": "#3C3C3D"
+ },
+ "facebook": {
+  "title": "Facebook",
+  "color": "#0866FF"
+ },
+ "ferrari": {
+  "title": "Ferrari",
+  "color": "#D40000"
+ },
+ "figma-color": {
+  "title": "Figma",
+  "color": null
+ },
+ "figma": {
+  "title": "Figma",
+  "color": "#F24E1E"
+ },
+ "gemini-color": {
+  "title": "Gemini",
+  "color": null
+ },
+ "github": {
+  "title": "GitHub",
+  "color": "#181717"
+ },
+ "gmail": {
+  "title": "Gmail",
+  "color": "#EA4335"
+ },
+ "google": {
+  "title": "Google",
+  "color": "#4285F4"
+ },
+ "googlechrome": {
+  "title": "Google Chrome",
+  "color": "#4285F4"
+ },
+ "googledrive": {
+  "title": "Google Drive",
+  "color": "#4285F4"
+ },
+ "googlemaps": {
+  "title": "Google Maps",
+  "color": "#4285F4"
+ },
+ "grok": {
+  "title": "Grok",
+  "color": null
+ },
+ "handm": {
+  "title": "H&M",
+  "color": "#E50010"
+ },
+ "hbomax": {
+  "title": "HBO Max",
+  "color": "#000000"
+ },
+ "hermes": {
+  "title": "Hermes",
+  "color": "#0091CD"
+ },
+ "hp": {
+  "title": "HP",
+  "color": "#0096D6"
+ },
+ "huawei": {
+  "title": "Huawei",
+  "color": "#FF0000"
+ },
+ "ikea": {
+  "title": "IKEA",
+  "color": "#0058A3"
+ },
+ "instagram": {
+  "title": "Instagram",
+  "color": "#FF0069"
+ },
+ "intel": {
+  "title": "Intel",
+  "color": "#0071C5"
+ },
+ "ios": {
+  "title": "iOS",
+  "color": "#000000"
+ },
+ "kfc": {
+  "title": "KFC",
+  "color": "#F40027"
+ },
+ "kinopoisk": {
+  "title": "Kinopoisk",
+  "color": "#FF5500"
+ },
+ "kling-color": {
+  "title": "Kling",
+  "color": null
+ },
+ "lamborghini": {
+  "title": "Lamborghini",
+  "color": "#B6A272"
+ },
+ "lenovo": {
+  "title": "Lenovo",
+  "color": "#E2231A"
+ },
+ "lg": {
+  "title": "LG",
+  "color": "#A50034"
+ },
+ "linux": {
+  "title": "Linux",
+  "color": "#FCC624"
+ },
+ "mastercard": {
+  "title": "MasterCard",
+  "color": "#EB001B"
+ },
+ "max": {
+  "title": "Max",
+  "color": "#525252"
+ },
+ "mcdonalds": {
+  "title": "McDonald's",
+  "color": "#FBC817"
+ },
+ "meta-color": {
+  "title": "Meta",
+  "color": null
+ },
+ "meta": {
+  "title": "Meta",
+  "color": "#0467DF"
+ },
+ "metaai-color": {
+  "title": "Metaai",
+  "color": null
+ },
+ "microsoft-color": {
+  "title": "Microsoft",
+  "color": null
+ },
+ "midjourney": {
+  "title": "Midjourney",
+  "color": null
+ },
+ "mistral-color": {
+  "title": "Mistral",
+  "color": null
+ },
+ "netflix": {
+  "title": "Netflix",
+  "color": "#E50914"
+ },
+ "newbalance": {
+  "title": "New Balance",
+  "color": "#CF0A2C"
+ },
+ "nike": {
+  "title": "Nike",
+  "color": "#111111"
+ },
+ "nokia": {
+  "title": "Nokia",
+  "color": "#005AFF"
+ },
+ "notion": {
+  "title": "Notion",
+  "color": "#000000"
+ },
+ "nvidia": {
+  "title": "NVIDIA",
+  "color": "#76B900"
+ },
+ "odnoklassniki": {
+  "title": "Odnoklassniki",
+  "color": "#EE8208"
+ },
+ "ollama": {
+  "title": "Ollama",
+  "color": "#000000"
+ },
+ "openai": {
+  "title": "Openai",
+  "color": null
+ },
+ "paypal": {
+  "title": "PayPal",
+  "color": "#002991"
+ },
+ "perplexity-color": {
+  "title": "Perplexity",
+  "color": null
+ },
+ "pinterest": {
+  "title": "Pinterest",
+  "color": "#BD081C"
+ },
+ "playstation": {
+  "title": "PlayStation",
+  "color": "#0070D1"
+ },
+ "porsche": {
+  "title": "Porsche",
+  "color": "#B12B28"
+ },
+ "puma": {
+  "title": "Puma",
+  "color": "#242B2F"
+ },
+ "qwen-color": {
+  "title": "Qwen",
+  "color": null
+ },
+ "redbull": {
+  "title": "Red Bull",
+  "color": "#DB0A40"
+ },
+ "reddit": {
+  "title": "Reddit",
+  "color": "#FF4500"
+ },
+ "reebok": {
+  "title": "Reebok",
+  "color": "#E41D1B"
+ },
+ "samsung": {
+  "title": "Samsung",
+  "color": "#1428A0"
+ },
+ "shopify": {
+  "title": "Shopify",
+  "color": "#7AB55C"
+ },
+ "snapchat": {
+  "title": "Snapchat",
+  "color": "#FFFC00"
+ },
+ "sony": {
+  "title": "Sony",
+  "color": "#FFFFFF"
+ },
+ "sora-color": {
+  "title": "Sora",
+  "color": null
+ },
+ "spotify": {
+  "title": "Spotify",
+  "color": "#1ED760"
+ },
+ "starbucks": {
+  "title": "Starbucks",
+  "color": "#006241"
+ },
+ "steam": {
+  "title": "Steam",
+  "color": "#000000"
+ },
+ "suno": {
+  "title": "Suno",
+  "color": "#000000"
+ },
+ "telegram": {
+  "title": "Telegram",
+  "color": "#26A5E4"
+ },
+ "tesla": {
+  "title": "Tesla",
+  "color": "#CC0000"
+ },
+ "tiktok": {
+  "title": "TikTok",
+  "color": "#000000"
+ },
+ "toyota": {
+  "title": "Toyota",
+  "color": "#EB0A1E"
+ },
+ "twitch": {
+  "title": "Twitch",
+  "color": "#9146FF"
+ },
+ "uber": {
+  "title": "Uber",
+  "color": "#000000"
+ },
+ "unilever": {
+  "title": "Unilever",
+  "color": "#1F36C7"
+ },
+ "uniqlo": {
+  "title": "Uniqlo",
+  "color": "#FF0000"
+ },
+ "visa": {
+  "title": "Visa",
+  "color": "#1A1F71"
+ },
+ "vk": {
+  "title": "VK",
+  "color": "#0077FF"
+ },
+ "volkswagen": {
+  "title": "Volkswagen",
+  "color": "#151F5D"
+ },
+ "whatsapp": {
+  "title": "WhatsApp",
+  "color": "#25D366"
+ },
+ "x": {
+  "title": "X",
+  "color": "#000000"
+ },
+ "xiaomi": {
+  "title": "Xiaomi",
+  "color": "#FF6900"
+ },
+ "yandex": {
+  "title": "Yandex",
+  "color": null
+ },
+ "youtube": {
+  "title": "YouTube",
+  "color": "#FF0000"
+ },
+ "zara": {
+  "title": "Zara",
+  "color": "#000000"
+ },
+ "zoom": {
+  "title": "Zoom",
+  "color": "#0B5CFF"
+ }
+}

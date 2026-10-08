@@ -13,9 +13,11 @@ plan.json  — {"captions": true, "events": [ {...}, ... ]}. Событие:
   "mark": true — жёлтый маркер под текстом, "wave": true — персонаж машет рукой.
 Линии «дрожат» (эффект рисованной анимации), фон медленно плывёт волнами.
 """
-import json, math, random, subprocess, sys, wave
+import json, math, os, random, subprocess, sys, wave
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import numpy as np
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw, ImageFilter, ImageFont
+import inserts
 
 W, H, FPS, SS = 1080, 1920, 30, 2
 INK = (24, 24, 28, 255)
@@ -202,8 +204,14 @@ def icon(d, name, cx, cy, s, seed, t, color=None):
         Fl([(-44, -66), (44, -66), (44, 70), (0, 36), (-44, 70)], (120, 170, 255, 255))
 
 
-def txt(d, text, cx, cy, px, color=INK, mark=None, seed=0):
-    f = font(px * SS)
+def txt(d, text, cx, cy, px, color=INK, mark=None, seed=0, maxw=None):
+    if px < 4:
+        return
+    if maxw:
+        wid = d.textlength(text, font=font(round(px * SS)))
+        if wid > maxw * SS:
+            px = px * maxw * SS / wid
+    f = font(round(px * SS))
     x0, y0, x1, y1 = d.textbbox((cx, cy), text, font=f, anchor='mm')
     if mark:
         pad = 14 * SS
@@ -215,6 +223,115 @@ def txt(d, text, cx, cy, px, color=INK, mark=None, seed=0):
 def ease_back(x):
     x = min(max(x, 0), 1); c = 1.7
     return 1 + (c + 1) * (x - 1) ** 3 + c * (x - 1) ** 2
+
+
+# ---------- графики и таблицы («сцены») ----------
+PALETTE = [(255, 206, 70), (120, 170, 255), (255, 120, 140), (110, 200, 140), (217, 119, 87)]
+
+
+def ease(x):
+    x = min(max(x, 0.0), 1.0)
+    return 1 - (1 - x) ** 3
+
+
+def chart(d, c, a, seed):
+    """c — описание из plan.json (kind: bars | iso | line | pie | table), a — сколько секунд сцена на экране."""
+    cx, cy = 540 * SS, c.get('y', 660) * SS
+    if c.get('title'):
+        txt(d, c['title'], cx, cy - 430 * SS, 96 * min(1, ease(a / 0.4) * 1.0), mark=(255, 226, 90), seed=seed)
+    items, kind = c.get('items', []), c['kind']
+    n = max(1, len(items))
+    col = lambda i, it: tuple(it.get('color', PALETTE[i % len(PALETTE)])) + (255,)
+    if kind in ('bars', 'iso'):
+        base, left, width = cy + 290 * SS, cx - 400 * SS, 800 * SS
+        line(d, [(left - 20 * SS, base), (left + width + 20 * SS, base)], seed, w=7)
+        vmax = max(it['value'] for it in items) or 1
+        bw = width / n * 0.55
+        for i, it in enumerate(items):
+            g = ease((a - 0.25 - i * 0.3) / 0.8)
+            h = it['value'] / vmax * 520 * SS * g
+            x0 = left + width / n * (i + 0.5) - bw / 2
+            if h > 2:
+                if kind == 'iso':
+                    dx, dy = bw * 0.35, -bw * 0.25
+                    top = tuple(min(255, int(v * 1.15 + 20)) for v in col(i, it)[:3]) + (255,)
+                    side = tuple(int(v * 0.72) for v in col(i, it)[:3]) + (255,)
+                    shape(d, [(x0 + bw, base), (x0 + bw + dx, base + dy), (x0 + bw + dx, base - h + dy), (x0 + bw, base - h)], seed + i, fill=side, w=6)
+                    shape(d, [(x0, base - h), (x0 + bw, base - h), (x0 + bw + dx, base - h + dy), (x0 + dx, base - h + dy)], seed + i + 9, fill=top, w=6)
+                shape(d, [(x0, base), (x0 + bw, base), (x0 + bw, base - h), (x0, base - h)], seed + i + 3, fill=col(i, it), w=6)
+            txt(d, it['label'], x0 + bw / 2, base + 55 * SS, 58)
+            if g > 0.95 and it.get('text'):
+                txt(d, it['text'], x0 + bw / 2 + (bw * 0.17 if kind == 'iso' else 0), base - h - (bw * 0.25 if kind == 'iso' else 0) - 60 * SS, 64)
+    elif kind == 'line':
+        left, width, base = cx - 400 * SS, 800 * SS, cy + 290 * SS
+        line(d, [(left, base - 560 * SS), (left, base), (left + width, base)], seed, w=6)
+        vmax = max(it['value'] for it in items) or 1
+        pts = [(left + 40 * SS + (width - 80 * SS) * i / max(1, n - 1), base - it['value'] / vmax * 500 * SS) for i, it in enumerate(items)]
+        f = ease((a - 0.3) / 1.6) * (n - 1)
+        k = int(f); part = pts[:k + 1]
+        if k < n - 1:
+            (x1, y1), (x2, y2) = pts[k], pts[k + 1]; r = f - k
+            part = part + [(x1 + (x2 - x1) * r, y1 + (y2 - y1) * r)]
+        if len(part) > 1:
+            line(d, part, seed, w=11, color=(217, 119, 87, 255))
+        for i, (x, y) in enumerate(pts[:k + 1]):
+            d.ellipse((x - 14 * SS, y - 14 * SS, x + 14 * SS, y + 14 * SS), fill=INK)
+            txt(d, items[i]['label'], x, base + 50 * SS, 54)
+    elif kind == 'pie':
+        tot = sum(it['value'] for it in items) or 1
+        sweep = 360 * ease((a - 0.25) / 1.2); ang = -90.0
+        for i, it in enumerate(items):
+            span = 360 * it['value'] / tot
+            vis = max(0.0, min(span, sweep - (ang + 90)))
+            if vis > 1:
+                pts = [(0, 0)] + ell(0, 0, 330, 330, 40, ang, ang + vis) + [(330 * math.cos(math.radians(ang + vis)), 330 * math.sin(math.radians(ang + vis)))]
+                shape(d, P(pts, cx, cy, 1), seed + i, fill=col(i, it), w=7)
+            if vis >= span - 1:
+                mid = math.radians(ang + span / 2)
+                txt(d, it['label'], cx + 200 * SS * math.cos(mid), cy + 200 * SS * math.sin(mid), 60)
+            ang += span
+    elif kind == 'table':
+        rows, cols = items, c.get('cols', [])
+        rh, tw = 120 * SS, 860 * SS
+        top = cy - 300 * SS; left = cx - tw / 2
+        widths = c.get('widths', [0.7, 0.3])
+        nr = len(rows) + (1 if cols else 0)
+        shape(d, [(left, top), (left + tw, top), (left + tw, top + rh * nr), (left, top + rh * nr)], seed, fill=(255, 255, 255, 255), w=7)
+        for r in range(1, nr):
+            line(d, [(left, top + rh * r), (left + tw, top + rh * r)], seed + r, w=5)
+        xs = [left]
+        for wdt in widths[:-1]:
+            xs.append(xs[-1] + tw * wdt)
+            line(d, [(xs[-1], top), (xs[-1], top + rh * nr)], seed + 40, w=5)
+        y = top
+        if cols:
+            for j, h_ in enumerate(cols):
+                txt(d, h_, xs[j] + tw * widths[j] / 2, y + rh / 2, 64, color=(217, 119, 87, 255))
+            y += rh
+        for i, row in enumerate(rows):
+            g = ease((a - row.get('dt', 0.3 + i * 0.5)) / 0.3)
+            if g > 0.05:
+                txt(d, row['label'], xs[0] + tw * widths[0] / 2, y + rh / 2, 62 * g)
+                v = row.get('value')
+                if v is True or v is False:
+                    icon(d, 'check' if v else 'cross', xs[1] + tw * widths[1] / 2, y + rh / 2, 0.55 * g, seed + i, a)
+                elif v is not None:
+                    txt(d, str(v), xs[1] + tw * widths[1] / 2, y + rh / 2, 62 * g)
+            y += rh
+
+
+CAM_DEFAULT = (540, 1050, 1.1)
+CAM_SIDE = (180, 1470, 0.55)    # персонаж отходит в левый нижний угол, экран занимает график
+CAM_ZOOM = (540, 1060, 2.1)     # крупный план лица
+
+
+def cam_target(t, evs):
+    for e in evs:
+        if e['type'] == 'chart' and e['t0'] - 0.15 <= t < e['t1'] - 0.2:
+            return e.get('cam', CAM_SIDE)
+        if e['type'] == 'zoom' and e['t0'] - 0.1 <= t < e['t1'] - 0.15:
+            return CAM_ZOOM
+    return CAM_DEFAULT
 
 
 # ---------- звук ----------
@@ -243,8 +360,23 @@ def resolve(plan, words):
         else:
             t0 = words[at][1]
         e = dict(e, t0=t0 + e.get('delay', 0), t1=t0 + e.get('delay', 0) + e.get('dur', 2.2))
-        if 'x' not in e:
+        if 'x' not in e and e['type'] in ('icon', 'text', 'badge'):
             e['x'], e['y'] = SLOTS[k % len(SLOTS)]
+        if e['type'] == 'kinetic':                       # время каждого слова фразы
+            j = next((i for i, (w, t) in enumerate(words) if t >= t0 - 0.01), len(words))
+            wt = []
+            for tok in e['text'].split():
+                k2 = next((i for i in range(j, min(j + 6, len(words))) if norm(words[i][0]) == norm(tok)), None)
+                if k2 is not None:
+                    wt.append(words[k2][1] - e['t0']); j = k2 + 1
+                else:
+                    wt.append((wt[-1] + 0.15) if wt else 0.0)
+            e['wt'] = wt
+        for it in e.get('chart', {}).get('items', []):
+            if isinstance(it.get('at'), str):
+                hits = [t for w, t in words if norm(w) == norm(it['at'])]
+                if hits:
+                    it['dt'] = hits[min(it.get('word_n', 1), len(hits)) - 1] - e['t0']
         evs.append(e)
     return evs
 
@@ -277,6 +409,9 @@ def main(wav, words_path, plan_path, out):
                            '-i', '-', '-i', wav, '-map', '0:v', '-map', '1:a', '-shortest', '-c:v', 'libx264', '-preset', 'medium',
                            '-crf', '17', '-pix_fmt', 'yuv420p', '-c:a', 'aac', '-b:a', '256k', '-ar', '48000',
                            '-movflags', '+faststart', out], stdin=subprocess.PIPE)
+    jumps = [e['t0'] for e in evs if e.get('jump')]
+    cuts = [x for e in evs if e['type'] in ('chart', 'zoom') for x in (e['t0'], e['t1'] - 0.1)]
+    cam = list(CAM_DEFAULT)
     prev, n = 0, len(rms)
     for i in range(n):
         t = i / FPS; v = rms[i]
@@ -293,9 +428,19 @@ def main(wav, words_path, plan_path, out):
               'arm_r': (-60 + 25 * math.sin(t * 14)) if waving else (-25 + 10 * math.sin(t * 1.7) - (14 * min(v, 1) if talk else 0))}
         layer = Image.new('RGBA', (W * SS, H * SS), (0, 0, 0, 0)); d = ImageDraw.Draw(layer)
         bob = 6 * math.sin(t * 2 * math.pi / 2.6) + (4 * min(v, 1) if talk else 0)
-        character(d, 540 * SS, (1050 + bob) * SS, 1.1, st, 100 + boil * 7)
+        for j0 in jumps:                                     # подпрыгивание
+            if 0 <= t - j0 < 0.45:
+                bob -= 70 * math.sin(math.pi * (t - j0) / 0.45)
+        tgt = cam_target(t, evs)
+        cam = [c + (g - c) * 0.16 for c, g in zip(cam, tgt)]  # плавный «отъезд» и «наезд»
+        in_scene = tgt == CAM_SIDE or any(e['type'] == 'chart' and e['t0'] <= t < e['t1'] for e in evs)
         for e in evs:
-            if not (e['t0'] <= t < e['t1']):
+            if e['type'] == 'chart' and e['t0'] <= t < e['t1']:
+                a = t - e['t0']
+                chart(d, e['chart'], a, 500 + boil * 13)
+        character(d, cam[0] * SS, (cam[1] + bob * cam[2]) * SS, cam[2], st, 100 + boil * 7)
+        for e in evs:
+            if not (e['t0'] <= t < e['t1']) or e['type'] in ('chart', 'zoom', 'logo', 'card', 'kinetic', 'burst'):
                 continue
             a = t - e['t0']; out_k = min(1.0, (e['t1'] - t) / 0.25)
             k = ease_back(a / 0.35) * out_k * e.get('size', 1.0)
@@ -313,10 +458,25 @@ def main(wav, words_path, plan_path, out):
                     mark=(255, 226, 90) if e.get('mark') else None, seed=sd)
         for c0, c1, text in caps:
             if c0 <= t < c1:
-                txt(d, text, 540 * SS, 760 * SS, 104, mark=(255, 255, 255), seed=boil)
+                cap_y = 1250 if in_scene else (360 if tgt[2] > 1.6 else 760)
+                txt(d, text, 640 * SS if in_scene else 540 * SS, cap_y * SS, 104, mark=(255, 255, 255), seed=boil, maxw=760 if in_scene else 960)
                 break
         frame = grid.draw(t)
         frame.alpha_composite(layer.reduce(SS))
+        for e in evs:                                        # «чистые» вставки поверх
+            if e['t0'] <= t < e['t1']:
+                a = t - e['t0']
+                if e['type'] == 'logo':
+                    inserts.draw_logo(frame, e, a)
+                elif e['type'] == 'card':
+                    inserts.draw_card(frame, e, a)
+                elif e['type'] == 'kinetic':
+                    inserts.draw_kinetic(frame, e, a, e['wt'])
+                elif e['type'] == 'burst':
+                    inserts.draw_burst(frame, e, a)
+        bl = max([0.0] + [1 - abs(t - ts) / 0.16 for ts in cuts])   # размытие на смене сцены
+        if bl > 0.05:
+            frame = frame.filter(ImageFilter.GaussianBlur(14 * bl))
         ff.stdin.write(frame.tobytes())
     ff.stdin.close(); ff.wait()
     print('Готово:', out)
