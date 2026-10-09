@@ -469,10 +469,10 @@ def main(wav, words_path, plan_path, out):
                            '-movflags', '+faststart', out], stdin=subprocess.PIPE)
     is_real = plan.get('style') == 'real'
     jumps = [e['t0'] for e in evs if e.get('jump')]
-    cuts = [x for e in evs if e['type'] in ('chart', 'zoom') for x in (e['t0'], e['t1'] - 0.1)]
+    cuts = [x for e in evs if e['type'] in ('chart', 'zoom') for x in (e['t0'], e['t1'] - 0.1) if x > 0.3]   # первый кадр — чёткий (это обложка)
     arms = [125.0, -25.0]
     bg_only = plan.get('bg_only')
-    cam = list(CAM_DEFAULT)
+    cam = list(cam_target(0, evs)[0])                       # с первого кадра — сразу нужный ракурс
     prev, n = 0, len(rms)
     for i in range(n):
         t = i / FPS; v = rms[i]
