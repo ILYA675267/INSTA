@@ -130,9 +130,10 @@ def draw_logo(frame, e, a):
     k_out = ease_out((dur - a) / 0.3)
     x = -size + (cx + size) * k_in
     if e.get('trail', True) and x > -50:
-        d = ImageDraw.Draw(frame)
         th = size * 0.62
-        d.rounded_rectangle((-60, cy - th / 2, x, cy + th / 2), int(th / 2), fill=(206, 206, 210, int(235 * k_out)))
+        lay = Image.new('RGBA', (int(x) + 61, int(th) + 2), (0, 0, 0, 0))     # отдельный слой — чтобы плавно гас
+        ImageDraw.Draw(lay).rounded_rectangle((0, 0, int(x) + 60, int(th)), int(th / 2), fill=(206, 206, 210, int(235 * k_out)))
+        frame.alpha_composite(lay, (-60, int(cy - th / 2)))
     blur = (1 - k_in) * 10 + (1 - k_out) * 6
     paste_center(frame, badge(e['logo'], size, e.get('dark')), x, cy + 6 * math.sin(a * 2.4),
                  scale=0.6 + 0.4 * k_out, alpha=k_out, blur=blur)
@@ -151,7 +152,7 @@ def draw_card(frame, e, a):
 def draw_kinetic(frame, e, a, words_t):
     """Текст по словам: слово появляется серым и мелким, затем становится чёрным и жирным.
     pill — слово в чёрной плашке, которая «вытирается» слева направо."""
-    d = ImageDraw.Draw(frame)
+    lay = Image.new('RGBA', frame.size, (0, 0, 0, 0)); d = ImageDraw.Draw(lay)   # слой — чтобы плавно гасло
     toks = e['text'].split()
     px = e.get('px', 84); maxw = e.get('maxw', 900)
     lines, cur = [], []
@@ -189,6 +190,7 @@ def draw_kinetic(frame, e, a, words_t):
                 d.text((x, yy), w, font=inter(px * (0.86 + 0.14 * g)), fill=col, anchor='lm')
             x += wd
         y += px * 1.24
+    frame.alpha_composite(lay)
 
 
 def draw_burst(frame, e, a):

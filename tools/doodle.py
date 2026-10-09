@@ -14,6 +14,8 @@ plan.json  — {"captions": true, "events": [ {...}, ... ]}. Событие:
 "corner_logo": {"logo": "claude-color", "x": 965, "y": 250, "size": 120, "speed": 18} — маленький логотип
   в углу, медленно крутится весь ролик (speed — градусов в секунду).
 "music": "work/<имя>/music.wav" — тихая фоновая мелодия (tools/music.py), "music_volume": 1.0 — множитель громкости.
+"style": "real" — реалистичные вставки вместо рисовки (стекло, глянец, кнопки; см. tools/real.py).
+"sfx": true — тихие звуки на появление элементов (tools/sfx.py), "sfx_volume": 1.0; у события "sfx": "pop"/false.
 "tail": 0.8 — сколько секунд тишины добавить в конце, чтобы последняя надпись успела доиграть.
 Субтитры рвутся на точках/запятых сценария, если рядом с words.json лежит script.txt.
 Линии «дрожат» (эффект рисованной анимации), фон медленно плывёт волнами.
@@ -22,7 +24,7 @@ import json, math, os, random, subprocess, sys, wave
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import numpy as np
 from PIL import Image, ImageDraw, ImageFilter, ImageFont
-import inserts
+import inserts, real, sfx
 
 W, H, FPS, SS = 1080, 1920, 30, 2
 INK = (24, 24, 28, 255)
@@ -428,17 +430,25 @@ def main(wav, words_path, plan_path, out):
     while t < dur:
         blinks.update(range(int(t * FPS), int(t * FPS) + 4)); t += rnd.uniform(2.0, 4.2)
     waves = [(e['t0'], e['t0'] + 1.4) for e in evs if e.get('wave')]
+    inputs, graph, mixin = [], ['[1:a]apad[v0]'], ['[v0]']
     if plan.get('music'):                               # тихая музыка; под речью приглушается ещё сильнее
-        audio = ['-stream_loop', '-1', '-i', plan['music'], '-filter_complex',
-                 f"[1:a]apad,asplit[v1][v2];[2:a]volume={plan.get('music_volume', 1.0)}[m];"
-                 "[m][v2]sidechaincompress=threshold=0.04:ratio=3:attack=40:release=600[md];"
-                 "[v1][md]amix=inputs=2:duration=first:normalize=0[a]", '-map', '0:v', '-map', '[a]']
-    else:
-        audio = ['-map', '0:v', '-map', '1:a', '-af', 'apad']
+        inputs += ['-stream_loop', '-1', '-i', plan['music']]
+        graph = ['[1:a]apad,asplit[v0][vs]', f"[2:a]volume={plan.get('music_volume', 1.0)}[m]",
+                 '[m][vs]sidechaincompress=threshold=0.04:ratio=3:attack=40:release=600[md]']
+        mixin.append('[md]')
+    fx_path = None
+    if plan.get('sfx'):                                 # звуки на появление элементов
+        fx_path = out + '.sfx.wav'
+        sfx.render(sfx.cues(evs), dur, fx_path, plan.get('sfx_volume', 1.0))
+        inputs += ['-i', fx_path]
+        graph.append(f'[{1 + len(mixin)}:a]anull[fx]'); mixin.append('[fx]')
+    graph.append(''.join(mixin) + f'amix=inputs={len(mixin)}:duration=first:normalize=0[a]')
+    audio = [*inputs, '-filter_complex', ';'.join(graph), '-map', '0:v', '-map', '[a]']
     ff = subprocess.Popen(['ffmpeg', '-v', 'error', '-y', '-f', 'rawvideo', '-pix_fmt', 'rgba', '-s', f'{W}x{H}', '-r', str(FPS),
                            '-i', '-', '-i', wav, *audio, '-t', f'{dur:.3f}', '-c:v', 'libx264', '-preset', 'medium',
                            '-crf', '17', '-pix_fmt', 'yuv420p', '-c:a', 'aac', '-b:a', '256k', '-ar', '48000',
                            '-movflags', '+faststart', out], stdin=subprocess.PIPE)
+    is_real = plan.get('style') == 'real'
     jumps = [e['t0'] for e in evs if e.get('jump')]
     cuts = [x for e in evs if e['type'] in ('chart', 'zoom') for x in (e['t0'], e['t1'] - 0.1)]
     cam = list(CAM_DEFAULT)
@@ -465,12 +475,12 @@ def main(wav, words_path, plan_path, out):
         cam = [c + (g - c) * 0.16 for c, g in zip(cam, tgt)]  # плавный «отъезд» и «наезд»
         in_scene = tgt == CAM_SIDE or any(e['type'] == 'chart' and e['t0'] <= t < e['t1'] for e in evs)
         for e in evs:
-            if e['type'] == 'chart' and e['t0'] <= t < e['t1']:
+            if e['type'] == 'chart' and e['t0'] <= t < e['t1'] and not is_real:
                 a = t - e['t0']
                 chart(d, e['chart'], a, 500 + boil * 13)
         character(d, cam[0] * SS, (cam[1] + bob * cam[2]) * SS, cam[2], st, 100 + boil * 7)
         for e in evs:
-            if not (e['t0'] <= t < e['t1']) or e['type'] in ('chart', 'zoom', 'logo', 'card', 'kinetic', 'burst'):
+            if not (e['t0'] <= t < e['t1']) or e['type'] in ('chart', 'zoom', 'logo', 'card', 'kinetic', 'burst') or is_real:
                 continue
             a = t - e['t0']; out_k = min(1.0, (e['t1'] - t) / 0.25)
             k = ease_back(a / 0.35) * out_k * e.get('size', 1.0)
@@ -494,6 +504,17 @@ def main(wav, words_path, plan_path, out):
                 break
         frame = grid.draw(t)
         frame.alpha_composite(layer.reduce(SS))
+        if is_real:                                          # реалистичные вставки: сначала графики, потом остальное
+            for e in sorted((e for e in evs if e['t0'] <= t < e['t1']), key=lambda e: e['type'] != 'chart'):
+                a = t - e['t0']
+                if e['type'] == 'chart':
+                    real.chart(frame, e['chart'], a, e['t1'] - e['t0'])
+                elif e['type'] == 'badge':
+                    real.badge(frame, e, a)
+                elif e['type'] == 'icon':
+                    real.icon(frame, e, a)
+                elif e['type'] == 'text':
+                    (real.button if e.get('mark') else real.plain_text)(frame, e, a)
         for e in evs:                                        # «чистые» вставки поверх
             if e['t0'] <= t < e['t1']:
                 a = t - e['t0']
@@ -504,7 +525,7 @@ def main(wav, words_path, plan_path, out):
                 elif e['type'] == 'kinetic':
                     inserts.draw_kinetic(frame, e, a, e['wt'])
                 elif e['type'] == 'burst':
-                    inserts.draw_burst(frame, e, a)
+                    (real.burst if is_real else inserts.draw_burst)(frame, e, a)
         if plan.get('corner_logo'):
             inserts.draw_spin_logo(frame, plan['corner_logo'], t)
         bl = max([0.0] + [1 - abs(t - ts) / 0.16 for ts in cuts])   # размытие на смене сцены
@@ -512,6 +533,8 @@ def main(wav, words_path, plan_path, out):
             frame = frame.filter(ImageFilter.GaussianBlur(14 * bl))
         ff.stdin.write(frame.tobytes())
     ff.stdin.close(); ff.wait()
+    if fx_path:
+        os.remove(fx_path)
     print('Готово:', out)
 
 
