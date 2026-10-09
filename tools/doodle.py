@@ -464,8 +464,8 @@ def main(wav, words_path, plan_path, out):
     graph.append(''.join(mixin) + f'amix=inputs={len(mixin)}:duration=first:normalize=0[a]')
     audio = [*inputs, '-filter_complex', ';'.join(graph), '-map', '0:v', '-map', '[a]']
     ff = subprocess.Popen(['ffmpeg', '-v', 'error', '-y', '-f', 'rawvideo', '-pix_fmt', 'rgba', '-s', f'{W}x{H}', '-r', str(FPS),
-                           '-i', '-', '-i', wav, *audio, '-t', f'{dur:.3f}', '-c:v', 'libx264', '-preset', 'medium',
-                           '-crf', '17', '-pix_fmt', 'yuv420p', '-c:a', 'aac', '-b:a', '256k', '-ar', '48000',
+                           '-i', '-', '-i', wav, *audio, '-t', f'{dur:.3f}', '-c:v', 'libx264', '-preset', 'slow',
+                           '-crf', '10' if plan.get('bg_only') else '15', '-pix_fmt', 'yuv420p', '-c:a', 'aac', '-b:a', '256k', '-ar', '48000',
                            '-movflags', '+faststart', out], stdin=subprocess.PIPE)
     is_real = plan.get('style') == 'real'
     jumps = [e['t0'] for e in evs if e.get('jump')]
