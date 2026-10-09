@@ -2,3 +2,5 @@ models/
 __pycache__/
 *.pyc
 work/*/asr.json
+work/*/video_silent.mp4
+work/*/sfx.wav
