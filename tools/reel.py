@@ -76,9 +76,14 @@ def main(folder, out):
             bg_events.append({'at': e['at'], 'word_n': e.get('word_n', 1), 'type': 'badge', 'text': '', 'x': -999, 'y': -999,
                               'dur': 0.5, 'jump': True})
     bg_plan = {'captions': False, 'bg_only': True, 'tail': plan.get('tail', 0.9), 'events': bg_events}
-    json.dump(bg_plan, open(f'{folder}/plan_bg.json', 'w'), ensure_ascii=False, indent=1)
     bg = f'{folder}/bg.mp4'
-    doodle.main(f'{folder}/voice.wav', f'{folder}/words.json', f'{folder}/plan_bg.json', bg)
+    old = open(f'{folder}/plan_bg.json').read() if os.path.exists(f'{folder}/plan_bg.json') else None
+    new = json.dumps(bg_plan, ensure_ascii=False, indent=1)
+    if old != new or not os.path.exists(bg) or os.path.getmtime(f'{ROOT}/tools/doodle.py') > os.path.getmtime(bg):
+        open(f'{folder}/plan_bg.json', 'w').write(new)
+        doodle.main(f'{folder}/voice.wav', f'{folder}/words.json', f'{folder}/plan_bg.json', bg)
+    else:
+        print('Подложка не менялась — беру готовую')
 
     # 3) субтитры фразами: где стоят и когда спрятать (пока кинетический текст повторяет слова)
     punct = doodle.punctuation(f'{folder}/words.json', words)
@@ -90,7 +95,7 @@ def main(folder, out):
         active = [e for e in evs if e['t0'] <= mid < e['t1']]
         pos = 'top' if any(e['type'] == 'zoom' for e in active) else \
               'side' if any(e.get('side') or e['type'] in SIDE_MODE_TYPES for e in active) else 'mid'
-        hide = any(e['type'] in ('kinetic', 'hook') for e in active)
+        hide = any(e['type'] in ('kinetic', 'hook', 'tg') for e in active)
         chunks.append({'t0': c0, 't1': c1, 'pos': pos, 'hide': hide, 'words': ws})
     json.dump({'duration': dur, 'chunks': chunks, 'events': [e for e in evs if e['type'] not in BG_TYPES]},
               open(f'{REM}/src/reel.json', 'w'), ensure_ascii=False)

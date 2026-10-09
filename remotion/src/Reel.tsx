@@ -81,7 +81,7 @@ const Card: React.FC<{e: Ev}> = ({e}) => {
         display: 'flex', alignItems: 'center', padding: '0 50px', gap: 36, opacity: Math.min(1, k * 1.5)}}>
         <div style={{fontSize: 120, filter: 'drop-shadow(0 8px 10px rgba(0,0,0,0.2))'}}>{e.emoji}</div>
         <div style={{fontFamily: FONT}}>
-          <div style={{fontSize: 66, color: INK}}>{e.title}</div>
+          <div style={{fontSize: e.title.length > 18 ? 52 : e.title.length > 14 ? 58 : 66, color: INK, whiteSpace: 'nowrap'}}>{e.title}</div>
           {e.sub && <div style={{fontSize: 40, color: '#6b6d78', marginTop: 10, opacity: sub, transform: `translateX(${(1 - sub) * 30}px)`}}>{e.sub}</div>}
         </div>
       </div>
@@ -373,6 +373,7 @@ const Captions: React.FC = () => {
   if (!c || c.hide) return null;
   const pop = sp(t, c.t0, 14, 0.5);
   const side = c.pos === 'side';
+  const chars = c.words.reduce((n: number, [w]: [string, number]) => n + w.length + 1, 0);   // длинная фраза — шрифт меньше, без переноса
   const top = c.pos === 'top' ? 300 : side ? 1270 : 690;
   return (
     <div style={{position: 'absolute', left: side ? 330 : 30, right: 30, top, display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 8,
@@ -381,7 +382,7 @@ const Captions: React.FC = () => {
         const nx = i + 1 < c.words.length ? c.words[i + 1][1] : c.t1;
         const active = t >= ts && t < nx; const said = t >= ts;
         return (
-          <span key={i} style={{fontFamily: FONT, fontSize: side ? 56 : 64, padding: '4px 16px', borderRadius: 18, whiteSpace: 'nowrap',
+          <span key={i} style={{fontFamily: FONT, fontSize: Math.round((side ? 56 : 64) * (chars > 30 ? 0.8 : chars > 24 ? 0.9 : 1)), padding: '4px 16px', borderRadius: 18, whiteSpace: 'nowrap',
             color: active ? 'white' : said ? INK : 'rgba(22,22,26,0.42)', background: active ? ORANGE : 'transparent',
             boxShadow: active ? '0 8px 18px rgba(217,119,87,0.45)' : 'none', transform: `scale(${active ? 1.08 : 1})`,
             textShadow: active ? 'none' : '0 0 12px white, 0 0 4px white'}}>{w}</span>
