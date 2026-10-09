@@ -20,7 +20,7 @@ REM = os.path.join(ROOT, 'remotion')
 BROWSER = '/opt/pw-browsers/chromium_headless_shell-1194/chrome-linux/headless_shell'
 BG_TYPES = ('zoom', 'punch', 'cam', 'pose')
 SIDE_MODE_TYPES = ('table', 'bars')
-SFX = {'badge': 'pop', 'flare': 'ding', 'card': 'whoosh', 'table': 'whoosh', 'bars': 'whoosh', 'coin': 'whoosh',
+SFX = {'tg': 'whoosh', 'badge': 'pop', 'flare': 'ding', 'card': 'whoosh', 'table': 'whoosh', 'bars': 'whoosh', 'coin': 'whoosh',
        'moneybutton': 'whoosh', 'button': 'pop', 'punch': None}
 
 

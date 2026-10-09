@@ -13,7 +13,7 @@ const INK = '#16161a';
 const FONT = 'InterX';
 type Ev = any;
 
-const useFonts = () => {
+export const useFonts = () => {
   const [handle] = useState(() => delayRender('шрифты'));
   useEffect(() => {
     const f = new FontFace(FONT, `url(${staticFile('Inter-ExtraBold.ttf')})`);
@@ -317,6 +317,44 @@ const Hook: React.FC<{e: Ev}> = ({e}) => {
   );
 };
 
+// ---------- призыв в Telegram-канал (в конце каждого ролика) ----------
+const TG = '#2AABEE';
+export const TgCard: React.FC<{e: Ev}> = ({e}) => {
+  const t = useT(); const k = sp(t, e.t0, 12, 0.9) * outK(t, e, 0.3);
+  const a = t - e.t0;
+  const tap = interpolate(a, [1.0, 1.15, 1.35], [0, 1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
+  const finger = sp(t, e.t0 + 0.7, 14, 0.6);
+  const pulse = 1 + 0.035 * Math.sin(a * 6) * (a > 1.4 ? 1 : 0);
+  const y = e.y ?? 230;
+  return (
+    <div style={{position: 'absolute', left: 80, top: y, width: 920, height: 560, perspective: 1200,
+      transform: `translateY(${(1 - k) * 300}px) scale(${0.85 + 0.15 * k})`, opacity: Math.min(1, k * 1.4)}}>
+      <div style={{position: 'absolute', left: -40, top: -50, width: 480, height: 380, borderRadius: '50%', background: 'rgba(42,171,238,0.55)', filter: 'blur(70px)'}} />
+      <div style={{position: 'absolute', right: -30, bottom: -50, width: 420, height: 320, borderRadius: '50%', background: 'rgba(255,150,100,0.5)', filter: 'blur(70px)'}} />
+      <div style={{position: 'absolute', inset: 0, borderRadius: 56, ...glass, transform: `rotateX(${4 + 3 * Math.sin(t * 1.5)}deg)`,
+        display: 'flex', flexDirection: 'column', alignItems: 'center', paddingTop: 44}}>
+        <div style={{position: 'relative', width: 190, height: 190}}>
+          <img src={staticFile('ember_avatar.png')} style={{width: 190, height: 190, borderRadius: '50%', boxShadow: `0 0 0 7px white, 0 0 0 13px ${TG}, 0 18px 30px rgba(20,90,140,0.3)`}} />
+          <div style={{position: 'absolute', right: -14, bottom: -6, width: 74, height: 74, borderRadius: '50%', background: TG, boxShadow: '0 0 0 6px white',
+            display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+            <img src={staticFile('telegram.svg')} style={{width: 44, height: 44, filter: 'brightness(0) invert(1)'}} />
+          </div>
+        </div>
+        <div style={{fontFamily: FONT, fontSize: 74, color: INK, marginTop: 26}}>{e.title ?? 'Ember'}</div>
+        <div style={{fontFamily: FONT, fontSize: 40, color: '#6b6d78', marginTop: 4}}>{e.sub ?? 'Telegram-канал'} · <span style={{color: TG}}>{e.link ?? 't.me/ember_aii'}</span></div>
+        <div style={{position: 'relative', marginTop: 34, padding: '24px 78px', borderRadius: 70, fontFamily: FONT, fontSize: 58, color: 'white',
+          background: `linear-gradient(180deg, #45bdf5, ${TG} 60%, #1f93d1)`, boxShadow: '0 16px 30px rgba(42,171,238,0.45), inset 0 2px 0 rgba(255,255,255,0.45)',
+          transform: `scale(${pulse * (1 - 0.08 * tap)})`, display: 'flex', alignItems: 'center', gap: 18}}>
+          <img src={staticFile('telegram.svg')} style={{width: 52, height: 52, filter: 'brightness(0) invert(1)'}} />
+          {e.button ?? 'Подписаться'}
+        </div>
+      </div>
+      <div style={{position: 'absolute', left: 700, top: 500 - 18 * tap, fontSize: 100, opacity: finger,
+        transform: `translate(${(1 - finger) * 120}px, ${(1 - finger) * 120}px) rotate(-20deg)`}}>👆</div>
+    </div>
+  );
+};
+
 // ---------- кнопка «Подписаться» ----------
 const Button: React.FC<{e: Ev}> = ({e}) => {
   const t = useT(); const k = sp(t, e.t0, 9, 0.6) * outK(t, e);
@@ -355,7 +393,7 @@ const Captions: React.FC = () => {
 
 const COMPONENTS: Record<string, React.FC<{e: Ev}>> = {
   badge: Badge, flare: Flare, card: Card, tiles: Tiles, kinetic: Kinetic, table: Table, bars: Bars, grid: Grid,
-  fan: Fan, moneybutton: MoneyButton, coin: Coin, button: Button, hook: Hook,
+  fan: Fan, moneybutton: MoneyButton, coin: Coin, button: Button, hook: Hook, tg: TgCard,
 };
 
 export const Reel: React.FC = () => {
