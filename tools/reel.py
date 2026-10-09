@@ -126,10 +126,10 @@ def main(folder, out):
         elif kind:
             cues.append((e['t0'], kind, 1))
     sfx.render(cues, dur, f'{folder}/sfx.wav')
-    if not os.path.exists(f'{folder}/music.wav'):
-        music.main(f'{folder}/music.wav', dur + 1)
+    if not os.path.exists(f'{folder}/music.wav'):          # лёгкая бодрая музыка: слышна, но голос не перекрывает
+        music.main(f'{folder}/music.wav', dur + 1, target=plan.get('music_lufs', -21.0))
     subprocess.run(['ffmpeg', '-v', 'error', '-y', '-i', silent, '-i', f'{folder}/voice.wav', '-i', f'{folder}/music.wav', '-i', f'{folder}/sfx.wav',
-                    '-filter_complex', '[1:a]apad,asplit[v][vs];[2:a]volume=1[m];[m][vs]sidechaincompress=threshold=0.04:ratio=3:attack=40:release=600[md];'
+                    '-filter_complex', '[1:a]apad,asplit[v][vs];[2:a]volume=1[m];[m][vs]sidechaincompress=threshold=0.08:ratio=2:attack=60:release=700[md];'
                     '[v][md][3:a]amix=inputs=3:duration=first:normalize=0[a]',
                     '-map', '0:v', '-map', '[a]', '-c:v', 'copy', '-c:a', 'aac', '-b:a', '256k', '-t', f'{dur:.3f}',
                     '-movflags', '+faststart', out], check=True)
