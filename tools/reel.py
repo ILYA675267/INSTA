@@ -90,7 +90,7 @@ def main(folder, out):
         active = [e for e in evs if e['t0'] <= mid < e['t1']]
         pos = 'top' if any(e['type'] == 'zoom' for e in active) else \
               'side' if any(e.get('side') or e['type'] in SIDE_MODE_TYPES for e in active) else 'mid'
-        hide = any(e['type'] == 'kinetic' for e in active)
+        hide = any(e['type'] in ('kinetic', 'hook') for e in active)
         chunks.append({'t0': c0, 't1': c1, 'pos': pos, 'hide': hide, 'words': ws})
     json.dump({'duration': dur, 'chunks': chunks, 'events': [e for e in evs if e['type'] not in BG_TYPES]},
               open(f'{REM}/src/reel.json', 'w'), ensure_ascii=False)

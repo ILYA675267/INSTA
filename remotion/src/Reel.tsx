@@ -301,6 +301,22 @@ const Coin: React.FC<{e: Ev}> = ({e}) => {
   );
 };
 
+// ---------- заголовок-«крючок» с первого кадра (первый кадр = обложка в ленте) ----------
+const Hook: React.FC<{e: Ev}> = ({e}) => {
+  const t = useT(); const k = outK(t, e, 0.3);
+  return (
+    <div style={{position: 'absolute', left: 70, top: e.y ?? 190, width: 940, height: 330, opacity: k, transform: `scale(${0.9 + 0.1 * k})`}}>
+      <Glow x={0} y={0} w={940} h={330} k={1} />
+      <div style={{position: 'absolute', inset: 0, borderRadius: 56, ...glass, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
+        {e.lines.map((l: string, i: number) => (
+          <div key={i} style={{fontFamily: FONT, fontSize: 104, lineHeight: 1.15, color: i ? ORANGE : INK}}>{l}</div>
+        ))}
+      </div>
+      {e.emoji && <div style={{position: 'absolute', right: -20, top: -70, fontSize: 150, transform: `rotate(${12 + 6 * Math.sin(t * 4)}deg)`}}>{e.emoji}</div>}
+    </div>
+  );
+};
+
 // ---------- кнопка «Подписаться» ----------
 const Button: React.FC<{e: Ev}> = ({e}) => {
   const t = useT(); const k = sp(t, e.t0, 9, 0.6) * outK(t, e);
@@ -339,7 +355,7 @@ const Captions: React.FC = () => {
 
 const COMPONENTS: Record<string, React.FC<{e: Ev}>> = {
   badge: Badge, flare: Flare, card: Card, tiles: Tiles, kinetic: Kinetic, table: Table, bars: Bars, grid: Grid,
-  fan: Fan, moneybutton: MoneyButton, coin: Coin, button: Button,
+  fan: Fan, moneybutton: MoneyButton, coin: Coin, button: Button, hook: Hook,
 };
 
 export const Reel: React.FC = () => {
