@@ -1,0 +1,175 @@
+{
+ "captions": false,
+ "bg_only": true,
+ "tail": 0.9,
+ "events": [
+  {
+   "type": "zoom",
+   "at": "Хочешь",
+   "dur": 3.29
+  },
+  {
+   "type": "pose",
+   "pose": "shrug",
+   "at": "знаешь",
+   "dur": 1.0
+  },
+  {
+   "type": "pose",
+   "pose": "explain",
+   "at": "Вот",
+   "dur": 1.2
+  },
+  {
+   "type": "punch",
+   "at": "завтра",
+   "dur": 0.6
+  },
+  {
+   "at": "Эмбер",
+   "word_n": 1,
+   "type": "badge",
+   "text": "",
+   "x": -999,
+   "y": -999,
+   "dur": 0.5,
+   "jump": true
+  },
+  {
+   "type": "pose",
+   "pose": "point_up",
+   "at": "Эмбер",
+   "dur": 1.0
+  },
+  {
+   "at": "Первое",
+   "word_n": 1,
+   "type": "badge",
+   "text": "",
+   "x": -999,
+   "y": -999,
+   "dur": 0.5,
+   "jump": true
+  },
+  {
+   "type": "pose",
+   "pose": "explain",
+   "at": "сотни",
+   "dur": 1.0
+  },
+  {
+   "at": "Нейросеть",
+   "word_n": 1,
+   "delay": 0,
+   "dur": 3.6800000000000006,
+   "type": "chart",
+   "chart": {
+    "kind": "none"
+   }
+  },
+  {
+   "at": "Второе",
+   "word_n": 1,
+   "type": "badge",
+   "text": "",
+   "x": -999,
+   "y": -999,
+   "dur": 0.5,
+   "jump": true
+  },
+  {
+   "type": "pose",
+   "pose": "explain",
+   "at": "Кофейни",
+   "dur": 1.2
+  },
+  {
+   "type": "pose",
+   "pose": "shrug",
+   "at": "некогда",
+   "dur": 1.0
+  },
+  {
+   "at": "Ты",
+   "word_n": 2,
+   "delay": 0,
+   "dur": 3.9099999999999993,
+   "type": "chart",
+   "chart": {
+    "kind": "none"
+   }
+  },
+  {
+   "at": "Третье",
+   "word_n": 1,
+   "type": "badge",
+   "text": "",
+   "x": -999,
+   "y": -999,
+   "dur": 0.5,
+   "jump": true
+  },
+  {
+   "type": "pose",
+   "pose": "point_up",
+   "at": "Убрать",
+   "dur": 0.9
+  },
+  {
+   "type": "pose",
+   "pose": "shrug",
+   "at": "Раньше",
+   "dur": 1.0
+  },
+  {
+   "type": "punch",
+   "at": "минут",
+   "dur": 0.5
+  },
+  {
+   "type": "pose",
+   "pose": "shrug",
+   "at": "клиентов",
+   "dur": 0.8
+  },
+  {
+   "type": "pose",
+   "pose": "point_right",
+   "at": "Напиши",
+   "dur": 0.9
+  },
+  {
+   "type": "pose",
+   "pose": "arms_up",
+   "at": "портфолио",
+   "dur": 0.8
+  },
+  {
+   "type": "punch",
+   "at": "портфолио",
+   "dur": 0.5
+  },
+  {
+   "type": "pose",
+   "pose": "explain",
+   "at": "Кстати",
+   "dur": 1.0
+  },
+  {
+   "at": "Подписывайся",
+   "word_n": 1,
+   "type": "badge",
+   "text": "",
+   "x": -999,
+   "y": -999,
+   "dur": 0.5,
+   "jump": true
+  },
+  {
+   "type": "pose",
+   "pose": "arms_up",
+   "at": "Подписывайся",
+   "dur": 1.2
+  }
+ ]
+}
