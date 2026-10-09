@@ -1,0 +1,218 @@
+{
+ "captions": false,
+ "bg_only": true,
+ "tail": 0.9,
+ "events": [
+  {
+   "type": "zoom",
+   "at": "Пока",
+   "dur": 3.0
+  },
+  {
+   "type": "pose",
+   "pose": "shrug",
+   "at": "боятся",
+   "dur": 1.4
+  },
+  {
+   "type": "pose",
+   "pose": "arms_up",
+   "at": "зарабатывают",
+   "dur": 1.0
+  },
+  {
+   "at": "зарабатывают",
+   "word_n": 1,
+   "type": "badge",
+   "text": "",
+   "x": -999,
+   "y": -999,
+   "dur": 0.5,
+   "jump": true
+  },
+  {
+   "type": "punch",
+   "at": "Почему",
+   "dur": 0.7
+  },
+  {
+   "type": "pose",
+   "pose": "shrug",
+   "at": "Почему",
+   "dur": 0.8
+  },
+  {
+   "type": "pose",
+   "pose": "point_right",
+   "at": "Смотри",
+   "dur": 0.7
+  },
+  {
+   "at": "Первое",
+   "word_n": 1,
+   "type": "badge",
+   "text": "",
+   "x": -999,
+   "y": -999,
+   "dur": 0.5,
+   "jump": true
+  },
+  {
+   "type": "pose",
+   "pose": "explain",
+   "at": "часы",
+   "dur": 0.8
+  },
+  {
+   "type": "pose",
+   "pose": "point_up",
+   "at": "Тексты",
+   "dur": 1.0
+  },
+  {
+   "at": "Ты",
+   "word_n": 1,
+   "delay": 0,
+   "dur": 4.45,
+   "type": "chart",
+   "chart": {
+    "kind": "none"
+   }
+  },
+  {
+   "at": "Второе",
+   "word_n": 1,
+   "type": "badge",
+   "text": "",
+   "x": -999,
+   "y": -999,
+   "dur": 0.5,
+   "jump": true
+  },
+  {
+   "type": "pose",
+   "pose": "shrug",
+   "at": "диплом",
+   "dur": 1.6
+  },
+  {
+   "type": "pose",
+   "pose": "arms_up",
+   "at": "желание",
+   "dur": 1.0
+  },
+  {
+   "type": "punch",
+   "at": "разобраться",
+   "dur": 0.7
+  },
+  {
+   "at": "Третье",
+   "word_n": 1,
+   "type": "badge",
+   "text": "",
+   "x": -999,
+   "y": -999,
+   "dur": 0.5,
+   "jump": true
+  },
+  {
+   "type": "pose",
+   "pose": "point_up",
+   "at": "сейчас",
+   "dur": 0.6
+  },
+  {
+   "at": "Магазинам",
+   "word_n": 1,
+   "delay": 0,
+   "dur": 6.439999999999998,
+   "type": "chart",
+   "chart": {
+    "kind": "none"
+   }
+  },
+  {
+   "at": "людей",
+   "word_n": 1,
+   "delay": 0,
+   "dur": 2.5500000000000016,
+   "type": "chart",
+   "chart": {
+    "kind": "none"
+   }
+  },
+  {
+   "at": "Четвёртое",
+   "word_n": 1,
+   "type": "badge",
+   "text": "",
+   "x": -999,
+   "y": -999,
+   "dur": 0.5,
+   "jump": true
+  },
+  {
+   "type": "pose",
+   "pose": "explain",
+   "at": "Можно",
+   "dur": 1.0
+  },
+  {
+   "type": "pose",
+   "pose": "point_up",
+   "at": "Шаблоны",
+   "dur": 0.8
+  },
+  {
+   "type": "pose",
+   "pose": "arms_up",
+   "at": "много",
+   "dur": 0.9
+  },
+  {
+   "type": "punch",
+   "at": "запомни",
+   "dur": 0.7
+  },
+  {
+   "type": "pose",
+   "pose": "point_up",
+   "at": "запомни",
+   "dur": 1.0
+  },
+  {
+   "type": "pose",
+   "pose": "shrug",
+   "at": "Платят",
+   "dur": 1.0
+  },
+  {
+   "type": "pose",
+   "pose": "explain",
+   "at": "Хочешь",
+   "dur": 0.9
+  },
+  {
+   "type": "punch",
+   "at": "конкретные",
+   "dur": 0.7
+  },
+  {
+   "at": "подписывайся",
+   "word_n": 1,
+   "type": "badge",
+   "text": "",
+   "x": -999,
+   "y": -999,
+   "dur": 0.5,
+   "jump": true
+  },
+  {
+   "type": "pose",
+   "pose": "arms_up",
+   "at": "подписывайся",
+   "dur": 1.3
+  }
+ ]
+}
