@@ -16,6 +16,10 @@ plan.json  — {"captions": true, "events": [ {...}, ... ]}. Событие:
 "music": "work/<имя>/music.wav" — тихая фоновая мелодия (tools/music.py), "music_volume": 1.0 — множитель громкости.
 "style": "real" — реалистичные вставки вместо рисовки (стекло, глянец, кнопки; см. tools/real.py).
 "sfx": true — тихие звуки на появление элементов (tools/sfx.py), "sfx_volume": 1.0; у события "sfx": "pop"/false.
+"type": "pose", "pose": shrug | arms_up | point_up | point_left | point_right | explain — жест руками на время dur.
+"type": "cam", "cam": [x, y, масштаб], "snap": true — свой ракурс камеры (snap — резкий «наезд»);
+"type": "punch" — короткий резкий наезд на лицо на ключевом слове (dur ~0.6).
+"bg_only": true — только персонаж и фон (без субтитров и вставок): подложка для Remotion.
 "tail": 0.8 — сколько секунд тишины добавить в конце, чтобы последняя надпись успела доиграть.
 Субтитры рвутся на точках/запятых сценария, если рядом с words.json лежит script.txt.
 Линии «дрожат» (эффект рисованной анимации), фон медленно плывёт волнами.
@@ -333,7 +337,22 @@ CAM_SIDE = (180, 1470, 0.55)    # персонаж отходит в левый 
 CAM_ZOOM = (540, 1060, 2.1)     # крупный план лица
 
 
+CAM_PUNCH = (540, 1110, 1.55)   # резкий наезд на лицо
+POSES = {'shrug': (195, -15), 'arms_up': (238, -58), 'point_up': (128, -86), 'point_left': (182, -22),
+         'point_right': (128, 2), 'explain': (158, 18)}
+
+
 def cam_target(t, evs):
+    """Куда смотрит камера и насколько резко туда «прыгает»."""
+    for e in evs:
+        if e['type'] == 'punch' and e['t0'] <= t < e['t1']:
+            return CAM_PUNCH, 0.45
+        if e['type'] == 'cam' and e['t0'] <= t < e['t1']:
+            return tuple(e['cam']), (0.45 if e.get('snap') else 0.16)
+    return cam_base(t, evs), 0.16
+
+
+def cam_base(t, evs):
     for e in evs:
         if e['type'] == 'chart' and e['t0'] - 0.15 <= t < e['t1'] - 0.2:
             return e.get('cam', CAM_SIDE)
@@ -451,6 +470,8 @@ def main(wav, words_path, plan_path, out):
     is_real = plan.get('style') == 'real'
     jumps = [e['t0'] for e in evs if e.get('jump')]
     cuts = [x for e in evs if e['type'] in ('chart', 'zoom') for x in (e['t0'], e['t1'] - 0.1)]
+    arms = [125.0, -25.0]
+    bg_only = plan.get('bg_only')
     cam = list(CAM_DEFAULT)
     prev, n = 0, len(rms)
     for i in range(n):
@@ -466,21 +487,28 @@ def main(wav, words_path, plan_path, out):
               'head_dx': 4 * math.sin(t * 1.3) + (3 * math.sin(t * 7) if talk else 0),
               'arm_l': 125 + 8 * math.sin(t * 2.1) + (10 * min(v, 1) if talk else 0),
               'arm_r': (-60 + 25 * math.sin(t * 14)) if waving else (-25 + 10 * math.sin(t * 1.7) - (14 * min(v, 1) if talk else 0))}
+        pose = next((e for e in evs if e['type'] == 'pose' and e['t0'] <= t < e['t1']), None)
+        goal = [st['arm_l'], st['arm_r']]
+        if pose:                                             # жест: руки плавно, но бодро идут в позу
+            pl, pr = POSES[pose['pose']]
+            goal = [pl + 4 * math.sin(t * 5), pr + 4 * math.sin(t * 5 + 1)]
+        arms = [a + (g - a) * 0.28 for a, g in zip(arms, goal)]
+        st['arm_l'], st['arm_r'] = arms
         layer = Image.new('RGBA', (W * SS, H * SS), (0, 0, 0, 0)); d = ImageDraw.Draw(layer)
         bob = 6 * math.sin(t * 2 * math.pi / 2.6) + (4 * min(v, 1) if talk else 0)
         for j0 in jumps:                                     # подпрыгивание
             if 0 <= t - j0 < 0.45:
                 bob -= 70 * math.sin(math.pi * (t - j0) / 0.45)
-        tgt = cam_target(t, evs)
-        cam = [c + (g - c) * 0.16 for c, g in zip(cam, tgt)]  # плавный «отъезд» и «наезд»
+        tgt, speed = cam_target(t, evs)
+        cam = [c + (g - c) * speed for c, g in zip(cam, tgt)]  # плавный (или резкий) «отъезд» и «наезд»
         in_scene = tgt == CAM_SIDE or any(e['type'] == 'chart' and e['t0'] <= t < e['t1'] for e in evs)
         for e in evs:
-            if e['type'] == 'chart' and e['t0'] <= t < e['t1'] and not is_real:
+            if e['type'] == 'chart' and e['t0'] <= t < e['t1'] and not is_real and not bg_only:
                 a = t - e['t0']
                 chart(d, e['chart'], a, 500 + boil * 13)
         character(d, cam[0] * SS, (cam[1] + bob * cam[2]) * SS, cam[2], st, 100 + boil * 7)
         for e in evs:
-            if not (e['t0'] <= t < e['t1']) or e['type'] in ('chart', 'zoom', 'logo', 'card', 'kinetic', 'burst') or is_real:
+            if not (e['t0'] <= t < e['t1']) or e['type'] in ('chart', 'zoom', 'logo', 'card', 'kinetic', 'burst', 'pose', 'cam', 'punch') or is_real or bg_only:
                 continue
             a = t - e['t0']; out_k = min(1.0, (e['t1'] - t) / 0.25)
             k = ease_back(a / 0.35) * out_k * e.get('size', 1.0)
@@ -498,13 +526,13 @@ def main(wav, words_path, plan_path, out):
                     mark=(255, 226, 90) if e.get('mark') else None, seed=sd)
         kinetic = any(e['type'] == 'kinetic' and e['t0'] <= t < e['t1'] for e in evs)   # не дублировать текст
         for c0, c1, text in caps:
-            if c0 <= t < c1 and not kinetic:
+            if c0 <= t < c1 and not kinetic and not bg_only:
                 cap_y = 1250 if in_scene else (360 if tgt[2] > 1.6 else 760)
                 txt(d, text, 640 * SS if in_scene else 540 * SS, cap_y * SS, 104, mark=(255, 255, 255), seed=boil, maxw=760 if in_scene else 960)
                 break
         frame = grid.draw(t)
         frame.alpha_composite(layer.reduce(SS))
-        if is_real:                                          # реалистичные вставки: сначала графики, потом остальное
+        if is_real and not bg_only:                          # реалистичные вставки: сначала графики, потом остальное
             for e in sorted((e for e in evs if e['t0'] <= t < e['t1']), key=lambda e: e['type'] != 'chart'):
                 a = t - e['t0']
                 if e['type'] == 'chart':
@@ -516,7 +544,7 @@ def main(wav, words_path, plan_path, out):
                 elif e['type'] == 'text':
                     (real.button if e.get('mark') else real.plain_text)(frame, e, a)
         for e in evs:                                        # «чистые» вставки поверх
-            if e['t0'] <= t < e['t1']:
+            if e['t0'] <= t < e['t1'] and not bg_only:
                 a = t - e['t0']
                 if e['type'] == 'logo':
                     inserts.draw_logo(frame, e, a)
@@ -526,7 +554,7 @@ def main(wav, words_path, plan_path, out):
                     inserts.draw_kinetic(frame, e, a, e['wt'])
                 elif e['type'] == 'burst':
                     (real.burst if is_real else inserts.draw_burst)(frame, e, a)
-        if plan.get('corner_logo'):
+        if plan.get('corner_logo') and not bg_only:
             inserts.draw_spin_logo(frame, plan['corner_logo'], t)
         bl = max([0.0] + [1 - abs(t - ts) / 0.16 for ts in cuts])   # размытие на смене сцены
         if bl > 0.05:
