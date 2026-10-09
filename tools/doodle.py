@@ -126,6 +126,7 @@ def spikes():
 HAIR = spikes()
 SHIRT = (226, 62, 62, 255)     # красная футболка Эмбер
 SHORTS = (58, 110, 210, 255)   # синие шорты
+WATCH = (240, 196, 72, 255)    # золотистые часы на руке, None — без часов
 CHEST_LOGO = 'nike'            # белый знак на футболке (assets/logos/<имя>.svg), None — без логотипа
 
 
@@ -152,6 +153,17 @@ def character(d, ox, oy, s, st, seed):
         px = max(4, int(74 * s * SS))
         lg = inserts.logo_img(CHEST_LOGO, px, '#FFFFFF')
         d._image.alpha_composite(lg, (int(ox + 62 * s * SS - px / 2), int(oy + 205 * s * SS - px / 2)))
+    if WATCH:                                        # часы на запястье (рука справа на экране), крутятся вместе с рукой
+        sx, sy = 160, 250
+        dx, dy = rh[0] - sx, rh[1] - sy; ln = math.hypot(dx, dy) or 1; ux, uy = dx / ln, dy / ln
+        wx, wy = rh[0] - ux * 62, rh[1] - uy * 62    # чуть выше ладони
+        nx, ny = -uy, ux
+        F([(wx + nx * k1 + ux * k2, wy + ny * k1 + uy * k2) for k1, k2 in ((-26, -11), (26, -11), (26, 11), (-26, 11))],
+          fill=(38, 38, 44, 255))                     # ремешок
+        F(ell(wx, wy, 23, 23), fill=WATCH)                                                          # корпус
+        shape(d, P(ell(wx, wy, 14, 14), ox, oy, s), seed + 91, fill=(255, 255, 255, 255), w=2.5 * s, amp=0.6)   # циферблат
+        line(d, P([(wx, wy), (wx + 8 * ux, wy + 8 * uy)], ox, oy, s), seed + 92, w=2.5 * s, amp=0.3)
+        line(d, P([(wx, wy), (wx + 10 * nx, wy + 10 * ny)], ox, oy, s), seed + 93, w=2.5 * s, amp=0.3)
     L([(-36, 120), (0, 150), (36, 120)], w=5)
     # голова
     hx = st['head_dx']
