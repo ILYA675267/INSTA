@@ -127,7 +127,7 @@ HAIR = spikes()
 SHIRT = (226, 62, 62, 255)     # красная футболка Эмбер
 SHORTS = (58, 110, 210, 255)   # синие шорты
 WATCH = (240, 196, 72, 255)    # золотистые часы на руке, None — без часов
-CHEST_LOGO = 'nike'            # белый знак на футболке (assets/logos/<имя>.svg), None — без логотипа
+CHEST_LOGO = None              # белый знак на футболке (assets/logos/<имя>.svg), None — без логотипа
 
 
 def character(d, ox, oy, s, st, seed):
