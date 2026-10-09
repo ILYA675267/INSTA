@@ -126,6 +126,7 @@ def spikes():
 HAIR = spikes()
 SHIRT = (226, 62, 62, 255)     # красная футболка Эмбер
 SHORTS = (58, 110, 210, 255)   # синие шорты
+CHEST_LOGO = 'nike'            # белый знак на футболке (assets/logos/<имя>.svg), None — без логотипа
 
 
 def character(d, ox, oy, s, st, seed):
@@ -147,6 +148,10 @@ def character(d, ox, oy, s, st, seed):
     # футболка
     F([(-36, 118), (36, 118), (108, 140), (190, 215), (160, 285), (124, 262), (130, 430), (-130, 430), (-124, 262),
        (-160, 285), (-190, 215), (-108, 140)], fill=SHIRT)
+    if CHEST_LOGO:                                   # маленький логотип на груди (слева у героя = справа на экране)
+        px = max(4, int(74 * s * SS))
+        lg = inserts.logo_img(CHEST_LOGO, px, '#FFFFFF')
+        d._image.alpha_composite(lg, (int(ox + 62 * s * SS - px / 2), int(oy + 205 * s * SS - px / 2)))
     L([(-36, 120), (0, 150), (36, 120)], w=5)
     # голова
     hx = st['head_dx']
