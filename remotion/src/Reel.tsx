@@ -407,58 +407,104 @@ const ORBS = Array.from({length: 7}, (_, i) => {
 const DUST = Array.from({length: 28}, (_, i) => ({x: rnd(i + 40) * 1080, y: rnd(i + 80) * 1920, s: 3 + rnd(i + 120) * 5,
   sp: 18 + rnd(i + 160) * 40, ph: rnd(i + 200) * 6.28}));
 
-// «удар» на смене пункта: быстро вверх, плавно назад
-const bump = (dt: number) => (dt < 0 ? 0 : dt < 0.08 ? dt / 0.08 : Math.exp(-(dt - 0.08) * 7));
 
-const MotionFX: React.FC<{beats: number[]}> = ({beats}) => {
+// плавный «пролёт»: 0 → 1 → 0 за dur секунд (для разворотов камеры)
+const swoop = (dt: number, dur = 1.1) => (dt < 0 || dt > dur ? 0 : Math.sin(Math.PI * dt / dur) ** 2);
+// плавный вход/выход для сцен (таблицы, графики)
+const hold = (t: number, a: number, b: number, f = 0.45) =>
+  Math.min(1, Math.max(0, (t - a + f) / f)) * Math.min(1, Math.max(0, (b - t) / f));
+
+const P = 1400;                                       // «объектив»: чем меньше — тем сильнее объём
+// слой на глубине z: размер компенсирован, чтобы в покое всё стояло как задумано
+const Layer: React.FC<{z: number; extra?: number; children: React.ReactNode}> = ({z, extra = 1, children}) => (
+  <AbsoluteFill style={{transform: `translateZ(${z}px) scale(${((P - z) / P) * extra})`, transformStyle: 'preserve-3d'}}>{children}</AbsoluteFill>
+);
+
+const Orbs: React.FC = () => {
   const t = useT();
-  const sweep = beats.map((b) => t - b).find((dt) => dt >= 0 && dt < 0.7);
   return (
-    <AbsoluteFill style={{pointerEvents: 'none'}}>
+    <>
       {ORBS.map((o, i) => {
         const x = o.x + Math.sin(t * o.sp + o.ph) * 50 * o.depth;
         const y = ((o.y - t * 14 * o.depth) % 2100 + 2100) % 2100 - 90;
         return <div key={i} style={{position: 'absolute', left: x - o.r, top: y - o.r, width: o.r * 2, height: o.r * 2, borderRadius: '50%',
-          background: `radial-gradient(circle, rgba(${o.c},0.55), rgba(${o.c},0) 70%)`, opacity: 0.35 + 0.15 * Math.sin(t * 0.8 + o.ph),
-          filter: `blur(${8 + 14 * (1 - o.depth / 1.4)}px)`}} />;
+          background: `radial-gradient(circle, rgba(${o.c},0.5), rgba(${o.c},0) 70%)`, opacity: 0.35 + 0.15 * Math.sin(t * 0.8 + o.ph)}} />;
       })}
+    </>
+  );
+};
+
+const Dust: React.FC = () => {
+  const t = useT();
+  return (
+    <>
       {DUST.map((p, i) => {
         const y = ((p.y - t * p.sp) % 1980 + 1980) % 1980 - 30;
         const tw = 0.35 + 0.65 * Math.abs(Math.sin(t * 1.7 + p.ph));
         return <div key={i} style={{position: 'absolute', left: p.x + Math.sin(t + p.ph) * 12, top: y, width: p.s, height: p.s, borderRadius: '50%',
           background: 'white', opacity: tw * 0.85, boxShadow: `0 0 ${p.s * 2.5}px rgba(255,170,120,0.9)`}} />;
       })}
-      {sweep !== undefined && (
-        <div style={{position: 'absolute', left: -600, top: -400, width: 2400, height: 380,
-          transform: `rotate(-24deg) translateY(${-200 + sweep / 0.7 * 2800}px)`, opacity: 0.55 * Math.sin(Math.PI * sweep / 0.7),
-          background: 'linear-gradient(180deg, rgba(255,255,255,0), rgba(255,240,225,0.9), rgba(255,255,255,0))', mixBlendMode: 'screen'}} />
-      )}
-      <AbsoluteFill style={{background: 'radial-gradient(ellipse at 50% 45%, rgba(0,0,0,0) 58%, rgba(40,25,70,0.16) 100%)'}} />
-    </AbsoluteFill>
+    </>
   );
 };
 
 export const Reel: React.FC = () => {
   useFonts();
   const t = useT();
-  const evs = useMemo(() => (data.events as Ev[]).filter((e) => COMPONENTS[e.type]), []);
-  // «удары» камеры — на вспышках смены пунктов и на кнопке/Telegram в конце
-  const beats = useMemo(() => (data.events as Ev[]).filter((e) => e.type === 'flare' || e.type === 'tg').map((e) => e.t0 + 0.12), []);
-  let kick = 0, sign = 1;
-  beats.forEach((b, i) => { const v = bump(t - b); if (v > kick) { kick = v; sign = i % 2 ? -1 : 1; } });
-  const breathe = 1.012 + 0.008 * Math.sin(t * 0.45);              // «дыхание» камеры
-  const cam = `scale(${breathe + 0.045 * kick}) rotate(${sign * 0.9 * kick}deg) translate(${4 * Math.sin(t * 0.3)}px, ${3 * Math.cos(t * 0.37)}px)`;
+  const all = data.events as Ev[];
+  const evs = useMemo(() => all.filter((e) => COMPONENTS[e.type]), []);
+  const beats = useMemo(() => all.filter((e) => e.type === 'flare' || e.type === 'tg').map((e) => e.t0), []);
+  const scenes = useMemo(() => all.filter((e) => e.type === 'table' || e.type === 'bars'), []);
+
+  // ---- 3D-камера ----
+  let ry = 4.5 * Math.sin(t * 0.31) + 1.5 * Math.sin(t * 0.83);      // медленный облёт
+  let rx = 2.2 * Math.sin(t * 0.27 + 1);
+  let tz = 25 * Math.sin(t * 0.21);                                    // «дыхание» вперёд-назад
+  let tx = 0;
+  beats.forEach((b, i) => {                                            // на смене пункта — пролёт с разворотом
+    const k = swoop(t - b + 0.1);
+    const dir = i % 2 ? -1 : 1;
+    ry += dir * 8 * k; rx -= 2.5 * k; tz += 120 * k; tx += dir * 25 * k;   // без вылета вставок за край
+  });
+  scenes.forEach((e) => {                                              // таблица/график — отъезд и наклон
+    const k = hold(t, e.t0, e.t1);
+    rx += 5 * k; tz -= 90 * k;
+  });
+  const tgEv = all.find((e) => e.type === 'tg');
+  if (tgEv) tz += 60 * hold(t, tgEv.t0 + 0.4, tgEv.t1 + 1, 1.2);       // финал — медленный наезд
+  const intro = Math.min(1, t / 1.4);                                  // первый кадр (обложка) — ровный
+  ry *= intro; rx *= intro; tx *= intro; tz *= intro;
+
+  const sweep = beats.map((b) => t - b - 0.05).find((dt) => dt >= 0 && dt < 0.7);
+  const layered = (data as Ev).layers;
   return (
-    <AbsoluteFill style={{background: 'white', overflow: 'hidden'}}>
-      <AbsoluteFill style={{transform: cam, filter: kick > 0.3 ? `blur(${(kick - 0.3) * 3}px)` : 'none'}}>
-        <OffthreadVideo src={staticFile('reel_bg.mp4')} muted />
-        {evs.filter((e) => t >= e.t0 - 0.05 && t < e.t1).map((e, i) => {
-          const C = COMPONENTS[e.type];
-          return <C key={i} e={e} />;
-        })}
-        <Captions />
+    <AbsoluteFill style={{background: '#f7f7f8', overflow: 'hidden', perspective: `${P}px`}}>
+      <AbsoluteFill style={{transformStyle: 'preserve-3d',
+        transform: `translateX(${tx}px) translateZ(${tz}px) rotateX(${rx}deg) rotateY(${ry}deg)`}}>
+        {layered ? (
+          <>
+            <Layer z={-600} extra={1.22}><OffthreadVideo src={staticFile('reel_grid.mp4')} muted /></Layer>
+            <Layer z={-300} extra={1.1}><Orbs /></Layer>
+            <Layer z={0}><OffthreadVideo src={staticFile('reel_char.webm')} muted transparent /></Layer>
+          </>
+        ) : (
+          <Layer z={0} extra={1.08}><OffthreadVideo src={staticFile('reel_bg.mp4')} muted /></Layer>
+        )}
+        <Layer z={140}>
+          {evs.filter((e) => t >= e.t0 - 0.05 && t < e.t1).map((e, i) => {
+            const C = COMPONENTS[e.type];
+            return <C key={i} e={e} />;
+          })}
+        </Layer>
+        <Layer z={180}><Captions /></Layer>
+        <Layer z={380}><Dust /></Layer>
       </AbsoluteFill>
-      <MotionFX beats={beats} />
+      {sweep !== undefined && (
+        <div style={{position: 'absolute', left: -600, top: -400, width: 2400, height: 380,
+          transform: `rotate(-24deg) translateY(${-200 + sweep / 0.7 * 2800}px)`, opacity: 0.5 * Math.sin(Math.PI * sweep / 0.7),
+          background: 'linear-gradient(180deg, rgba(255,255,255,0), rgba(255,240,225,0.9), rgba(255,255,255,0))', mixBlendMode: 'screen'}} />
+      )}
+      <AbsoluteFill style={{background: 'radial-gradient(ellipse at 50% 45%, rgba(0,0,0,0) 58%, rgba(40,25,70,0.16) 100%)'}} />
     </AbsoluteFill>
   );
 };

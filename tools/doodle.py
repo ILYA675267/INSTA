@@ -20,6 +20,8 @@ plan.json  — {"captions": true, "events": [ {...}, ... ]}. Событие:
 "type": "cam", "cam": [x, y, масштаб], "snap": true — свой ракурс камеры (snap — резкий «наезд»);
 "type": "punch" — короткий резкий наезд на лицо на ключевом слове (dur ~0.6).
 "bg_only": true — только персонаж и фон (без субтитров и вставок): подложка для Remotion.
+"layers": true (вместе с bg_only) — два файла: <out>_grid.mp4 (клетка) и <out>_char.webm (Эмбер с тенью, прозрачный фон)
+  для 3D-камеры в Remotion; в <out> пишется метка.
 "tail": 0.8 — сколько секунд тишины добавить в конце, чтобы последняя надпись успела доиграть.
 Субтитры рвутся на точках/запятых сценария, если рядом с words.json лежит script.txt.
 Линии «дрожат» (эффект рисованной анимации), фон медленно плывёт волнами.
@@ -484,10 +486,19 @@ def main(wav, words_path, plan_path, out):
         graph.append(f'[{1 + len(mixin)}:a]anull[fx]'); mixin.append('[fx]')
     graph.append(''.join(mixin) + f'amix=inputs={len(mixin)}:duration=first:normalize=0[a]')
     audio = [*inputs, '-filter_complex', ';'.join(graph), '-map', '0:v', '-map', '[a]']
-    ff = subprocess.Popen(['ffmpeg', '-v', 'error', '-y', '-f', 'rawvideo', '-pix_fmt', 'rgba', '-s', f'{W}x{H}', '-r', str(FPS),
-                           '-i', '-', '-i', wav, *audio, '-t', f'{dur:.3f}', '-c:v', 'libx264', '-preset', 'slow',
-                           '-crf', '10' if plan.get('bg_only') else '15', '-pix_fmt', 'yuv420p', '-c:a', 'aac', '-b:a', '256k', '-ar', '48000',
-                           '-movflags', '+faststart', out], stdin=subprocess.PIPE)
+    layers = plan.get('bg_only') and plan.get('layers')   # слои для 3D-камеры: фон отдельно, Эмбер на прозрачном
+    raw_in = ['ffmpeg', '-v', 'error', '-y', '-f', 'rawvideo', '-pix_fmt', 'rgba', '-s', f'{W}x{H}', '-r', str(FPS), '-i', '-']
+    if layers:
+        base = out.rsplit('.', 1)[0]
+        ff = subprocess.Popen(raw_in + ['-t', f'{dur:.3f}', '-c:v', 'libvpx-vp9', '-pix_fmt', 'yuva420p', '-b:v', '0', '-crf', '18',
+                               '-deadline', 'good', '-cpu-used', '5', '-row-mt', '1', '-auto-alt-ref', '0', '-an', base + '_char.webm'],
+                              stdin=subprocess.PIPE)
+        ff_grid = subprocess.Popen(raw_in + ['-t', f'{dur:.3f}', '-c:v', 'libx264', '-preset', 'slow', '-crf', '12', '-pix_fmt', 'yuv420p',
+                                    '-movflags', '+faststart', base + '_grid.mp4'], stdin=subprocess.PIPE)
+    else:
+        ff = subprocess.Popen(raw_in + ['-i', wav, *audio, '-t', f'{dur:.3f}', '-c:v', 'libx264', '-preset', 'slow',
+                               '-crf', '10' if plan.get('bg_only') else '15', '-pix_fmt', 'yuv420p', '-c:a', 'aac', '-b:a', '256k', '-ar', '48000',
+                               '-movflags', '+faststart', out], stdin=subprocess.PIPE)
     is_real = plan.get('style') == 'real'
     jumps = [e['t0'] for e in evs if e.get('jump')]
     cuts = [x for e in evs if e['type'] in ('chart', 'zoom') for x in (e['t0'], e['t1'] - 0.1) if x > 0.3]   # первый кадр — чёткий (это обложка)
@@ -551,7 +562,8 @@ def main(wav, words_path, plan_path, out):
                 cap_y = 1250 if in_scene else (360 if tgt[2] > 1.6 else 760)
                 txt(d, text, 640 * SS if in_scene else 540 * SS, cap_y * SS, 104, mark=(255, 255, 255), seed=boil, maxw=760 if in_scene else 960)
                 break
-        frame = grid.draw(t)
+        grid_frame = grid.draw(t)
+        frame = Image.new('RGBA', (W, H), (0, 0, 0, 0)) if layers else grid_frame
         small = layer.reduce(SS)
         if plan.get('depth', True):                         # мягкая тень от фигуры — объём вместо «наклейки»
             a = small.split()[3].resize((W // 4, H // 4), Image.BILINEAR).filter(ImageFilter.GaussianBlur(5))
@@ -586,8 +598,15 @@ def main(wav, words_path, plan_path, out):
         bl = max([0.0] + [1 - abs(t - ts) / 0.16 for ts in cuts])   # размытие на смене сцены
         if bl > 0.05:
             frame = frame.filter(ImageFilter.GaussianBlur(14 * bl))
+            if layers:
+                grid_frame = grid_frame.filter(ImageFilter.GaussianBlur(14 * bl))
         ff.stdin.write(frame.tobytes())
+        if layers:
+            ff_grid.stdin.write(grid_frame.tobytes())
     ff.stdin.close(); ff.wait()
+    if layers:
+        ff_grid.stdin.close(); ff_grid.wait()
+        open(out, 'w').write('layers')                    # метка: подложка собрана слоями
     if fx_path:
         os.remove(fx_path)
     print('Готово:', out)

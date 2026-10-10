@@ -75,7 +75,8 @@ def main(folder, out):
         if e.get('jump'):
             bg_events.append({'at': e['at'], 'word_n': e.get('word_n', 1), 'type': 'badge', 'text': '', 'x': -999, 'y': -999,
                               'dur': 0.5, 'jump': True})
-    bg_plan = {'captions': False, 'bg_only': True, 'tail': plan.get('tail', 0.9), 'events': bg_events}
+    layers = plan.get('layers', True)                # 3D-камера: фон и Эмбер отдельными слоями
+    bg_plan = {'captions': False, 'bg_only': True, 'layers': layers, 'tail': plan.get('tail', 0.9), 'events': bg_events}
     bg = f'{folder}/bg.mp4'
     old = open(f'{folder}/plan_bg.json').read() if os.path.exists(f'{folder}/plan_bg.json') else None
     new = json.dumps(bg_plan, ensure_ascii=False, indent=1)
@@ -97,9 +98,13 @@ def main(folder, out):
               'side' if any(e.get('side') or e['type'] in SIDE_MODE_TYPES for e in active) else 'mid'
         hide = any(e['type'] in ('kinetic', 'hook', 'tg') for e in active)
         chunks.append({'t0': c0, 't1': c1, 'pos': pos, 'hide': hide, 'words': ws})
-    json.dump({'duration': dur, 'chunks': chunks, 'events': [e for e in evs if e['type'] not in BG_TYPES]},
+    json.dump({'duration': dur, 'layers': layers, 'chunks': chunks, 'events': [e for e in evs if e['type'] not in BG_TYPES]},
               open(f'{REM}/src/reel.json', 'w'), ensure_ascii=False)
-    shutil.copy(bg, f'{REM}/public/reel_bg.mp4')
+    if layers:
+        shutil.copy(f'{folder}/bg_grid.mp4', f'{REM}/public/reel_grid.mp4')
+        shutil.copy(f'{folder}/bg_char.webm', f'{REM}/public/reel_char.webm')
+    else:
+        shutil.copy(bg, f'{REM}/public/reel_bg.mp4')
 
     # 4) Remotion
     silent = f'{folder}/video_silent.mp4'
