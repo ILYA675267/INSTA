@@ -397,18 +397,68 @@ const COMPONENTS: Record<string, React.FC<{e: Ev}>> = {
   fan: Fan, moneybutton: MoneyButton, coin: Coin, button: Button, hook: Hook, tg: TgCard,
 };
 
+// ---------- моушн-графика: глубина и движение поверх всего ролика ----------
+const rnd = (i: number) => { const x = Math.sin(i * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
+const ORBS = Array.from({length: 7}, (_, i) => {
+  const side = i % 2 ? 1 : -1;                       // пятна держатся у краёв, чтобы не мешать вставкам
+  return {x: 540 + side * (380 + rnd(i) * 220), y: 150 + rnd(i + 9) * 1650, r: 70 + rnd(i + 3) * 120,
+    c: ['255,150,100', '120,170,255', '255,205,140'][i % 3], sp: 0.15 + rnd(i + 5) * 0.25, ph: rnd(i + 7) * 6.28, depth: 0.4 + rnd(i + 11)};
+});
+const DUST = Array.from({length: 28}, (_, i) => ({x: rnd(i + 40) * 1080, y: rnd(i + 80) * 1920, s: 3 + rnd(i + 120) * 5,
+  sp: 18 + rnd(i + 160) * 40, ph: rnd(i + 200) * 6.28}));
+
+// «удар» на смене пункта: быстро вверх, плавно назад
+const bump = (dt: number) => (dt < 0 ? 0 : dt < 0.08 ? dt / 0.08 : Math.exp(-(dt - 0.08) * 7));
+
+const MotionFX: React.FC<{beats: number[]}> = ({beats}) => {
+  const t = useT();
+  const sweep = beats.map((b) => t - b).find((dt) => dt >= 0 && dt < 0.7);
+  return (
+    <AbsoluteFill style={{pointerEvents: 'none'}}>
+      {ORBS.map((o, i) => {
+        const x = o.x + Math.sin(t * o.sp + o.ph) * 50 * o.depth;
+        const y = ((o.y - t * 14 * o.depth) % 2100 + 2100) % 2100 - 90;
+        return <div key={i} style={{position: 'absolute', left: x - o.r, top: y - o.r, width: o.r * 2, height: o.r * 2, borderRadius: '50%',
+          background: `radial-gradient(circle, rgba(${o.c},0.55), rgba(${o.c},0) 70%)`, opacity: 0.35 + 0.15 * Math.sin(t * 0.8 + o.ph),
+          filter: `blur(${8 + 14 * (1 - o.depth / 1.4)}px)`}} />;
+      })}
+      {DUST.map((p, i) => {
+        const y = ((p.y - t * p.sp) % 1980 + 1980) % 1980 - 30;
+        const tw = 0.35 + 0.65 * Math.abs(Math.sin(t * 1.7 + p.ph));
+        return <div key={i} style={{position: 'absolute', left: p.x + Math.sin(t + p.ph) * 12, top: y, width: p.s, height: p.s, borderRadius: '50%',
+          background: 'white', opacity: tw * 0.85, boxShadow: `0 0 ${p.s * 2.5}px rgba(255,170,120,0.9)`}} />;
+      })}
+      {sweep !== undefined && (
+        <div style={{position: 'absolute', left: -600, top: -400, width: 2400, height: 380,
+          transform: `rotate(-24deg) translateY(${-200 + sweep / 0.7 * 2800}px)`, opacity: 0.55 * Math.sin(Math.PI * sweep / 0.7),
+          background: 'linear-gradient(180deg, rgba(255,255,255,0), rgba(255,240,225,0.9), rgba(255,255,255,0))', mixBlendMode: 'screen'}} />
+      )}
+      <AbsoluteFill style={{background: 'radial-gradient(ellipse at 50% 45%, rgba(0,0,0,0) 58%, rgba(40,25,70,0.16) 100%)'}} />
+    </AbsoluteFill>
+  );
+};
+
 export const Reel: React.FC = () => {
   useFonts();
   const t = useT();
   const evs = useMemo(() => (data.events as Ev[]).filter((e) => COMPONENTS[e.type]), []);
+  // «удары» камеры — на вспышках смены пунктов и на кнопке/Telegram в конце
+  const beats = useMemo(() => (data.events as Ev[]).filter((e) => e.type === 'flare' || e.type === 'tg').map((e) => e.t0 + 0.12), []);
+  let kick = 0, sign = 1;
+  beats.forEach((b, i) => { const v = bump(t - b); if (v > kick) { kick = v; sign = i % 2 ? -1 : 1; } });
+  const breathe = 1.012 + 0.008 * Math.sin(t * 0.45);              // «дыхание» камеры
+  const cam = `scale(${breathe + 0.045 * kick}) rotate(${sign * 0.9 * kick}deg) translate(${4 * Math.sin(t * 0.3)}px, ${3 * Math.cos(t * 0.37)}px)`;
   return (
-    <AbsoluteFill style={{background: 'white'}}>
-      <OffthreadVideo src={staticFile('reel_bg.mp4')} muted />
-      {evs.filter((e) => t >= e.t0 - 0.05 && t < e.t1).map((e, i) => {
-        const C = COMPONENTS[e.type];
-        return <C key={i} e={e} />;
-      })}
-      <Captions />
+    <AbsoluteFill style={{background: 'white', overflow: 'hidden'}}>
+      <AbsoluteFill style={{transform: cam, filter: kick > 0.3 ? `blur(${(kick - 0.3) * 3}px)` : 'none'}}>
+        <OffthreadVideo src={staticFile('reel_bg.mp4')} muted />
+        {evs.filter((e) => t >= e.t0 - 0.05 && t < e.t1).map((e, i) => {
+          const C = COMPONENTS[e.type];
+          return <C key={i} e={e} />;
+        })}
+        <Captions />
+      </AbsoluteFill>
+      <MotionFX beats={beats} />
     </AbsoluteFill>
   );
 };

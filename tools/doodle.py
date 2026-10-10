@@ -135,6 +135,8 @@ def character(d, ox, oy, s, st, seed):
     L = lambda pts, **k: line(d, P(pts, ox, oy, s), seed + len(pts), w=k.get('w', 7) * s, closed=k.get('closed', False),
                              color=k.get('color', INK))
     F = lambda pts, fill=(255, 255, 255, 255): shape(d, P(pts, ox, oy, s), seed + len(pts) * 3, fill=fill, w=7 * s)
+    # тень на «полу» под ногами — герой стоит, а не висит в воздухе
+    d.ellipse([*P([(-175, 668)], ox, oy, s)[0], *P([(185, 712)], ox, oy, s)[0]], fill=(40, 30, 60, 46))
     # ноги и стопы
     L([(-62, 560), (-66, 640)]); L([(62, 560), (70, 640)])
     F(ell(-88, 655, 52, 28)); F(ell(96, 655, 52, 28))
@@ -550,7 +552,13 @@ def main(wav, words_path, plan_path, out):
                 txt(d, text, 640 * SS if in_scene else 540 * SS, cap_y * SS, 104, mark=(255, 255, 255), seed=boil, maxw=760 if in_scene else 960)
                 break
         frame = grid.draw(t)
-        frame.alpha_composite(layer.reduce(SS))
+        small = layer.reduce(SS)
+        if plan.get('depth', True):                         # мягкая тень от фигуры — объём вместо «наклейки»
+            a = small.split()[3].resize((W // 4, H // 4), Image.BILINEAR).filter(ImageFilter.GaussianBlur(5))
+            a = a.resize((W, H), Image.BILINEAR).point(lambda v: v * 34 // 255)
+            sh = Image.new('RGBA', (W, H), (40, 30, 70, 0)); sh.putalpha(a)
+            frame.alpha_composite(sh, (16, 26))
+        frame.alpha_composite(small)
         if is_real and not bg_only:                          # реалистичные вставки: сначала графики, потом остальное
             for e in sorted((e for e in evs if e['t0'] <= t < e['t1']), key=lambda e: e['type'] != 'chart'):
                 a = t - e['t0']
