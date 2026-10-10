@@ -116,7 +116,7 @@ def main(folder, out):
     layers = plan.get('layers', True)                # 3D-камера: фон и Эмбер отдельными слоями
     cam = camera_track(evs, dur)
     bg_plan = {'captions': False, 'bg_only': True, 'layers': layers, 'tail': plan.get('tail', 0.9), 'events': bg_events,
-               'turn': turn_track(cam) if plan.get('follow_camera', True) else None}
+               'turn': turn_track(cam) if plan.get('follow_camera', False) else None}   # поворот за камерой выключен (решение пользователя)
     bg = f'{folder}/bg.mp4'
     old = open(f'{folder}/plan_bg.json').read() if os.path.exists(f'{folder}/plan_bg.json') else None
     new = json.dumps(bg_plan, ensure_ascii=False, indent=1)
