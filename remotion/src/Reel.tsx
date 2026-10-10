@@ -438,7 +438,8 @@ const Phone: React.FC<{e: Ev}> = ({e}) => {
             <div style={{width: 60, height: 60, borderRadius: '50%', background: `radial-gradient(circle at 35% 30%, #ffd2bd, ${ORANGE})`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 34}}>🤖</div>
             <div style={{fontFamily: FONT}}><div style={{fontSize: 30, color: INK}}>{e.title ?? 'AI-репетитор'}</div><div style={{fontSize: 20, color: '#3dbb6e'}}>онлайн</div></div>
           </div>
-          <div style={{padding: '22px 20px', display: 'flex', flexDirection: 'column', gap: 16}}>
+          <div style={{padding: '22px 20px', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', gap: 16,
+            height: Hp - 28 - 120, boxSizing: 'border-box', overflow: 'hidden'}}>{/* как в мессенджере: новые снизу, старые уезжают вверх */}
             {msgs.map((m, i) => {
               const ai = m.from === 'ai';
               const typing = ai && t >= m.t - 0.7 && t < m.t;
