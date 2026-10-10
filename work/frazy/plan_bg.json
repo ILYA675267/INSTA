@@ -1,0 +1,159 @@
+{
+ "captions": false,
+ "bg_only": true,
+ "layers": true,
+ "tail": 0.9,
+ "events": [
+  {
+   "type": "zoom",
+   "at": "Эти",
+   "dur": 3.41
+  },
+  {
+   "type": "pose",
+   "pose": "shrug",
+   "at": "зря",
+   "dur": 0.8
+  },
+  {
+   "at": "Сохрани",
+   "word_n": 1,
+   "type": "badge",
+   "text": "",
+   "x": -999,
+   "y": -999,
+   "dur": 0.5,
+   "jump": true
+  },
+  {
+   "type": "pose",
+   "pose": "point_up",
+   "at": "Сохрани",
+   "dur": 1.0
+  },
+  {
+   "at": "Эмбер",
+   "word_n": 1,
+   "type": "badge",
+   "text": "",
+   "x": -999,
+   "y": -999,
+   "dur": 0.5,
+   "jump": true
+  },
+  {
+   "at": "Фраза",
+   "word_n": 1,
+   "type": "badge",
+   "text": "",
+   "x": -999,
+   "y": -999,
+   "dur": 0.5,
+   "jump": true
+  },
+  {
+   "type": "pose",
+   "pose": "explain",
+   "at": "Задай",
+   "dur": 1.0
+  },
+  {
+   "at": "Нейросеть",
+   "word_n": 1,
+   "delay": 0,
+   "dur": 5.879999999999998,
+   "type": "chart",
+   "chart": {
+    "kind": "none"
+   }
+  },
+  {
+   "at": "Фраза",
+   "word_n": 2,
+   "type": "badge",
+   "text": "",
+   "x": -999,
+   "y": -999,
+   "dur": 0.5,
+   "jump": true
+  },
+  {
+   "type": "pose",
+   "pose": "explain",
+   "at": "Объясни",
+   "dur": 1.0
+  },
+  {
+   "type": "punch",
+   "at": "кайф",
+   "dur": 0.5
+  },
+  {
+   "type": "pose",
+   "pose": "arms_up",
+   "at": "кайф",
+   "dur": 0.8
+  },
+  {
+   "at": "Фраза",
+   "word_n": 3,
+   "type": "badge",
+   "text": "",
+   "x": -999,
+   "y": -999,
+   "dur": 0.5,
+   "jump": true
+  },
+  {
+   "type": "pose",
+   "pose": "point_right",
+   "at": "слабые",
+   "dur": 0.9
+  },
+  {
+   "at": "бонус",
+   "word_n": 1,
+   "type": "badge",
+   "text": "",
+   "x": -999,
+   "y": -999,
+   "dur": 0.5,
+   "jump": true
+  },
+  {
+   "type": "pose",
+   "pose": "shrug",
+   "at": "воды",
+   "dur": 0.7
+  },
+  {
+   "type": "pose",
+   "pose": "arms_up",
+   "at": "разницу",
+   "dur": 1.0
+  },
+  {
+   "type": "pose",
+   "pose": "explain",
+   "at": "Кстати",
+   "dur": 1.0
+  },
+  {
+   "at": "Подписывайся",
+   "word_n": 1,
+   "type": "badge",
+   "text": "",
+   "x": -999,
+   "y": -999,
+   "dur": 0.5,
+   "jump": true
+  },
+  {
+   "type": "pose",
+   "pose": "arms_up",
+   "at": "Подписывайся",
+   "dur": 1.2
+  }
+ ],
+ "turn": null
+}
