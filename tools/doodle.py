@@ -133,10 +133,14 @@ CHEST_LOGO = None              # белый знак на футболке (asse
 
 
 def character(d, ox, oy, s, st, seed):
-    """ox, oy — центр головы (в пикселях SS); st — состояние (рот, глаза, руки)."""
-    L = lambda pts, **k: line(d, P(pts, ox, oy, s), seed + len(pts), w=k.get('w', 7) * s, closed=k.get('closed', False),
-                             color=k.get('color', INK))
-    F = lambda pts, fill=(255, 255, 255, 255): shape(d, P(pts, ox, oy, s), seed + len(pts) * 3, fill=fill, w=7 * s)
+    """ox, oy — центр головы (в пикселях SS); st — состояние (рот, глаза, руки, поворот turn: −1 влево … +1 вправо)."""
+    tr = max(-1.0, min(1.0, st.get('turn', 0.0)))
+    kx = 1 - 0.17 * abs(tr)                           # вполоборота корпус кажется уже
+    B = lambda pts: [(x * kx + tr * 14, y) for x, y in pts]
+    L = lambda pts, **k: line(d, P(B(pts) if k.get('body', True) else pts, ox, oy, s), seed + len(pts), w=k.get('w', 7) * s,
+                             closed=k.get('closed', False), color=k.get('color', INK))
+    F = lambda pts, fill=(255, 255, 255, 255), body=True: shape(d, P(B(pts) if body else pts, ox, oy, s), seed + len(pts) * 3,
+                                                               fill=fill, w=7 * s)
     # тень на «полу» под ногами — герой стоит, а не висит в воздухе
     d.ellipse([*P([(-175, 668)], ox, oy, s)[0], *P([(185, 712)], ox, oy, s)[0]], fill=(40, 30, 60, 46))
     # ноги и стопы
@@ -156,7 +160,7 @@ def character(d, ox, oy, s, st, seed):
     if CHEST_LOGO:                                   # маленький логотип на груди (слева у героя = справа на экране)
         px = max(4, int(74 * s * SS))
         lg = inserts.logo_img(CHEST_LOGO, px, '#FFFFFF')
-        d._image.alpha_composite(lg, (int(ox + 62 * s * SS - px / 2), int(oy + 205 * s * SS - px / 2)))
+        d._image.alpha_composite(lg, (int(ox + (62 * kx + tr * 14) * s * SS - px / 2), int(oy + 205 * s * SS - px / 2)))
     if WATCH:                                        # часы на запястье (рука справа на экране), крутятся вместе с рукой
         sx, sy = 160, 250
         dx, dy = rh[0] - sx, rh[1] - sy; ln = math.hypot(dx, dy) or 1; ux, uy = dx / ln, dy / ln
@@ -165,27 +169,32 @@ def character(d, ox, oy, s, st, seed):
         F([(wx + nx * k1 + ux * k2, wy + ny * k1 + uy * k2) for k1, k2 in ((-26, -11), (26, -11), (26, 11), (-26, 11))],
           fill=(38, 38, 44, 255))                     # ремешок
         F(ell(wx, wy, 23, 23), fill=WATCH)                                                          # корпус
-        shape(d, P(ell(wx, wy, 14, 14), ox, oy, s), seed + 91, fill=(255, 255, 255, 255), w=2.5 * s, amp=0.6)   # циферблат
-        line(d, P([(wx, wy), (wx + 8 * ux, wy + 8 * uy)], ox, oy, s), seed + 92, w=2.5 * s, amp=0.3)
-        line(d, P([(wx, wy), (wx + 10 * nx, wy + 10 * ny)], ox, oy, s), seed + 93, w=2.5 * s, amp=0.3)
-    L([(-36, 120), (0, 150), (36, 120)], w=5)
-    # голова
-    hx = st['head_dx']
-    F(ell(hx, 0, 124, 120))
-    F([(x + hx, y) for x, y in HAIR])
-    # глаза
+        shape(d, P(B(ell(wx, wy, 14, 14)), ox, oy, s), seed + 91, fill=(255, 255, 255, 255), w=2.5 * s, amp=0.6)   # циферблат
+        line(d, P(B([(wx, wy), (wx + 8 * ux, wy + 8 * uy)]), ox, oy, s), seed + 92, w=2.5 * s, amp=0.3)
+        line(d, P(B([(wx, wy), (wx + 10 * nx, wy + 10 * ny)]), ox, oy, s), seed + 93, w=2.5 * s, amp=0.3)
+    L([(-36 + tr * 18, 120), (tr * 22, 150), (36 + tr * 18, 120)], w=5)     # ворот смещается к повороту
+    # голова: сама чуть сдвигается, лицо и причёска — сильнее (вполоборота)
+    hx = st['head_dx'] + tr * 8
+    fx = hx + tr * 36
+    F(ell(hx, 0, 124, 120), body=False)
+    F([(x * (1 - 0.06 * abs(tr)) + hx + tr * 12, y) for x, y in HAIR], body=False)
+    # глаза: дальний глаз чуть уже
     for ex in (-40, 40):
+        far = (ex > 0) != (tr > 0)
+        ew = 9 * (1 - 0.35 * abs(tr)) if far else 9
+        exx = fx + ex * (1 - 0.18 * abs(tr))
         if st['blink']:
-            L([(hx + ex - 12, 34), (hx + ex + 12, 34)], w=6)
+            L([(exx - 12, 34), (exx + 12, 34)], w=6, body=False)
         else:
-            d.ellipse([*P([(hx + ex - 9 + st['look'] * 4, 24)], ox, oy, s)[0], *P([(hx + ex + 9 + st['look'] * 4, 44)], ox, oy, s)[0]], fill=INK)
+            lk = st['look'] * 4 + tr * 5
+            d.ellipse([*P([(exx - ew + lk, 24)], ox, oy, s)[0], *P([(exx + ew + lk, 44)], ox, oy, s)[0]], fill=INK)
     # рот
     m = st['mouth']
     if m == 0:
-        L([(hx - 26, 74), (hx - 6, 77), (hx + 12, 73), (hx + 26, 75)], w=6)
+        L([(fx - 26, 74), (fx - 6, 77), (fx + 12, 73), (fx + 26, 75)], w=6, body=False)
     else:
         rw, rh_ = [0, 16, 22, 26, 20][m], [0, 7, 13, 19, 24][m]
-        shape(d, P(ell(hx, 76, rw, rh_, 28), ox, oy, s), seed + 77, fill=INK, w=5 * s, amp=1.2)
+        shape(d, P(ell(fx, 76, rw * (1 - 0.15 * abs(tr)), rh_, 28), ox, oy, s), seed + 77, fill=INK, w=5 * s, amp=1.2)
 
 
 # ---------- мини-анимации ----------
@@ -519,6 +528,8 @@ def main(wav, words_path, plan_path, out):
               'head_dx': 4 * math.sin(t * 1.3) + (3 * math.sin(t * 7) if talk else 0),
               'arm_l': 125 + 8 * math.sin(t * 2.1) + (10 * min(v, 1) if talk else 0),
               'arm_r': (-60 + 25 * math.sin(t * 14)) if waving else (-25 + 10 * math.sin(t * 1.7) - (14 * min(v, 1) if talk else 0))}
+        if plan.get('turn'):                                # поворот вслед за 3D-камерой (считает tools/reel.py)
+            st['turn'] = plan['turn'][min(i, len(plan['turn']) - 1)]
         pose = next((e for e in evs if e['type'] == 'pose' and e['t0'] <= t < e['t1']), None)
         goal = [st['arm_l'], st['arm_r']]
         if pose:                                             # жест: руки плавно, но бодро идут в позу

@@ -584,6 +584,11 @@ export const Reel: React.FC = () => {
   if (tgEv) tz += 60 * hold(t, tgEv.t0 + 0.4, tgEv.t1 + 1, 1.2);       // финал — медленный наезд
   const intro = Math.min(1, t / 1.4);                                  // первый кадр (обложка) — ровный
   ry *= intro; rx *= intro; tx *= intro; tz *= intro;
+  const camTrack = (data as Ev).cam as number[][] | undefined;          // общая с Эмбером траектория (tools/reel.py)
+  if (camTrack && camTrack.length) {
+    const c = camTrack[Math.min(Math.round(t * 30), camTrack.length - 1)];
+    rx = c[0]; ry = c[1]; tz = c[2]; tx = c[3];
+  }
 
   const sweep = beats.map((b) => t - b - 0.05).find((dt) => dt >= 0 && dt < 0.7);
   const layered = (data as Ev).layers;

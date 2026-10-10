@@ -11,17 +11,55 @@ python3 tools/reel.py work/<имя>/ output/<имя>.mp4
   "mark": "check"|"cross" и "mark_at" — когда поставить галочку/зачеркнуть; у fan — "copies_at": [слова].
 Звуки, музыка (тихая бодрая), микс — автоматически.
 """
-import json, os, shutil, subprocess, sys
+import json, math, os, shutil, subprocess, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import doodle, music, sfx
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 REM = os.path.join(ROOT, 'remotion')
 BROWSER = '/opt/pw-browsers/chromium_headless_shell-1194/chrome-linux/headless_shell'
-BG_TYPES = ('zoom', 'punch', 'cam', 'pose')
+BG_TYPES = ('zoom', 'punch', 'cam', 'pose', 'orbit')
 SIDE_MODE_TYPES = ('table', 'bars', 'phone')
 SFX = {'globe': 'whoosh', 'book': 'whoosh', 'tg': 'whoosh', 'badge': 'pop', 'flare': 'ding', 'card': 'whoosh', 'table': 'whoosh', 'bars': 'whoosh', 'coin': 'whoosh',
        'moneybutton': 'whoosh', 'button': 'pop', 'punch': None}
+
+
+def camera_track(evs, dur, fps=30):
+    """3D-камера по кадрам: [наклон rx, поворот ry, наезд tz, сдвиг tx]. Её же «видит» Эмбер — и поворачивается за ней.
+    ry > 0 — камера уходит влево от героя, ry < 0 — вправо. Событие "orbit": "dir": 1 (вправо) / -1 (влево)."""
+    swoop = lambda dt, d=1.1: 0.0 if dt < 0 or dt > d else math.sin(math.pi * dt / d) ** 2
+    hold = lambda t, a, b, f=0.45: min(1, max(0, (t - a + f) / f)) * min(1, max(0, (b - t) / f))
+    beats = [e['t0'] for e in evs if e['type'] in ('flare', 'tg')]
+    scenes = [e for e in evs if e['type'] in ('table', 'bars')]
+    orbits = [e for e in evs if e['type'] == 'orbit']
+    tg = next((e for e in evs if e['type'] == 'tg'), None)
+    out = []
+    for i in range(int(math.ceil(dur * fps)) + 1):
+        t = i / fps
+        ry = 4.5 * math.sin(t * 0.31) + 1.5 * math.sin(t * 0.83)
+        rx = 2.2 * math.sin(t * 0.27 + 1); tz = 25 * math.sin(t * 0.21); tx = 0.0
+        for j, b in enumerate(beats):                      # смена пункта — пролёт с разворотом (по очереди в разные стороны)
+            k = swoop(t - b + 0.1); dr = -1 if j % 2 else 1
+            ry += dr * 8 * k; rx -= 2.5 * k; tz += 120 * k; tx += dr * 25 * k
+        for e in scenes:                                   # таблица/график — отъезд и наклон
+            k = hold(t, e['t0'], e['t1']); rx += 5 * k; tz -= 90 * k
+        for e in orbits:                                   # заданный облёт: камера уходит вправо/влево
+            k = hold(t, e['t0'], e['t1'], 0.6); dr = e.get('dir', 1)
+            ry -= dr * 14 * k; tx -= dr * 30 * k
+        if tg:
+            tz += 60 * hold(t, tg['t0'] + 0.4, tg['t1'] + 1, 1.2)
+        intro = min(1, t / 1.4)                            # первый кадр (обложка) — ровный
+        out.append([round(rx * intro, 3), round(ry * intro, 3), round(tz * intro, 2), round(tx * intro, 2)])
+    return out
+
+
+def turn_track(cam):
+    """Эмбер поворачивается к камере с небольшой задержкой — как живой."""
+    res, v = [], 0.0
+    for rx, ry, tz, tx in cam:
+        v += (max(-1.0, min(1.0, -ry / 9)) - v) * 0.18
+        res.append(round(v, 3))
+    return res
 
 
 def word_time(words, at, n=1):
@@ -76,7 +114,9 @@ def main(folder, out):
             bg_events.append({'at': e['at'], 'word_n': e.get('word_n', 1), 'type': 'badge', 'text': '', 'x': -999, 'y': -999,
                               'dur': 0.5, 'jump': True})
     layers = plan.get('layers', True)                # 3D-камера: фон и Эмбер отдельными слоями
-    bg_plan = {'captions': False, 'bg_only': True, 'layers': layers, 'tail': plan.get('tail', 0.9), 'events': bg_events}
+    cam = camera_track(evs, dur)
+    bg_plan = {'captions': False, 'bg_only': True, 'layers': layers, 'tail': plan.get('tail', 0.9), 'events': bg_events,
+               'turn': turn_track(cam) if plan.get('follow_camera', True) else None}
     bg = f'{folder}/bg.mp4'
     old = open(f'{folder}/plan_bg.json').read() if os.path.exists(f'{folder}/plan_bg.json') else None
     new = json.dumps(bg_plan, ensure_ascii=False, indent=1)
@@ -98,7 +138,7 @@ def main(folder, out):
               'side' if any(e.get('side') or e['type'] in SIDE_MODE_TYPES for e in active) else 'mid'
         hide = any(e['type'] in ('kinetic', 'hook', 'tg') for e in active)
         chunks.append({'t0': c0, 't1': c1, 'pos': pos, 'hide': hide, 'words': ws})
-    json.dump({'duration': dur, 'layers': layers, 'chunks': chunks, 'events': [e for e in evs if e['type'] not in BG_TYPES]},
+    json.dump({'duration': dur, 'layers': layers, 'cam': cam, 'chunks': chunks, 'events': [e for e in evs if e['type'] not in BG_TYPES]},
               open(f'{REM}/src/reel.json', 'w'), ensure_ascii=False)
     if layers:
         shutil.copy(f'{folder}/bg_grid.mp4', f'{REM}/public/reel_grid.mp4')
