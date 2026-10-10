@@ -113,8 +113,9 @@ def main(folder, out):
         if e.get('jump'):
             bg_events.append({'at': e['at'], 'word_n': e.get('word_n', 1), 'type': 'badge', 'text': '', 'x': -999, 'y': -999,
                               'dur': 0.5, 'jump': True})
-    layers = plan.get('layers', True)                # 3D-камера: фон и Эмбер отдельными слоями
-    cam = camera_track(evs, dur)
+    flat = plan.get('flat', False)                   # простой режим: плоская картинка, без 3D-камеры — рендер в разы быстрее
+    layers = plan.get('layers', not flat)            # 3D-камера: фон и Эмбер отдельными слоями
+    cam = [[0, 0, 0, 0]] * (int(math.ceil(dur * 30)) + 1) if flat else camera_track(evs, dur)
     bg_plan = {'captions': False, 'bg_only': True, 'layers': layers, 'tail': plan.get('tail', 0.9), 'events': bg_events,
                'turn': turn_track(cam) if plan.get('follow_camera', False) else None}   # поворот за камерой выключен (решение пользователя)
     bg = f'{folder}/bg.mp4'
@@ -138,7 +139,7 @@ def main(folder, out):
               'side' if any(e.get('side') or e['type'] in SIDE_MODE_TYPES for e in active) else 'mid'
         hide = any(e['type'] in ('kinetic', 'hook', 'tg') for e in active)
         chunks.append({'t0': c0, 't1': c1, 'pos': pos, 'hide': hide, 'words': ws})
-    json.dump({'duration': dur, 'layers': layers, 'cam': cam, 'chunks': chunks, 'events': [e for e in evs if e['type'] not in BG_TYPES]},
+    json.dump({'duration': dur, 'flat': flat, 'layers': layers, 'cam': cam, 'chunks': chunks, 'events': [e for e in evs if e['type'] not in BG_TYPES]},
               open(f'{REM}/src/reel.json', 'w'), ensure_ascii=False)
     if layers:
         shutil.copy(f'{folder}/bg_grid.mp4', f'{REM}/public/reel_grid.mp4')

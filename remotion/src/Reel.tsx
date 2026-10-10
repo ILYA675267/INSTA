@@ -593,6 +593,7 @@ export const Reel: React.FC = () => {
 
   const sweep = beats.map((b) => t - b - 0.05).find((dt) => dt >= 0 && dt < 0.7);
   const layered = (data as Ev).layers;
+  const flat = (data as Ev).flat;                                       // простой режим: без 3D, пылинок и световой полосы
   return (
     <AbsoluteFill style={{background: '#f7f7f8', overflow: 'hidden', perspective: `${P}px`}}>
       <AbsoluteFill style={{transformStyle: 'preserve-3d',
@@ -613,9 +614,9 @@ export const Reel: React.FC = () => {
           })}
         </Layer>
         <Layer z={180}><Captions /></Layer>
-        <Layer z={380}><Dust /></Layer>
+        {!flat && <Layer z={380}><Dust /></Layer>}
       </AbsoluteFill>
-      {sweep !== undefined && (
+      {!flat && sweep !== undefined && (
         <div style={{position: 'absolute', left: -600, top: -400, width: 2400, height: 380,
           transform: `rotate(-24deg) translateY(${-200 + sweep / 0.7 * 2800}px)`, opacity: 0.5 * Math.sin(Math.PI * sweep / 0.7),
           background: 'linear-gradient(180deg, rgba(255,255,255,0), rgba(255,240,225,0.9), rgba(255,255,255,0))', mixBlendMode: 'screen'}} />
