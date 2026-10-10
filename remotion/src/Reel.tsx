@@ -448,7 +448,7 @@ const Phone: React.FC<{e: Ev}> = ({e}) => {
                 <div key={i} style={{alignSelf: ai ? 'flex-start' : 'flex-end', maxWidth: '82%', padding: '16px 20px', borderRadius: 26,
                   borderBottomLeftRadius: ai ? 8 : 26, borderBottomRightRadius: ai ? 26 : 8,
                   background: ai ? 'white' : 'linear-gradient(180deg, #45bdf5, #2AABEE)', color: ai ? INK : 'white',
-                  boxShadow: '0 6px 14px rgba(30,40,80,0.10)', fontFamily: FONT, fontSize: 27, lineHeight: 1.25,
+                  boxShadow: '0 6px 14px rgba(30,40,80,0.10)', fontFamily: FONT, fontSize: 27, lineHeight: 1.25, whiteSpace: 'pre-line',
                   transform: typing ? 'none' : `scale(${0.6 + 0.4 * g}) translateY(${(1 - g) * 20}px)`, transformOrigin: ai ? 'left bottom' : 'right bottom', opacity: typing ? 1 : g}}>
                   {typing ? <span style={{letterSpacing: 6, color: '#9aa3b5'}}>{'•••'.slice(0, 1 + Math.floor((t * 6) % 3))}</span> : m.text}
                 </div>
