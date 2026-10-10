@@ -1,0 +1,160 @@
+{
+ "captions": false,
+ "bg_only": true,
+ "layers": true,
+ "tail": 0.9,
+ "events": [
+  {
+   "type": "zoom",
+   "at": "Все",
+   "dur": 3.45
+  },
+  {
+   "type": "pose",
+   "pose": "shrug",
+   "at": "киваешь",
+   "dur": 1.0
+  },
+  {
+   "type": "punch",
+   "at": "минуту",
+   "dur": 0.5
+  },
+  {
+   "at": "Эмбер",
+   "word_n": 1,
+   "type": "badge",
+   "text": "",
+   "x": -999,
+   "y": -999,
+   "dur": 0.5,
+   "jump": true
+  },
+  {
+   "type": "pose",
+   "pose": "point_up",
+   "at": "Эмбер",
+   "dur": 1.0
+  },
+  {
+   "type": "pose",
+   "pose": "explain",
+   "at": "Промпт",
+   "word_n": 2,
+   "dur": 1.0
+  },
+  {
+   "type": "pose",
+   "pose": "shrug",
+   "at": "себе",
+   "dur": 0.7
+  },
+  {
+   "type": "pose",
+   "pose": "point_up",
+   "at": "Смотри",
+   "dur": 0.9
+  },
+  {
+   "at": "Первое",
+   "word_n": 1,
+   "type": "badge",
+   "text": "",
+   "x": -999,
+   "y": -999,
+   "dur": 0.5,
+   "jump": true
+  },
+  {
+   "at": "Второе",
+   "word_n": 1,
+   "type": "badge",
+   "text": "",
+   "x": -999,
+   "y": -999,
+   "dur": 0.5,
+   "jump": true
+  },
+  {
+   "at": "Третье",
+   "word_n": 1,
+   "type": "badge",
+   "text": "",
+   "x": -999,
+   "y": -999,
+   "dur": 0.5,
+   "jump": true
+  },
+  {
+   "at": "четвёртое",
+   "word_n": 1,
+   "type": "badge",
+   "text": "",
+   "x": -999,
+   "y": -999,
+   "dur": 0.5,
+   "jump": true
+  },
+  {
+   "type": "pose",
+   "pose": "explain",
+   "at": "Скажи",
+   "dur": 1.0
+  },
+  {
+   "type": "pose",
+   "pose": "point_right",
+   "at": "Покажи",
+   "dur": 0.9
+  },
+  {
+   "type": "pose",
+   "pose": "explain",
+   "at": "Списком",
+   "dur": 1.0
+  },
+  {
+   "at": "Сравни",
+   "word_n": 1,
+   "delay": 0,
+   "dur": 6.349999999999999,
+   "type": "chart",
+   "chart": {
+    "kind": "none"
+   }
+  },
+  {
+   "type": "punch",
+   "at": "база",
+   "dur": 0.5
+  },
+  {
+   "type": "pose",
+   "pose": "arms_up",
+   "at": "база",
+   "dur": 0.8
+  },
+  {
+   "type": "pose",
+   "pose": "explain",
+   "at": "Кстати",
+   "dur": 1.0
+  },
+  {
+   "at": "Подписывайся",
+   "word_n": 1,
+   "type": "badge",
+   "text": "",
+   "x": -999,
+   "y": -999,
+   "dur": 0.5,
+   "jump": true
+  },
+  {
+   "type": "pose",
+   "pose": "arms_up",
+   "at": "Подписывайся",
+   "dur": 1.2
+  }
+ ]
+}
