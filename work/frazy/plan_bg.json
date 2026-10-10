@@ -1,7 +1,7 @@
 {
  "captions": false,
  "bg_only": true,
- "layers": true,
+ "layers": false,
  "tail": 0.9,
  "events": [
   {
