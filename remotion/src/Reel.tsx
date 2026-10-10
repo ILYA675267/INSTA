@@ -355,6 +355,116 @@ export const TgCard: React.FC<{e: Ev}> = ({e}) => {
   );
 };
 
+// ---------- 3D-глобус: синяя планета с сеткой меридианов, кольцо-орбита и «спутник» ----------
+const Globe: React.FC<{e: Ev}> = ({e}) => {
+  const t = useT(); const k = sp(t, e.t0, 10, 0.8) * outK(t, e, 0.35);
+  if (k <= 0.001) return null;
+  const size = e.size ?? 560;
+  return (
+    <div style={{position: 'absolute', left: (e.x ?? 540) - size / 2, top: (e.y ?? 380) - size / 2, width: size, height: size}}>
+      <div style={{position: 'absolute', inset: '12%', borderRadius: '50%', background: 'radial-gradient(circle, rgba(90,150,255,0.45), transparent 70%)', filter: 'blur(30px)', opacity: k}} />
+      <ThreeCanvas width={size} height={size} camera={{position: [0, 0, 8], fov: 35}}>
+        <ambientLight intensity={0.6} />
+        <directionalLight position={[5, 6, 8]} intensity={2.4} />
+        <pointLight position={[-6, -3, 5]} intensity={40} color="#ffc9a8" />
+        <group scale={k} rotation={[0.35, t * 0.9 + (1 - k) * 4, 0.15]}>
+          <mesh><sphereGeometry args={[1.45, 64, 64]} />
+            <meshPhysicalMaterial color="#3d7eff" roughness={0.35} metalness={0.1} clearcoat={1} clearcoatRoughness={0.2} /></mesh>
+          <mesh><sphereGeometry args={[1.47, 24, 16]} />
+            <meshBasicMaterial color="#ffffff" wireframe transparent opacity={0.35} /></mesh>
+          {[[-0.6, 0.5, 1.2], [0.7, -0.2, 1.25], [-0.2, -0.8, 1.15], [0.4, 0.9, 1.05]].map((q) => { const l = Math.hypot(...q); return q.map((v) => v / l * 1.2); }).map((p, i) => (
+            <mesh key={i} position={p as [number, number, number]}><sphereGeometry args={[0.32 + 0.08 * i, 24, 24]} />
+              <meshStandardMaterial color="#5ccf8a" roughness={0.6} /></mesh>
+          ))}
+        </group>
+        <group rotation={[1.2, 0, 0.3]} scale={k}>
+          <mesh rotation={[0, 0, t * 0.6]}><torusGeometry args={[2.05, 0.035, 16, 100]} />
+            <meshStandardMaterial color="#ffb38a" metalness={0.6} roughness={0.3} /></mesh>
+          <mesh position={[2.05 * Math.cos(t * 1.6), 2.05 * Math.sin(t * 1.6), 0]}><sphereGeometry args={[0.16, 24, 24]} />
+            <meshPhysicalMaterial color={ORANGE} clearcoat={1} roughness={0.2} /></mesh>
+        </group>
+      </ThreeCanvas>
+      {e.label && <div style={{position: 'absolute', left: 0, right: 0, bottom: -10, textAlign: 'center', fontFamily: FONT, fontSize: 56, color: INK,
+        opacity: k, textShadow: '0 0 14px white, 0 0 6px white'}}>{e.label}</div>}
+    </div>
+  );
+};
+
+// ---------- 3D-книга: обложка, страницы, корешок; покачивается и парит ----------
+const Book: React.FC<{e: Ev}> = ({e}) => {
+  const t = useT(); const k = sp(t, e.t0, 10, 0.8) * outK(t, e, 0.35);
+  if (k <= 0.001) return null;
+  const size = e.size ?? 520;
+  return (
+    <div style={{position: 'absolute', left: (e.x ?? 540) - size / 2, top: (e.y ?? 400) - size / 2, width: size, height: size}}>
+      <ThreeCanvas width={size} height={size} camera={{position: [0, 0, 9], fov: 35}}>
+        <ambientLight intensity={0.7} />
+        <directionalLight position={[4, 6, 8]} intensity={2.4} />
+        <pointLight position={[-5, -2, 6]} intensity={30} color="#ffe2c8" />
+        <group scale={k} rotation={[0.25 + 0.08 * Math.sin(t * 1.3), -0.6 + 0.35 * Math.sin(t * 0.9) + (1 - k) * 3, 0.08]} position={[0, 0.15 * Math.sin(t * 2), 0]}>
+          <mesh position={[0, 0, 0.2]}><boxGeometry args={[2.4, 3.2, 0.12]} />
+            <meshPhysicalMaterial color={e.color ?? '#e5484d'} clearcoat={1} roughness={0.3} /></mesh>
+          <mesh position={[0.06, 0, 0]}><boxGeometry args={[2.3, 3.08, 0.32]} />
+            <meshStandardMaterial color="#fffaf0" roughness={0.9} /></mesh>
+          <mesh position={[0, 0, -0.2]}><boxGeometry args={[2.4, 3.2, 0.12]} />
+            <meshPhysicalMaterial color={e.color ?? '#e5484d'} clearcoat={1} roughness={0.3} /></mesh>
+          <mesh position={[-1.2, 0, 0]}><boxGeometry args={[0.12, 3.2, 0.52]} />
+            <meshPhysicalMaterial color="#b3242a" clearcoat={1} roughness={0.3} /></mesh>
+          <mesh position={[0, 0.6, 0.27]}><boxGeometry args={[1.6, 0.5, 0.02]} />
+            <meshStandardMaterial color="#ffd36b" metalness={0.7} roughness={0.25} /></mesh>
+        </group>
+      </ThreeCanvas>
+      {e.label && <div style={{position: 'absolute', left: 0, right: 0, bottom: 0, textAlign: 'center', fontFamily: FONT, fontSize: 60, color: INK,
+        opacity: k, textShadow: '0 0 14px white, 0 0 6px white'}}>{e.label}</div>}
+    </div>
+  );
+};
+
+// ---------- 3D-телефон: корпус с толщиной, в экране чат — сообщения появляются по словам, нейросеть «печатает» ----------
+const Phone: React.FC<{e: Ev}> = ({e}) => {
+  const t = useT(); const k = sp(t, e.t0, 13, 1) * outK(t, e, 0.35);
+  if (k <= 0.001) return null;
+  const Wp = 400, Hp = 800;
+  const msgs: Ev[] = e.items;
+  return (
+    <div style={{position: 'absolute', left: (e.x ?? 560) - Wp / 2, top: (e.y ?? 560) - Hp / 2, width: Wp, height: Hp, perspective: 1300}}>
+      <div style={{position: 'absolute', inset: 0, transformStyle: 'preserve-3d',
+        transform: `translateY(${(1 - k) * 500}px) rotateY(${-22 + 8 * Math.sin(t * 0.8) + (1 - k) * 60}deg) rotateX(${6 + 3 * Math.sin(t * 1.1)}deg) rotateZ(${-3 * (1 - k)}deg)`}}>
+        {Array.from({length: 10}, (_, i) => (                          // толщина корпуса
+          <div key={i} style={{position: 'absolute', inset: 0, borderRadius: 64, background: i === 9 ? '#2a2a30' : '#1b1b20', transform: `translateZ(${-i * 3}px)`}} />
+        ))}
+        <div style={{position: 'absolute', inset: 14, borderRadius: 52, overflow: 'hidden', background: 'linear-gradient(180deg, #f4f6fb, #e9edf6)', transform: 'translateZ(1px)'}}>
+          <div style={{height: 120, background: 'white', display: 'flex', alignItems: 'center', gap: 16, padding: '30px 26px 0', boxShadow: '0 2px 10px rgba(0,0,0,0.06)'}}>
+            <div style={{width: 60, height: 60, borderRadius: '50%', background: `radial-gradient(circle at 35% 30%, #ffd2bd, ${ORANGE})`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 34}}>🤖</div>
+            <div style={{fontFamily: FONT}}><div style={{fontSize: 30, color: INK}}>{e.title ?? 'AI-репетитор'}</div><div style={{fontSize: 20, color: '#3dbb6e'}}>онлайн</div></div>
+          </div>
+          <div style={{padding: '22px 20px', display: 'flex', flexDirection: 'column', gap: 16}}>
+            {msgs.map((m, i) => {
+              const ai = m.from === 'ai';
+              const typing = ai && t >= m.t - 0.7 && t < m.t;
+              const g = sp(t, m.t, 12, 0.6);
+              if (!typing && g <= 0.01) return null;
+              return (
+                <div key={i} style={{alignSelf: ai ? 'flex-start' : 'flex-end', maxWidth: '82%', padding: '16px 20px', borderRadius: 26,
+                  borderBottomLeftRadius: ai ? 8 : 26, borderBottomRightRadius: ai ? 26 : 8,
+                  background: ai ? 'white' : 'linear-gradient(180deg, #45bdf5, #2AABEE)', color: ai ? INK : 'white',
+                  boxShadow: '0 6px 14px rgba(30,40,80,0.10)', fontFamily: FONT, fontSize: 27, lineHeight: 1.25,
+                  transform: typing ? 'none' : `scale(${0.6 + 0.4 * g}) translateY(${(1 - g) * 20}px)`, transformOrigin: ai ? 'left bottom' : 'right bottom', opacity: typing ? 1 : g}}>
+                  {typing ? <span style={{letterSpacing: 6, color: '#9aa3b5'}}>{'•••'.slice(0, 1 + Math.floor((t * 6) % 3))}</span> : m.text}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+        <div style={{position: 'absolute', left: Wp / 2 - 60, top: 26, width: 120, height: 34, borderRadius: 20, background: '#0d0d10', transform: 'translateZ(2px)'}} />
+        <div style={{position: 'absolute', inset: 0, borderRadius: 64, transform: 'translateZ(2px)', pointerEvents: 'none',
+          background: 'linear-gradient(120deg, rgba(255,255,255,0.28), rgba(255,255,255,0) 35%)'}} />
+      </div>
+      <div style={{position: 'absolute', left: 30, right: 30, bottom: -50, height: 60, borderRadius: '50%', background: 'radial-gradient(ellipse, rgba(30,20,60,0.25), transparent 70%)', opacity: k}} />
+    </div>
+  );
+};
+
 // ---------- кнопка «Подписаться» ----------
 const Button: React.FC<{e: Ev}> = ({e}) => {
   const t = useT(); const k = sp(t, e.t0, 9, 0.6) * outK(t, e);
@@ -394,7 +504,7 @@ const Captions: React.FC = () => {
 
 const COMPONENTS: Record<string, React.FC<{e: Ev}>> = {
   badge: Badge, flare: Flare, card: Card, tiles: Tiles, kinetic: Kinetic, table: Table, bars: Bars, grid: Grid,
-  fan: Fan, moneybutton: MoneyButton, coin: Coin, button: Button, hook: Hook, tg: TgCard,
+  fan: Fan, moneybutton: MoneyButton, coin: Coin, button: Button, hook: Hook, tg: TgCard, globe: Globe, book: Book, phone: Phone,
 };
 
 // ---------- моушн-графика: глубина и движение поверх всего ролика ----------

@@ -19,8 +19,8 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 REM = os.path.join(ROOT, 'remotion')
 BROWSER = '/opt/pw-browsers/chromium_headless_shell-1194/chrome-linux/headless_shell'
 BG_TYPES = ('zoom', 'punch', 'cam', 'pose')
-SIDE_MODE_TYPES = ('table', 'bars')
-SFX = {'tg': 'whoosh', 'badge': 'pop', 'flare': 'ding', 'card': 'whoosh', 'table': 'whoosh', 'bars': 'whoosh', 'coin': 'whoosh',
+SIDE_MODE_TYPES = ('table', 'bars', 'phone')
+SFX = {'globe': 'whoosh', 'book': 'whoosh', 'tg': 'whoosh', 'badge': 'pop', 'flare': 'ding', 'card': 'whoosh', 'table': 'whoosh', 'bars': 'whoosh', 'coin': 'whoosh',
        'moneybutton': 'whoosh', 'button': 'pop', 'punch': None}
 
 
@@ -123,6 +123,8 @@ def main(folder, out):
         elif e['type'] in ('table',):
             cues.append((e['t0'], 'whoosh', 1))
             cues += [(r['t'], 'pop', 1.1) for r in e['rows']]
+        elif e['type'] == 'phone':
+            cues.append((e['t0'], 'whoosh', 1)); cues += [(it['t'], 'pop', 1.2 if it.get('from') == 'ai' else 1.0) for it in e['items']]
         elif e['type'] == 'grid':
             cues += [(it['t'], 'pop', 1.05) for it in e['items']]
         elif e['type'] == 'bars':
