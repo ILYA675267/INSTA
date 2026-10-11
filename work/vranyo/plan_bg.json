@@ -1,0 +1,159 @@
+{
+ "captions": false,
+ "bg_only": true,
+ "layers": false,
+ "tail": 0.9,
+ "events": [
+  {
+   "type": "zoom",
+   "at": 0.0,
+   "dur": 3.64
+  },
+  {
+   "type": "pose",
+   "pose": "shrug",
+   "at": 2.72,
+   "dur": 0.9
+  },
+  {
+   "at": 3.76,
+   "word_n": 1,
+   "type": "badge",
+   "text": "",
+   "x": -999,
+   "y": -999,
+   "dur": 0.5,
+   "jump": true
+  },
+  {
+   "type": "pose",
+   "pose": "shrug",
+   "at": 5.88,
+   "dur": 0.9
+  },
+  {
+   "type": "pose",
+   "pose": "explain",
+   "at": 8.24,
+   "dur": 1.0
+  },
+  {
+   "at": 15.61,
+   "word_n": 1,
+   "type": "badge",
+   "text": "",
+   "x": -999,
+   "y": -999,
+   "dur": 0.5,
+   "jump": true
+  },
+  {
+   "at": 17.65,
+   "word_n": 1,
+   "type": "badge",
+   "text": "",
+   "x": -999,
+   "y": -999,
+   "dur": 0.5,
+   "jump": true
+  },
+  {
+   "type": "pose",
+   "pose": "point_up",
+   "at": 18.09,
+   "dur": 1.0
+  },
+  {
+   "at": 19.41,
+   "word_n": 1,
+   "delay": 0,
+   "dur": 5.45,
+   "type": "chart",
+   "chart": {
+    "kind": "none"
+   }
+  },
+  {
+   "at": 25.01,
+   "word_n": 1,
+   "type": "badge",
+   "text": "",
+   "x": -999,
+   "y": -999,
+   "dur": 0.5,
+   "jump": true
+  },
+  {
+   "type": "pose",
+   "pose": "explain",
+   "at": 25.57,
+   "dur": 1.0
+  },
+  {
+   "at": 32.04,
+   "word_n": 1,
+   "type": "badge",
+   "text": "",
+   "x": -999,
+   "y": -999,
+   "dur": 0.5,
+   "jump": true
+  },
+  {
+   "type": "pose",
+   "pose": "point_up",
+   "at": 32.56,
+   "dur": 1.0
+  },
+  {
+   "type": "punch",
+   "at": 37.84,
+   "dur": 0.5
+  },
+  {
+   "type": "pose",
+   "pose": "arms_up",
+   "at": 37.84,
+   "dur": 0.8
+  },
+  {
+   "type": "pose",
+   "pose": "explain",
+   "at": 38.92,
+   "dur": 1.0
+  },
+  {
+   "at": 41.54,
+   "word_n": 1,
+   "type": "badge",
+   "text": "",
+   "x": -999,
+   "y": -999,
+   "dur": 0.5,
+   "jump": true
+  },
+  {
+   "type": "pose",
+   "pose": "explain",
+   "at": 42.94,
+   "dur": 1.0
+  },
+  {
+   "at": 46.22,
+   "word_n": 1,
+   "type": "badge",
+   "text": "",
+   "x": -999,
+   "y": -999,
+   "dur": 0.5,
+   "jump": true
+  },
+  {
+   "type": "pose",
+   "pose": "arms_up",
+   "at": 46.22,
+   "dur": 1.2
+  }
+ ],
+ "turn": null
+}
