@@ -79,7 +79,12 @@ const Card: React.FC<{e: Ev}> = ({e}) => {
       <div style={{position: 'absolute', inset: 0, borderRadius: 48, ...glass,
         transform: `translateY(${(1 - k) * 420}px) rotateX(${(1 - k) * 50 + 6}deg) rotateY(${4 * Math.sin(t * 1.6)}deg) scale(${0.8 + 0.2 * k})`,
         display: 'flex', alignItems: 'center', padding: '0 50px', gap: 36, opacity: Math.min(1, k * 1.5)}}>
-        <div style={{fontSize: 120, filter: 'drop-shadow(0 8px 10px rgba(0,0,0,0.2))'}}>{e.emoji}</div>
+        {e.logo ? (                                                      // оригинальный логотип сервиса в кружке
+          <div style={{width: 150, height: 150, flex: 'none', borderRadius: '50%', background: e.logoBg ?? '#fff',
+            display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 12px 26px rgba(0,0,0,0.22)'}}>
+            <img src={staticFile(`logos/${e.logo}.svg`)} style={{width: 92, height: 92, filter: e.logoInvert ? 'brightness(0) invert(1)' : 'none'}} />
+          </div>
+        ) : <div style={{fontSize: 120, filter: 'drop-shadow(0 8px 10px rgba(0,0,0,0.2))'}}>{e.emoji}</div>}
         <div style={{fontFamily: FONT}}>
           <div style={{fontSize: e.title.length > 18 ? 52 : e.title.length > 14 ? 58 : 66, color: INK, whiteSpace: 'nowrap'}}>{e.title}</div>
           {e.sub && <div style={{fontSize: 40, color: '#6b6d78', marginTop: 10, opacity: sub, transform: `translateX(${(1 - sub) * 30}px)`}}>{e.sub}</div>}

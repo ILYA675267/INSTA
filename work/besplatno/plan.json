@@ -84,7 +84,10 @@
    "sub": "картинки по описанию",
    "sub_at": "Шедеврум",
    "y": 330,
-   "dur": 4.82
+   "dur": 4.82,
+   "logo": "yandex",
+   "logoBg": "#FC3F1D",
+   "logoInvert": true
   },
   {
    "type": "pose",
@@ -147,7 +150,10 @@
    "sub": "монтаж и субтитры",
    "sub_at": "КапКут",
    "y": 330,
-   "dur": 1.3
+   "dur": 1.3,
+   "logo": "capcut",
+   "logoBg": "#000",
+   "logoInvert": true
   },
   {
    "type": "pose",
@@ -210,7 +216,10 @@
    "sub": "тексты без подписки",
    "sub_at": "ДипСик",
    "y": 330,
-   "dur": 1.34
+   "dur": 1.34,
+   "logo": "deepseek-color",
+   "logoBg": "#fff",
+   "logoInvert": false
   },
   {
    "type": "pose",
@@ -336,7 +345,10 @@
    "sub": "песня по описанию",
    "sub_at": "Сюно",
    "y": 330,
-   "dur": 2.17
+   "dur": 2.17,
+   "logo": "suno",
+   "logoBg": "#000",
+   "logoInvert": true
   },
   {
    "type": "pose",
