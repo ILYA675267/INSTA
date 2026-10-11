@@ -108,7 +108,11 @@ const Tiles: React.FC<{e: Ev}> = ({e}) => {
           <div key={i} style={{position: 'absolute', left: it.x - size / 2, top: it.y - size / 2 + 8 * Math.sin(t * 3 + i), width: size,
             transform: `scale(${k}) rotate(${(1 - k) * 25}deg)`}}>
             <div style={{width: size, height: size, borderRadius: size * 0.28, ...glass, display: 'flex', alignItems: 'center', justifyContent: 'center',
-              fontSize: size * 0.56, filter: it.mark === 'cross' && m > 0.5 ? 'grayscale(0.7)' : 'none', opacity: it.mark === 'cross' ? 1 - 0.3 * m : 1}}>{it.emoji}</div>
+              fontSize: size * 0.56, filter: it.mark === 'cross' && m > 0.5 ? 'grayscale(0.7)' : 'none', opacity: it.mark === 'cross' ? 1 - 0.3 * m : 1}}>{it.logo ? (                      // оригинальный логотип вместо эмодзи
+              <div style={{width: size * 0.7, height: size * 0.7, borderRadius: '50%', background: it.logoBg ?? '#fff', display: 'flex',
+                alignItems: 'center', justifyContent: 'center', boxShadow: '0 8px 18px rgba(0,0,0,0.2)'}}>
+                <img src={staticFile(`logos/${it.logo}.svg`)} style={{width: size * 0.42, height: size * 0.42, filter: it.logoInvert ? 'brightness(0) invert(1)' : 'none'}} />
+              </div>) : it.emoji}</div>
             {it.label && <div style={{fontFamily: FONT, fontSize: 38, color: INK, textAlign: 'center', marginTop: 12, textShadow: '0 0 10px white, 0 0 4px white', whiteSpace: 'nowrap'}}>{it.label}</div>}
             {it.mark === 'cross' && m > 0.001 && (
               <svg width={size} height={size} style={{position: 'absolute', left: 0, top: 0}} viewBox="0 0 100 100">

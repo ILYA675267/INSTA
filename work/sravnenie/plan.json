@@ -1,0 +1,455 @@
+{
+ "tail": 0.9,
+ "flat": true,
+ "events": [
+  {
+   "type": "hook",
+   "at": "ЧатГПТ",
+   "dur": 1.25,
+   "lines": [
+    "Кто умнее?",
+    "GPT · DeepSeek · Claude"
+   ],
+   "emoji": "🥊",
+   "y": 190
+  },
+  {
+   "type": "zoom",
+   "at": "ЧатГПТ",
+   "dur": 5.48
+  },
+  {
+   "type": "tiles",
+   "at": "ЧатГПТ",
+   "delay": 1.3,
+   "dur": 2.1499999999999995,
+   "items": [
+    {
+     "label": "",
+     "at": "ЧатГПТ",
+     "word_n": 1,
+     "x": 230,
+     "y": 1060,
+     "logo": "openai",
+     "logoBg": "#000",
+     "logoInvert": true
+    },
+    {
+     "label": "",
+     "at": "ДипСик",
+     "word_n": 1,
+     "x": 540,
+     "y": 1060,
+     "logo": "deepseek-color",
+     "logoBg": "#fff",
+     "logoInvert": false
+    },
+    {
+     "label": "",
+     "at": "Клод",
+     "word_n": 1,
+     "x": 850,
+     "y": 1060,
+     "logo": "claude-color",
+     "logoBg": "#fff",
+     "logoInvert": false
+    }
+   ]
+  },
+  {
+   "type": "kinetic",
+   "at": "Спойлер",
+   "text": "Спойлер ответ тебя удивит",
+   "pill": "удивит",
+   "y": 380,
+   "dur": 1.96
+  },
+  {
+   "type": "pose",
+   "pose": "shrug",
+   "at": "удивит",
+   "dur": 0.8
+  },
+  {
+   "type": "card",
+   "at": "Эмбер",
+   "emoji": "💡",
+   "title": "Эмбер объяснит",
+   "sub": "простыми словами",
+   "sub_at": "простыми",
+   "y": 330,
+   "dur": 1.96,
+   "jump": true
+  },
+  {
+   "type": "flare",
+   "at": "Первый",
+   "corner": "tr",
+   "dur": 0.8,
+   "delay": -0.15
+  },
+  {
+   "type": "badge",
+   "at": "Первый",
+   "text": "1",
+   "x": 150,
+   "y": 250,
+   "dur": 7.22,
+   "jump": true
+  },
+  {
+   "type": "card",
+   "at": "Первый",
+   "title": "ЧатГПТ",
+   "sub": "универсал",
+   "sub_at": "универсал",
+   "y": 330,
+   "emoji": "",
+   "dur": 2.74,
+   "logo": "openai",
+   "logoBg": "#000",
+   "logoInvert": true
+  },
+  {
+   "type": "pose",
+   "pose": "point_up",
+   "at": "ЧатГПТ",
+   "word_n": 2,
+   "dur": 1.0
+  },
+  {
+   "type": "tiles",
+   "at": "голосом",
+   "dur": 2.7,
+   "items": [
+    {
+     "emoji": "🎙️",
+     "label": "голос",
+     "at": "голосом",
+     "x": 230,
+     "y": 440
+    },
+    {
+     "emoji": "🎨",
+     "label": "картинки",
+     "at": "картинки",
+     "x": 540,
+     "y": 440
+    },
+    {
+     "emoji": "🌐",
+     "label": "интернет",
+     "at": "интернете",
+     "x": 850,
+     "y": 440
+    }
+   ]
+  },
+  {
+   "type": "flare",
+   "at": "Второй",
+   "corner": "tl",
+   "dur": 0.8,
+   "delay": -0.15
+  },
+  {
+   "type": "badge",
+   "at": "Второй",
+   "text": "2",
+   "x": 150,
+   "y": 250,
+   "dur": 8.0,
+   "jump": true
+  },
+  {
+   "type": "card",
+   "at": "Второй",
+   "title": "ДипСик",
+   "sub": "бесплатный и мощный",
+   "sub_at": "Бесплатный",
+   "y": 330,
+   "emoji": "",
+   "dur": 1.22,
+   "logo": "deepseek-color",
+   "logoBg": "#fff",
+   "logoInvert": false
+  },
+  {
+   "type": "pose",
+   "pose": "explain",
+   "at": "ДипСик",
+   "word_n": 2,
+   "dur": 1.0
+  },
+  {
+   "type": "tiles",
+   "at": "Бесплатный",
+   "dur": 3.36,
+   "items": [
+    {
+     "emoji": "🆓",
+     "label": "бесплатно",
+     "at": "Бесплатный",
+     "x": 230,
+     "y": 440
+    },
+    {
+     "emoji": "➗",
+     "label": "математика",
+     "at": "математике",
+     "x": 540,
+     "y": 440
+    },
+    {
+     "emoji": "💻",
+     "label": "код",
+     "at": "коде",
+     "x": 850,
+     "y": 440
+    }
+   ]
+  },
+  {
+   "type": "flare",
+   "at": "Третий",
+   "corner": "tr",
+   "dur": 0.8,
+   "delay": -0.15
+  },
+  {
+   "type": "badge",
+   "at": "Третий",
+   "text": "3",
+   "x": 150,
+   "y": 250,
+   "dur": 7.28,
+   "jump": true
+  },
+  {
+   "type": "card",
+   "at": "Третий",
+   "title": "Клод",
+   "sub": "тексты как у человека",
+   "sub_at": "Пишет",
+   "y": 330,
+   "emoji": "",
+   "dur": 1.62,
+   "logo": "claude-color",
+   "logoBg": "#fff",
+   "logoInvert": false
+  },
+  {
+   "type": "pose",
+   "pose": "point_up",
+   "at": "Клод",
+   "word_n": 2,
+   "dur": 1.0
+  },
+  {
+   "type": "tiles",
+   "at": "тексты",
+   "dur": 5.56,
+   "items": [
+    {
+     "emoji": "✍️",
+     "label": "тексты",
+     "at": "тексты",
+     "x": 230,
+     "y": 440
+    },
+    {
+     "emoji": "🧑",
+     "label": "как человек",
+     "at": "человек",
+     "x": 540,
+     "y": 440
+    },
+    {
+     "emoji": "📚",
+     "label": "документы",
+     "at": "документы",
+     "x": 850,
+     "y": 440
+    }
+   ]
+  },
+  {
+   "type": "kinetic",
+   "at": "Короче",
+   "text": "Короче швейцарский нож",
+   "pill": "нож",
+   "y": 380,
+   "dur": 1.56
+  },
+  {
+   "type": "tiles",
+   "at": "Решает",
+   "dur": 3.2,
+   "items": [
+    {
+     "emoji": "🧠",
+     "label": "думает по шагам",
+     "at": "шагам",
+     "x": 540,
+     "y": 470,
+     "size": 210
+    }
+   ]
+  },
+  {
+   "type": "flare",
+   "at": 30.54,
+   "corner": "br",
+   "dur": 0.8
+  },
+  {
+   "type": "kinetic",
+   "at": 30.54,
+   "text": "И кто же умнее",
+   "pill": "умнее",
+   "y": 380,
+   "dur": 1.22
+  },
+  {
+   "type": "pose",
+   "pose": "shrug",
+   "at": "никто",
+   "dur": 1.0
+  },
+  {
+   "type": "tiles",
+   "at": "Честно",
+   "dur": 2.92,
+   "items": [
+    {
+     "label": "ЧатГПТ",
+     "at": "У",
+     "word_n": 1,
+     "x": 230,
+     "y": 440,
+     "logo": "openai",
+     "logoBg": "#000",
+     "logoInvert": true
+    },
+    {
+     "label": "ДипСик",
+     "at": "каждого",
+     "word_n": 1,
+     "x": 540,
+     "y": 440,
+     "logo": "deepseek-color",
+     "logoBg": "#fff",
+     "logoInvert": false
+    },
+    {
+     "label": "Клод",
+     "at": "своя",
+     "word_n": 1,
+     "x": 850,
+     "y": 440,
+     "logo": "claude-color",
+     "logoBg": "#fff",
+     "logoInvert": false
+    }
+   ]
+  },
+  {
+   "type": "kinetic",
+   "at": "Честно",
+   "text": "Честно никто",
+   "pill": "никто",
+   "y": 720,
+   "dur": 1.08
+  },
+  {
+   "type": "card",
+   "at": "У",
+   "emoji": "💪",
+   "title": "У каждого своя",
+   "sub": "суперсила",
+   "sub_at": "суперсила",
+   "y": 760,
+   "dur": 1.72
+  },
+  {
+   "type": "card",
+   "at": "Лайфхак",
+   "emoji": "🔁",
+   "title": "Один вопрос — всем трём",
+   "sub": "выбери лучший ответ",
+   "sub_at": "выбери",
+   "y": 330,
+   "dur": 4.36
+  },
+  {
+   "type": "pose",
+   "pose": "point_up",
+   "at": "Лайфхак",
+   "dur": 1.0
+  },
+  {
+   "type": "kinetic",
+   "at": 39.38,
+   "text": "Это база",
+   "pill": "база",
+   "y": 380,
+   "dur": 0.66
+  },
+  {
+   "type": "punch",
+   "at": "база",
+   "dur": 0.5
+  },
+  {
+   "type": "pose",
+   "pose": "arms_up",
+   "at": "база",
+   "dur": 0.8
+  },
+  {
+   "type": "card",
+   "at": 40.14,
+   "emoji": "💬",
+   "title": "А ты кем пользуешься?",
+   "sub": "пиши в комментариях",
+   "sub_at": "Пиши",
+   "y": 330,
+   "dur": 2.53
+  },
+  {
+   "type": "pose",
+   "pose": "explain",
+   "at": 40.14,
+   "dur": 1.0
+  },
+  {
+   "type": "flare",
+   "at": "Кстати",
+   "corner": "br",
+   "dur": 0.8
+  },
+  {
+   "type": "card",
+   "at": "Кстати",
+   "emoji": "🤖",
+   "title": "Смонтировано нейросетью",
+   "sub": "даже это видео",
+   "sub_at": "видео",
+   "y": 330,
+   "dur": 3.16
+  },
+  {
+   "type": "tg",
+   "at": "Подписывайся",
+   "dur": 3.84,
+   "y": 130,
+   "jump": true
+  },
+  {
+   "type": "pose",
+   "pose": "arms_up",
+   "at": "Подписывайся",
+   "dur": 1.2
+  }
+ ]
+}
