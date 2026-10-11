@@ -1,0 +1,393 @@
+{
+ "tail": 0.9,
+ "flat": true,
+ "events": [
+  {
+   "type": "hook",
+   "at": 0.0,
+   "dur": 1.25,
+   "lines": [
+    "Нейросеть",
+    "врёт тебе?"
+   ],
+   "emoji": "🤥",
+   "y": 190
+  },
+  {
+   "type": "zoom",
+   "at": 0.0,
+   "dur": 3.64
+  },
+  {
+   "type": "pose",
+   "pose": "shrug",
+   "at": 2.72,
+   "dur": 0.9
+  },
+  {
+   "type": "card",
+   "at": 3.76,
+   "emoji": "💡",
+   "title": "Эмбер объяснит",
+   "sub": "простыми словами",
+   "sub_at": 4.68,
+   "y": 330,
+   "dur": 2.0,
+   "jump": true
+  },
+  {
+   "type": "kinetic",
+   "at": 5.88,
+   "text": "Почему так?",
+   "pill": "так",
+   "y": 380,
+   "dur": 0.85
+  },
+  {
+   "type": "pose",
+   "pose": "shrug",
+   "at": 5.88,
+   "dur": 0.9
+  },
+  {
+   "type": "card",
+   "at": 6.8,
+   "emoji": "🎲",
+   "title": "Она угадывает",
+   "sub": "какое слово следующее",
+   "sub_at": 8.84,
+   "y": 330,
+   "dur": 3.55
+  },
+  {
+   "type": "pose",
+   "pose": "explain",
+   "at": 8.24,
+   "dur": 1.0
+  },
+  {
+   "type": "tiles",
+   "at": 10.48,
+   "dur": 4.15,
+   "items": [
+    {
+     "emoji": "🔢",
+     "label": "цифры",
+     "at": 12.2,
+     "x": 230,
+     "y": 440,
+     "mark": "cross",
+     "mark_at": 13.9
+    },
+    {
+     "emoji": "💬",
+     "label": "цитаты",
+     "at": 12.72,
+     "x": 540,
+     "y": 440,
+     "mark": "cross",
+     "mark_at": 14.05
+    },
+    {
+     "emoji": "🔗",
+     "label": "ссылки",
+     "at": 13.6,
+     "x": 850,
+     "y": 440,
+     "mark": "cross",
+     "mark_at": 14.2
+    }
+   ]
+  },
+  {
+   "type": "kinetic",
+   "at": 14.73,
+   "text": "Знакомо?",
+   "pill": "Знакомо",
+   "y": 380,
+   "dur": 0.8
+  },
+  {
+   "type": "card",
+   "at": 15.61,
+   "emoji": "🛡️",
+   "title": "3 способа защиты",
+   "sub": "от выдумок нейросети",
+   "sub_at": 16.73,
+   "y": 330,
+   "dur": 1.92,
+   "jump": true
+  },
+  {
+   "type": "flare",
+   "at": 17.65,
+   "corner": "tr",
+   "dur": 0.8,
+   "delay": -0.15
+  },
+  {
+   "type": "badge",
+   "at": 17.65,
+   "text": "1",
+   "x": 150,
+   "y": 250,
+   "dur": 7.24,
+   "jump": true
+  },
+  {
+   "type": "kinetic",
+   "at": 17.65,
+   "text": "Попроси источники",
+   "pill": "источники",
+   "y": 380,
+   "dur": 1.66
+  },
+  {
+   "type": "pose",
+   "pose": "point_up",
+   "at": 18.09,
+   "dur": 1.0
+  },
+  {
+   "type": "phone",
+   "at": 19.41,
+   "x": 600,
+   "y": 760,
+   "title": "Нейросеть",
+   "dur": 5.45,
+   "items": [
+    {
+     "from": "me",
+     "text": "Дай ссылки, откуда это",
+     "at": 19.89
+    },
+    {
+     "from": "ai",
+     "text": "Вот источники:\n🔗 nauka-fakty.ru/123\n🔗 research.org/ai",
+     "at": 20.73
+    },
+    {
+     "from": "me",
+     "text": "Открываю…",
+     "at": 22.37
+    },
+    {
+     "from": "ai",
+     "text": "⚠️ Страница не найдена",
+     "at": 24.13
+    }
+   ]
+  },
+  {
+   "type": "flare",
+   "at": 25.01,
+   "corner": "tl",
+   "dur": 0.8,
+   "delay": -0.15
+  },
+  {
+   "type": "badge",
+   "at": 25.01,
+   "text": "2",
+   "x": 150,
+   "y": 250,
+   "dur": 6.9,
+   "jump": true
+  },
+  {
+   "type": "kinetic",
+   "at": 25.57,
+   "text": "Разреши сказать «не знаю»",
+   "pill": "знаю",
+   "y": 380,
+   "dur": 1.65
+  },
+  {
+   "type": "pose",
+   "pose": "explain",
+   "at": 25.57,
+   "dur": 1.0
+  },
+  {
+   "type": "card",
+   "at": 27.32,
+   "emoji": "🤔",
+   "title": "Если не уверена —",
+   "sub": "так и скажи",
+   "sub_at": 29.2,
+   "y": 330,
+   "dur": 2.7
+  },
+  {
+   "type": "kinetic",
+   "at": 30.12,
+   "text": "Честно врать станет меньше",
+   "pill": "меньше",
+   "y": 380,
+   "dur": 1.8
+  },
+  {
+   "type": "flare",
+   "at": 32.04,
+   "corner": "tr",
+   "dur": 0.8,
+   "delay": -0.15
+  },
+  {
+   "type": "badge",
+   "at": 32.04,
+   "text": "3",
+   "x": 150,
+   "y": 250,
+   "dur": 6.25,
+   "jump": true
+  },
+  {
+   "type": "kinetic",
+   "at": 32.04,
+   "text": "Перепроверяй важное",
+   "pill": "важное",
+   "y": 380,
+   "dur": 1.7
+  },
+  {
+   "type": "pose",
+   "pose": "point_up",
+   "at": 32.56,
+   "dur": 1.0
+  },
+  {
+   "type": "tiles",
+   "at": 33.84,
+   "dur": 3.6,
+   "items": [
+    {
+     "emoji": "🔢",
+     "label": "цифры",
+     "at": 33.84,
+     "x": 180,
+     "y": 450,
+     "size": 170,
+     "mark": "check",
+     "mark_at": 36.68
+    },
+    {
+     "emoji": "📅",
+     "label": "даты",
+     "at": 34.32,
+     "x": 420,
+     "y": 450,
+     "size": 170,
+     "mark": "check",
+     "mark_at": 36.8
+    },
+    {
+     "emoji": "💊",
+     "label": "лекарства",
+     "at": 34.68,
+     "x": 660,
+     "y": 450,
+     "size": 170,
+     "mark": "check",
+     "mark_at": 36.92
+    },
+    {
+     "emoji": "⚖️",
+     "label": "законы",
+     "at": 35.24,
+     "x": 900,
+     "y": 450,
+     "size": 170,
+     "mark": "check",
+     "mark_at": 37.04
+    }
+   ]
+  },
+  {
+   "type": "kinetic",
+   "at": 37.56,
+   "text": "Это база",
+   "pill": "база",
+   "y": 380,
+   "dur": 0.75
+  },
+  {
+   "type": "punch",
+   "at": 37.84,
+   "dur": 0.5
+  },
+  {
+   "type": "pose",
+   "pose": "arms_up",
+   "at": 37.84,
+   "dur": 0.8
+  },
+  {
+   "type": "card",
+   "at": 38.4,
+   "emoji": "🤝",
+   "title": "Классный помощник",
+   "sub": "но не истина",
+   "sub_at": 40.68,
+   "y": 330,
+   "dur": 3.04
+  },
+  {
+   "type": "pose",
+   "pose": "explain",
+   "at": 38.92,
+   "dur": 1.0
+  },
+  {
+   "type": "tiles",
+   "at": 41.54,
+   "dur": 1.3,
+   "items": [
+    {
+     "emoji": "🔖",
+     "label": "сохрани",
+     "at": 41.54,
+     "x": 540,
+     "y": 470,
+     "size": 210
+    }
+   ],
+   "jump": true
+  },
+  {
+   "type": "flare",
+   "at": 42.94,
+   "corner": "br",
+   "dur": 0.8
+  },
+  {
+   "type": "card",
+   "at": 42.94,
+   "emoji": "🤖",
+   "title": "Смонтировано нейросетью",
+   "sub": "даже это видео",
+   "sub_at": 43.98,
+   "y": 330,
+   "dur": 3.16
+  },
+  {
+   "type": "pose",
+   "pose": "explain",
+   "at": 42.94,
+   "dur": 1.0
+  },
+  {
+   "type": "tg",
+   "at": 46.22,
+   "dur": 3.9,
+   "y": 130,
+   "jump": true
+  },
+  {
+   "type": "pose",
+   "pose": "arms_up",
+   "at": 46.22,
+   "dur": 1.2
+  }
+ ]
+}
