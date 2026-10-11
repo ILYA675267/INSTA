@@ -8,7 +8,7 @@
    "dur": 1.25,
    "lines": [
     "Кто умнее?",
-    "GPT · DeepSeek · Claude"
+    "3 нейросети"
    ],
    "emoji": "🥊",
    "y": 190
@@ -29,30 +29,33 @@
      "at": "ЧатГПТ",
      "word_n": 1,
      "x": 230,
-     "y": 1060,
+     "y": 540,
      "logo": "openai",
      "logoBg": "#000",
-     "logoInvert": true
+     "logoInvert": true,
+     "size": 170
     },
     {
      "label": "",
      "at": "ДипСик",
      "word_n": 1,
      "x": 540,
-     "y": 1060,
+     "y": 540,
      "logo": "deepseek-color",
      "logoBg": "#fff",
-     "logoInvert": false
+     "logoInvert": false,
+     "size": 170
     },
     {
      "label": "",
      "at": "Клод",
      "word_n": 1,
      "x": 850,
-     "y": 1060,
+     "y": 540,
      "logo": "claude-color",
      "logoBg": "#fff",
-     "logoInvert": false
+     "logoInvert": false,
+     "size": 170
     }
    ]
   },
@@ -360,16 +363,6 @@
    "pill": "никто",
    "y": 720,
    "dur": 1.08
-  },
-  {
-   "type": "card",
-   "at": "У",
-   "emoji": "💪",
-   "title": "У каждого своя",
-   "sub": "суперсила",
-   "sub_at": "суперсила",
-   "y": 760,
-   "dur": 1.72
   },
   {
    "type": "card",

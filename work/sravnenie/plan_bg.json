@@ -1,0 +1,126 @@
+{
+ "captions": false,
+ "bg_only": true,
+ "layers": false,
+ "tail": 0.9,
+ "events": [
+  {
+   "type": "zoom",
+   "at": "ЧатГПТ",
+   "dur": 5.48
+  },
+  {
+   "type": "pose",
+   "pose": "shrug",
+   "at": "удивит",
+   "dur": 0.8
+  },
+  {
+   "at": "Эмбер",
+   "word_n": 1,
+   "type": "badge",
+   "text": "",
+   "x": -999,
+   "y": -999,
+   "dur": 0.5,
+   "jump": true
+  },
+  {
+   "at": "Первый",
+   "word_n": 1,
+   "type": "badge",
+   "text": "",
+   "x": -999,
+   "y": -999,
+   "dur": 0.5,
+   "jump": true
+  },
+  {
+   "type": "pose",
+   "pose": "point_up",
+   "at": "ЧатГПТ",
+   "word_n": 2,
+   "dur": 1.0
+  },
+  {
+   "at": "Второй",
+   "word_n": 1,
+   "type": "badge",
+   "text": "",
+   "x": -999,
+   "y": -999,
+   "dur": 0.5,
+   "jump": true
+  },
+  {
+   "type": "pose",
+   "pose": "explain",
+   "at": "ДипСик",
+   "word_n": 2,
+   "dur": 1.0
+  },
+  {
+   "at": "Третий",
+   "word_n": 1,
+   "type": "badge",
+   "text": "",
+   "x": -999,
+   "y": -999,
+   "dur": 0.5,
+   "jump": true
+  },
+  {
+   "type": "pose",
+   "pose": "point_up",
+   "at": "Клод",
+   "word_n": 2,
+   "dur": 1.0
+  },
+  {
+   "type": "pose",
+   "pose": "shrug",
+   "at": "никто",
+   "dur": 1.0
+  },
+  {
+   "type": "pose",
+   "pose": "point_up",
+   "at": "Лайфхак",
+   "dur": 1.0
+  },
+  {
+   "type": "punch",
+   "at": "база",
+   "dur": 0.5
+  },
+  {
+   "type": "pose",
+   "pose": "arms_up",
+   "at": "база",
+   "dur": 0.8
+  },
+  {
+   "type": "pose",
+   "pose": "explain",
+   "at": 40.14,
+   "dur": 1.0
+  },
+  {
+   "at": "Подписывайся",
+   "word_n": 1,
+   "type": "badge",
+   "text": "",
+   "x": -999,
+   "y": -999,
+   "dur": 0.5,
+   "jump": true
+  },
+  {
+   "type": "pose",
+   "pose": "arms_up",
+   "at": "Подписывайся",
+   "dur": 1.2
+  }
+ ],
+ "turn": null
+}
