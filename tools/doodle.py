@@ -416,6 +416,8 @@ def resolve(plan, words):
             if not hits:
                 raise SystemExit(f'Слово «{at}» не найдено в words.json')
             t0 = hits[min(e.get('word_n', 1), len(hits)) - 1]
+        elif isinstance(at, float):                     # дробное число — время в секундах (как в tools/reel.py)
+            t0 = at
         else:
             t0 = words[at][1]
         e = dict(e, t0=t0 + e.get('delay', 0), t1=t0 + e.get('delay', 0) + e.get('dur', 2.2))
