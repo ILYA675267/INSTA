@@ -7,16 +7,16 @@
   {
    "type": "zoom",
    "at": 0.0,
-   "dur": 3.64
+   "dur": 3.4
   },
   {
    "type": "pose",
    "pose": "shrug",
-   "at": 2.72,
+   "at": 2.56,
    "dur": 0.9
   },
   {
-   "at": 3.76,
+   "at": 3.52,
    "word_n": 1,
    "type": "badge",
    "text": "",
@@ -28,17 +28,17 @@
   {
    "type": "pose",
    "pose": "shrug",
-   "at": 5.88,
+   "at": 5.4,
    "dur": 0.9
   },
   {
    "type": "pose",
    "pose": "explain",
-   "at": 8.24,
+   "at": 7.72,
    "dur": 1.0
   },
   {
-   "at": 15.61,
+   "at": 15.07,
    "word_n": 1,
    "type": "badge",
    "text": "",
@@ -48,7 +48,7 @@
    "jump": true
   },
   {
-   "at": 17.65,
+   "at": 17.19,
    "word_n": 1,
    "type": "badge",
    "text": "",
@@ -60,21 +60,21 @@
   {
    "type": "pose",
    "pose": "point_up",
-   "at": 18.09,
+   "at": 17.71,
    "dur": 1.0
   },
   {
-   "at": 19.41,
+   "at": 19.03,
    "word_n": 1,
    "delay": 0,
-   "dur": 5.45,
+   "dur": 5.44,
    "type": "chart",
    "chart": {
     "kind": "none"
    }
   },
   {
-   "at": 25.01,
+   "at": 24.59,
    "word_n": 1,
    "type": "badge",
    "text": "",
@@ -86,11 +86,11 @@
   {
    "type": "pose",
    "pose": "explain",
-   "at": 25.57,
+   "at": 25.11,
    "dur": 1.0
   },
   {
-   "at": 32.04,
+   "at": 31.52,
    "word_n": 1,
    "type": "badge",
    "text": "",
@@ -102,28 +102,44 @@
   {
    "type": "pose",
    "pose": "point_up",
-   "at": 32.56,
+   "at": 32.08,
    "dur": 1.0
   },
   {
    "type": "punch",
-   "at": 37.84,
+   "at": 37.64,
    "dur": 0.5
   },
   {
    "type": "pose",
    "pose": "arms_up",
-   "at": 37.84,
+   "at": 37.64,
    "dur": 0.8
   },
   {
    "type": "pose",
-   "pose": "explain",
-   "at": 38.92,
+   "pose": "point_up",
+   "at": 39.6,
    "dur": 1.0
   },
   {
-   "at": 41.54,
+   "at": 42.51,
+   "word_n": 1,
+   "delay": 0,
+   "dur": 7.64,
+   "type": "chart",
+   "chart": {
+    "kind": "none"
+   }
+  },
+  {
+   "type": "pose",
+   "pose": "explain",
+   "at": 50.79,
+   "dur": 1.0
+  },
+  {
+   "at": 53.55,
    "word_n": 1,
    "type": "badge",
    "text": "",
@@ -135,11 +151,11 @@
   {
    "type": "pose",
    "pose": "explain",
-   "at": 42.94,
+   "at": 55.07,
    "dur": 1.0
   },
   {
-   "at": 46.22,
+   "at": 58.15,
    "word_n": 1,
    "type": "badge",
    "text": "",
@@ -151,7 +167,7 @@
   {
    "type": "pose",
    "pose": "arms_up",
-   "at": 46.22,
+   "at": 58.15,
    "dur": 1.2
   }
  ],
