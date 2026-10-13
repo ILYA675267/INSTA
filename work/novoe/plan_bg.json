@@ -1,0 +1,143 @@
+{
+ "captions": false,
+ "bg_only": true,
+ "layers": false,
+ "tail": 0.9,
+ "events": [
+  {
+   "type": "zoom",
+   "at": 0.0,
+   "dur": 4.48
+  },
+  {
+   "type": "pose",
+   "pose": "arms_up",
+   "at": 2.92,
+   "dur": 0.9
+  },
+  {
+   "at": 4.6,
+   "word_n": 1,
+   "type": "badge",
+   "text": "",
+   "x": -999,
+   "y": -999,
+   "dur": 0.5,
+   "jump": true
+  },
+  {
+   "at": 6.6,
+   "word_n": 1,
+   "type": "badge",
+   "text": "",
+   "x": -999,
+   "y": -999,
+   "dur": 0.5,
+   "jump": true
+  },
+  {
+   "type": "pose",
+   "pose": "point_up",
+   "at": 7.12,
+   "dur": 1.0
+  },
+  {
+   "at": 17.36,
+   "word_n": 1,
+   "type": "badge",
+   "text": "",
+   "x": -999,
+   "y": -999,
+   "dur": 0.5,
+   "jump": true
+  },
+  {
+   "type": "pose",
+   "pose": "explain",
+   "at": 18.04,
+   "dur": 1.0
+  },
+  {
+   "at": 25.75,
+   "word_n": 1,
+   "type": "badge",
+   "text": "",
+   "x": -999,
+   "y": -999,
+   "dur": 0.5,
+   "jump": true
+  },
+  {
+   "type": "pose",
+   "pose": "point_up",
+   "at": 28.17,
+   "dur": 1.0
+  },
+  {
+   "type": "punch",
+   "at": 33.77,
+   "dur": 0.5
+  },
+  {
+   "type": "pose",
+   "pose": "arms_up",
+   "at": 33.77,
+   "dur": 0.8
+  },
+  {
+   "at": 34.25,
+   "word_n": 1,
+   "type": "badge",
+   "text": "",
+   "x": -999,
+   "y": -999,
+   "dur": 0.5,
+   "jump": true
+  },
+  {
+   "type": "pose",
+   "pose": "explain",
+   "at": 35.77,
+   "dur": 1.0
+  },
+  {
+   "type": "pose",
+   "pose": "arms_up",
+   "at": 42.19,
+   "dur": 0.8
+  },
+  {
+   "at": 42.87,
+   "word_n": 1,
+   "type": "badge",
+   "text": "",
+   "x": -999,
+   "y": -999,
+   "dur": 0.5,
+   "jump": true
+  },
+  {
+   "type": "pose",
+   "pose": "explain",
+   "at": 44.79,
+   "dur": 1.0
+  },
+  {
+   "at": 47.99,
+   "word_n": 1,
+   "type": "badge",
+   "text": "",
+   "x": -999,
+   "y": -999,
+   "dur": 0.5,
+   "jump": true
+  },
+  {
+   "type": "pose",
+   "pose": "arms_up",
+   "at": 47.99,
+   "dur": 1.2
+  }
+ ],
+ "turn": null
+}
