@@ -1,0 +1,136 @@
+{
+ "captions": false,
+ "bg_only": true,
+ "layers": false,
+ "tail": 0.9,
+ "events": [
+  {
+   "type": "zoom",
+   "at": 0.0,
+   "dur": 5.0
+  },
+  {
+   "at": 5.12,
+   "word_n": 1,
+   "type": "badge",
+   "text": "",
+   "x": -999,
+   "y": -999,
+   "dur": 0.5,
+   "jump": true
+  },
+  {
+   "at": 7.28,
+   "word_n": 1,
+   "type": "badge",
+   "text": "",
+   "x": -999,
+   "y": -999,
+   "dur": 0.5,
+   "jump": true
+  },
+  {
+   "type": "pose",
+   "pose": "point_up",
+   "at": 8.72,
+   "dur": 1.0
+  },
+  {
+   "type": "pose",
+   "pose": "arms_up",
+   "at": 15.99,
+   "dur": 0.8
+  },
+  {
+   "at": 16.51,
+   "word_n": 1,
+   "type": "badge",
+   "text": "",
+   "x": -999,
+   "y": -999,
+   "dur": 0.5,
+   "jump": true
+  },
+  {
+   "at": 18.95,
+   "word_n": 1,
+   "delay": 0,
+   "dur": 3.64,
+   "type": "chart",
+   "chart": {
+    "kind": "none"
+   }
+  },
+  {
+   "at": 22.71,
+   "word_n": 1,
+   "type": "badge",
+   "text": "",
+   "x": -999,
+   "y": -999,
+   "dur": 0.5,
+   "jump": true
+  },
+  {
+   "type": "pose",
+   "pose": "explain",
+   "at": 25.07,
+   "dur": 1.0
+  },
+  {
+   "at": 29.27,
+   "word_n": 1,
+   "type": "badge",
+   "text": "",
+   "x": -999,
+   "y": -999,
+   "dur": 0.5,
+   "jump": true
+  },
+  {
+   "type": "pose",
+   "pose": "point_up",
+   "at": 32.79,
+   "dur": 1.0
+  },
+  {
+   "type": "pose",
+   "pose": "arms_up",
+   "at": 37.59,
+   "dur": 0.9
+  },
+  {
+   "at": 39.35,
+   "word_n": 1,
+   "type": "badge",
+   "text": "",
+   "x": -999,
+   "y": -999,
+   "dur": 0.5,
+   "jump": true
+  },
+  {
+   "type": "pose",
+   "pose": "explain",
+   "at": 41.63,
+   "dur": 1.0
+  },
+  {
+   "at": 44.76,
+   "word_n": 1,
+   "type": "badge",
+   "text": "",
+   "x": -999,
+   "y": -999,
+   "dur": 0.5,
+   "jump": true
+  },
+  {
+   "type": "pose",
+   "pose": "arms_up",
+   "at": 44.76,
+   "dur": 1.2
+  }
+ ],
+ "turn": null
+}
