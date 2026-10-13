@@ -1,0 +1,388 @@
+{
+ "tail": 0.9,
+ "flat": true,
+ "events": [
+  {
+   "type": "hook",
+   "at": 0.0,
+   "dur": 1.25,
+   "lines": [
+    "Нейросети",
+    "теперь умеют"
+   ],
+   "emoji": "🚀",
+   "y": 190
+  },
+  {
+   "type": "zoom",
+   "at": 0.0,
+   "dur": 4.48
+  },
+  {
+   "type": "kinetic",
+   "at": 1.84,
+   "text": "ещё недавно казалось фантастикой",
+   "pill": "фантастикой",
+   "y": 380,
+   "dur": 1.76
+  },
+  {
+   "type": "pose",
+   "pose": "arms_up",
+   "at": 2.92,
+   "dur": 0.9
+  },
+  {
+   "type": "card",
+   "at": 4.6,
+   "emoji": "💡",
+   "title": "Эмбер объяснит",
+   "sub": "простыми словами",
+   "sub_at": 5.48,
+   "y": 330,
+   "dur": 1.88,
+   "jump": true
+  },
+  {
+   "type": "flare",
+   "at": 6.6,
+   "corner": "tr",
+   "dur": 0.8,
+   "delay": -0.15
+  },
+  {
+   "type": "badge",
+   "at": 6.6,
+   "text": "1",
+   "x": 150,
+   "y": 250,
+   "dur": 10.64,
+   "jump": true
+  },
+  {
+   "type": "kinetic",
+   "at": 6.6,
+   "text": "Агенты сами делают дела",
+   "pill": "Агенты",
+   "y": 380,
+   "dur": 4.6
+  },
+  {
+   "type": "pose",
+   "pose": "point_up",
+   "at": 7.12,
+   "dur": 1.0
+  },
+  {
+   "type": "card",
+   "at": 11.32,
+   "emoji": "",
+   "title": "Клод в браузере",
+   "sub": "делает сам",
+   "sub_at": 12.48,
+   "y": 330,
+   "dur": 1.56,
+   "logo": "claude-color",
+   "logoBg": "#fff",
+   "logoInvert": false
+  },
+  {
+   "type": "tiles",
+   "at": 13.12,
+   "dur": 2.8,
+   "items": [
+    {
+     "emoji": "🌐",
+     "label": "браузер",
+     "at": 13.12,
+     "x": 230,
+     "y": 450,
+     "mark": "check",
+     "mark_at": 13.6
+    },
+    {
+     "emoji": "🔎",
+     "label": "страница",
+     "at": 14.4,
+     "x": 540,
+     "y": 450,
+     "mark": "check",
+     "mark_at": 14.9
+    },
+    {
+     "emoji": "📝",
+     "label": "форма",
+     "at": 15.56,
+     "x": 850,
+     "y": 450,
+     "mark": "check",
+     "mark_at": 15.9
+    }
+   ]
+  },
+  {
+   "type": "card",
+   "at": 16.04,
+   "emoji": "👀",
+   "title": "Ты только проверяешь",
+   "y": 330,
+   "dur": 1.2
+  },
+  {
+   "type": "flare",
+   "at": 17.36,
+   "corner": "tl",
+   "dur": 0.8,
+   "delay": -0.15
+  },
+  {
+   "type": "badge",
+   "at": 17.36,
+   "text": "2",
+   "x": 150,
+   "y": 250,
+   "dur": 8.27,
+   "jump": true
+  },
+  {
+   "type": "kinetic",
+   "at": 17.36,
+   "text": "Видео со звуком",
+   "pill": "звуком",
+   "y": 380,
+   "dur": 1.72
+  },
+  {
+   "type": "pose",
+   "pose": "explain",
+   "at": 18.04,
+   "dur": 1.0
+  },
+  {
+   "type": "tiles",
+   "at": 19.2,
+   "dur": 3.52,
+   "items": [
+    {
+     "emoji": "✍️",
+     "label": "пара строк",
+     "at": 19.6,
+     "x": 230,
+     "y": 450
+    },
+    {
+     "emoji": "🎬",
+     "label": "ролик",
+     "at": 21.08,
+     "x": 540,
+     "y": 450
+    },
+    {
+     "emoji": "🎵",
+     "label": "голос и музыка",
+     "at": 21.52,
+     "x": 850,
+     "y": 450
+    }
+   ]
+  },
+  {
+   "type": "card",
+   "at": 22.84,
+   "emoji": "",
+   "title": "Сора",
+   "sub": "от создателей ЧатГПТ",
+   "sub_at": 24.4,
+   "y": 330,
+   "dur": 2.79,
+   "logo": "sora-color",
+   "logoBg": "#fff",
+   "logoInvert": false
+  },
+  {
+   "type": "flare",
+   "at": 25.75,
+   "corner": "tr",
+   "dur": 0.8,
+   "delay": -0.15
+  },
+  {
+   "type": "badge",
+   "at": 25.75,
+   "text": "3",
+   "x": 150,
+   "y": 250,
+   "dur": 8.38,
+   "jump": true
+  },
+  {
+   "type": "kinetic",
+   "at": 25.75,
+   "text": "Третье память",
+   "pill": "память",
+   "y": 380,
+   "dur": 1.5
+  },
+  {
+   "type": "card",
+   "at": 27.37,
+   "emoji": "",
+   "title": "ЧатГПТ помнит тебя",
+   "sub": "не надо объяснять заново",
+   "sub_at": 30.53,
+   "y": 330,
+   "dur": 5.44,
+   "logo": "openai",
+   "logoBg": "#000",
+   "logoInvert": true
+  },
+  {
+   "type": "pose",
+   "pose": "point_up",
+   "at": 28.17,
+   "dur": 1.0
+  },
+  {
+   "type": "kinetic",
+   "at": 32.93,
+   "text": "Честно это кайф",
+   "pill": "кайф",
+   "y": 380,
+   "dur": 1.2
+  },
+  {
+   "type": "punch",
+   "at": 33.77,
+   "dur": 0.5
+  },
+  {
+   "type": "pose",
+   "pose": "arms_up",
+   "at": 33.77,
+   "dur": 0.8
+  },
+  {
+   "type": "flare",
+   "at": 34.25,
+   "corner": "tl",
+   "dur": 0.8,
+   "delay": -0.15
+  },
+  {
+   "type": "badge",
+   "at": 34.25,
+   "text": "4",
+   "x": 150,
+   "y": 250,
+   "dur": 6.38,
+   "jump": true
+  },
+  {
+   "type": "kinetic",
+   "at": 34.25,
+   "text": "Живой голос",
+   "pill": "голос",
+   "y": 380,
+   "dur": 1.4
+  },
+  {
+   "type": "pose",
+   "pose": "explain",
+   "at": 35.77,
+   "dur": 1.0
+  },
+  {
+   "type": "tiles",
+   "at": 36.69,
+   "dur": 3.94,
+   "items": [
+    {
+     "emoji": "📞",
+     "label": "как по телефону",
+     "at": 37.45,
+     "x": 230,
+     "y": 450
+    },
+    {
+     "emoji": "😄",
+     "label": "шутить",
+     "at": 39.05,
+     "x": 540,
+     "y": 450
+    },
+    {
+     "emoji": "🌍",
+     "label": "перевод",
+     "at": 39.61,
+     "x": 850,
+     "y": 450
+    }
+   ]
+  },
+  {
+   "type": "kinetic",
+   "at": 40.75,
+   "text": "И знаешь что? Это только начало",
+   "pill": "начало",
+   "y": 380,
+   "dur": 2.0
+  },
+  {
+   "type": "pose",
+   "pose": "arms_up",
+   "at": 42.19,
+   "dur": 0.8
+  },
+  {
+   "type": "tiles",
+   "at": 42.87,
+   "dur": 1.8,
+   "items": [
+    {
+     "emoji": "🔖",
+     "label": "сохрани",
+     "at": 42.87,
+     "x": 540,
+     "y": 470,
+     "size": 210
+    }
+   ],
+   "jump": true
+  },
+  {
+   "type": "flare",
+   "at": 44.79,
+   "corner": "br",
+   "dur": 0.8
+  },
+  {
+   "type": "card",
+   "at": 44.79,
+   "emoji": "🤖",
+   "title": "Смонтировано нейросетью",
+   "sub": "даже это видео",
+   "sub_at": 45.83,
+   "y": 330,
+   "dur": 3.08
+  },
+  {
+   "type": "pose",
+   "pose": "explain",
+   "at": 44.79,
+   "dur": 1.0
+  },
+  {
+   "type": "tg",
+   "at": 47.99,
+   "dur": 3.96,
+   "y": 130,
+   "jump": true
+  },
+  {
+   "type": "pose",
+   "pose": "arms_up",
+   "at": 47.99,
+   "dur": 1.2
+  }
+ ]
+}
