@@ -1,0 +1,149 @@
+{
+ "captions": false,
+ "bg_only": true,
+ "layers": false,
+ "tail": 0.9,
+ "events": [
+  {
+   "type": "zoom",
+   "at": 0.0,
+   "dur": 3.76
+  },
+  {
+   "type": "pose",
+   "pose": "arms_up",
+   "at": 3.2,
+   "dur": 0.8
+  },
+  {
+   "at": 3.88,
+   "word_n": 1,
+   "type": "badge",
+   "text": "",
+   "x": -999,
+   "y": -999,
+   "dur": 0.5,
+   "jump": true
+  },
+  {
+   "at": 5.92,
+   "word_n": 1,
+   "type": "badge",
+   "text": "",
+   "x": -999,
+   "y": -999,
+   "dur": 0.5,
+   "jump": true
+  },
+  {
+   "type": "pose",
+   "pose": "shrug",
+   "at": 9.52,
+   "dur": 0.9
+  },
+  {
+   "type": "pose",
+   "pose": "arms_up",
+   "at": 15.0,
+   "dur": 0.7
+  },
+  {
+   "at": 15.68,
+   "word_n": 1,
+   "type": "badge",
+   "text": "",
+   "x": -999,
+   "y": -999,
+   "dur": 0.5,
+   "jump": true
+  },
+  {
+   "type": "pose",
+   "pose": "shrug",
+   "at": 21.72,
+   "dur": 0.9
+  },
+  {
+   "type": "pose",
+   "pose": "point_up",
+   "at": 25.44,
+   "dur": 0.6
+  },
+  {
+   "at": 25.8,
+   "word_n": 1,
+   "type": "badge",
+   "text": "",
+   "x": -999,
+   "y": -999,
+   "dur": 0.5,
+   "jump": true
+  },
+  {
+   "type": "pose",
+   "pose": "explain",
+   "at": 30.36,
+   "dur": 1.0
+  },
+  {
+   "at": 33.6,
+   "word_n": 1,
+   "type": "badge",
+   "text": "",
+   "x": -999,
+   "y": -999,
+   "dur": 0.5,
+   "jump": true
+  },
+  {
+   "at": 35.32,
+   "word_n": 1,
+   "delay": 0,
+   "dur": 3.16,
+   "type": "chart",
+   "chart": {
+    "kind": "none"
+   }
+  },
+  {
+   "type": "pose",
+   "pose": "point_up",
+   "at": 39.36,
+   "dur": 1.0
+  },
+  {
+   "type": "punch",
+   "at": 42.04,
+   "dur": 0.5
+  },
+  {
+   "type": "pose",
+   "pose": "arms_up",
+   "at": 42.04,
+   "dur": 0.8
+  },
+  {
+   "type": "pose",
+   "pose": "explain",
+   "at": 42.96,
+   "dur": 1.0
+  },
+  {
+   "at": 46.16,
+   "word_n": 1,
+   "type": "badge",
+   "text": "",
+   "x": -999,
+   "y": -999,
+   "dur": 0.5,
+   "jump": true
+  },
+  {
+   "type": "pose",
+   "pose": "arms_up",
+   "at": 46.16,
+   "dur": 1.2
+  }
+ ],
+ "turn": null
+}
